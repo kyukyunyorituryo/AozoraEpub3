@@ -11,9 +11,9 @@
 ## シリーズタイトル
 SERIES	.series a:0
 ## タイトル
-TITLE	.novel_title:0,.novel_subtitle:0	(^.*</div>)	
+TITLE	.novel_title:0,.novel_subtitle:0	(^.*</div>)
 ## 著者
-AUTHOR	.novel_writername a:0,.novel_writername:0	作者：	
+AUTHOR	.novel_writername a:0,.novel_writername:0	作者：
 ## 説明
 DESCRIPTION	#novel_ex:0
 ##表紙画像
@@ -35,13 +35,13 @@ CONTENT_UPDATE_LIST	.long_update	^([^<]+)\n?(<span title=\"([^"]+)\".*)?$	$1 公
 ## 各話 Chapter 先頭の章のみ大見出しで出力
 CONTENT_CHAPTER	.chapter_title:0
 ## 各話 章タイトル 中見出しで出力
-CONTENT_SUBTITLE	.novel_subtitle:0	(（改稿版）)|(^.*</div>)	
+CONTENT_SUBTITLE	.novel_subtitle:0	(（改稿版）)|(^.*</div>)
 
 ## 各話 本文
 CONTENT_ARTICLE	#novel_honbun:0
 
 ##本文タグ外に画像がある場合本文の前に出力
-#CONTENT_IMG	
+#CONTENT_IMG
 
 ##前書き
 CONTENT_PREAMBLE	#novel_p:0
