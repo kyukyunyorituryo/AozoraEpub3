@@ -308,8 +308,6 @@ public class WebAozoraConverter
 			if (pagerele != null && pagerele.length > 0) pagerMax = pagerele[0].query;
 			LogAppender.println("ページャー最大値は"+pagerMax);
 			//LogAppender.println(String.valueOf(toc_index));
-
-
 					boolean pager = toc_index.isEmpty();
 					boolean href = next_page.attr("href").isEmpty();
 					//link=n00000/?p=2
@@ -366,7 +364,7 @@ public class WebAozoraConverter
 				String introduction = episode.getJSONObject("Work:" + cd).getString("introduction");
 				String altauthor="";
 				if(episode.getJSONObject("Work:" + cd).optString("alternateAuthorName",null)!=null) {
-					altauthor=altauthor + "／"+ episode.getJSONObject("Work:" + cd).getString("alternateAuthorName");
+					altauthor = episode.getJSONObject("Work:" + cd).getString("alternateAuthorName")+ "／";
 				}
 				String author = altauthor + episode.getJSONObject(episode.getJSONObject("Work:" + cd).getJSONObject("author").getString("__ref")).getString("activityName");
 				JSONArray toc =episode.getJSONObject("Work:" + cd).getJSONArray("tableOfContents");
