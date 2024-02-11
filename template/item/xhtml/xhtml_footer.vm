@@ -1,5 +1,4 @@
-#if (${sectionInfo.Middle} || ${sectionInfo.bottom})
-</div>
+#if (${sectionInfo.Middle} || ${sectionInfo.Bottom})
 </div>
 #end
 </div>
