@@ -17,8 +17,10 @@
 </head>
 
 
-
-<body class="p-titlepage">
+#if ($kindle)
+#set ($kindle_cls=" kindle")
+#end
+<body class="p-titlepage$!{kindle_cls}">
 <div class="main vrtl block-align-center">
 #if (${PUBLISHER})
 	<div class="publisher">${PUBLISHER}</div>
