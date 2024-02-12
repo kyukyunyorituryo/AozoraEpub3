@@ -289,8 +289,6 @@
     <mkdir dir="${dir.jarfile}/template/item/style"/>
     <copy file="${dir.buildfile}/template/item/style/aozora.css" todir="${dir.jarfile}/template/item/style"/>
     <copy file="${dir.buildfile}/template/item/style/font.css" todir="${dir.jarfile}/template/item/style"/>
-    <copy file="${dir.buildfile}/template/item/style/image.css" todir="${dir.jarfile}/template/item/style"/>
-    <copy file="${dir.buildfile}/template/item/style/middle.css" todir="${dir.jarfile}/template/item/style"/>
     <copy file="${dir.buildfile}/template/item/style/text.vm" todir="${dir.jarfile}/template/item/style"/>
     <copy file="${dir.buildfile}/template/item/style/fixed-layout-jp.css" todir="${dir.jarfile}/template/item/style"/>
     <copy file="${dir.buildfile}/template/item/style/book-style.css" todir="${dir.jarfile}/template/item/style"/>
