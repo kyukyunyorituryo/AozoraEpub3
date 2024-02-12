@@ -138,7 +138,7 @@ public class AozoraEpub3Applet extends JFrame
 	JProfileDialog jProfileDialog;
 
 	/** プロファイル選択 */
-	JComboBox jComboProfile;
+	JComboBox<ProfileInfo> jComboProfile;
 	JButton jButtonProfileCreate;
 	JButton jButtonProfileEdit;
 	JButton jButtonProfileUp;
@@ -540,9 +540,9 @@ public class AozoraEpub3Applet extends JFrame
 		jButtonProfileUp.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) {
 			int idx = jComboProfile.getSelectedIndex();
 			if (idx > 0) {
-				Object item = jComboProfile.getItemAt(idx-1);
+				ProfileInfo item = jComboProfile.getItemAt(idx-1);
 				jComboProfile.removeItemAt(idx-1);
-				jComboProfile.insertItemAt((String) item, idx);
+				jComboProfile.insertItemAt(item, idx);
 				//移動ボタン有効化
 				setProfileMoveEnable();
 			}
@@ -556,9 +556,9 @@ public class AozoraEpub3Applet extends JFrame
 		jButtonProfileDown.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) {
 			int idx = jComboProfile.getSelectedIndex();
 			if (idx < jComboProfile.getItemCount()-1) {
-				Object item = jComboProfile.getItemAt(idx+1);
+				ProfileInfo item = jComboProfile.getItemAt(idx+1);
 				jComboProfile.removeItemAt(idx+1);
-				jComboProfile.insertItemAt((String) item, idx);
+				jComboProfile.insertItemAt(item, idx);
 				//移動ボタン有効化
 				setProfileMoveEnable();
 			}
@@ -4830,7 +4830,7 @@ public class AozoraEpub3Applet extends JFrame
 		try {
 			StringBuilder propList = new StringBuilder();
 			for (int i=0; i<this.jComboProfile.getItemCount(); i++) {
-				propInfo = (ProfileInfo)this.jComboProfile.getItemAt(i);
+				propInfo = this.jComboProfile.getItemAt(i);
 				propList.append(",").append(propInfo.getFileName());
 			}
 			propList.deleteCharAt(0);
