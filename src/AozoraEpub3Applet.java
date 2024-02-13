@@ -476,7 +476,7 @@ public class AozoraEpub3Applet extends JFrame
 		ImageIcon tocIcon = new ImageIcon(AozoraEpub3Applet.class.getResource("images/toc.png"));
 		ImageIcon styleIcon = new ImageIcon(AozoraEpub3Applet.class.getResource("images/style.png"));
 		ImageIcon webIcon = new ImageIcon(AozoraEpub3Applet.class.getResource("images/web.png"));
-		ImageIcon charIcon = new ImageIcon(AozoraEpub3Applet.class.getResource("images/char.png"));
+		//ImageIcon charIcon = new ImageIcon(AozoraEpub3Applet.class.getResource("images/char.png"));
 
 		ButtonGroup buttonGroup;
 
@@ -523,7 +523,7 @@ public class AozoraEpub3Applet extends JFrame
 		//プロファイル
 		label = new JLabel("プロファイル: ");
 		panel.add(label);
-		jComboProfile = new JComboBox();
+		jComboProfile = new JComboBox<ProfileInfo>();
 		jComboProfile.setEditable(false);
 		jComboProfile.setFocusable(false);
 		jComboProfile.setPreferredSize(new Dimension(320, 22));
@@ -645,7 +645,7 @@ public class AozoraEpub3Applet extends JFrame
 		label = new JLabel("本文内");
 		label.setBorder(padding2H);
 		panel.add(label);
-		jComboTitle = new JComboBox(BookInfo.TitleType.titleTypeNames);
+		jComboTitle = new JComboBox<String>(BookInfo.TitleType.titleTypeNames);
 		jComboTitle.setFocusable(false);
 		jComboTitle.setMaximumSize(new Dimension(200, 22));
 		jComboTitle.setBorder(padding0);
@@ -689,7 +689,7 @@ public class AozoraEpub3Applet extends JFrame
 		jLabelMaxCoverLine.setBorder(padding2H);
 		panel.add(jLabelMaxCoverLine);
 
-		jComboCover = new JComboBox(new String[]{"[先頭の挿絵]", "[入力ファイル名と同じ画像(png,jpg)]", "[表紙無し]", "http://"});
+		jComboCover = new JComboBox<String>(new String[]{"[先頭の挿絵]", "[入力ファイル名と同じ画像(png,jpg)]", "[表紙無し]", "http://"});
 		jComboCover.setEditable(true);
 		jComboCover.setPreferredSize(new Dimension(320, 24));
 		jComboCover.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent arg0) {
@@ -791,7 +791,7 @@ public class AozoraEpub3Applet extends JFrame
 		//拡張子
 		label = new JLabel("拡張子: ");
 		panel.add(label);
-		jComboExt = new JComboBox(new String[]{".epub", ".kepub.epub", ".fxl.kepub.epub", ".mobi", ".mobi+.epub"});
+		jComboExt = new JComboBox<String>(new String[]{".epub", ".kepub.epub", ".fxl.kepub.epub", ".mobi", ".mobi+.epub"});
 		jComboExt.setToolTipText("出力するファイルの拡張子を選択します。 mobi出力時はKindlegenが必要になります");
 		jComboExt.setEditable(true);
 		jComboExt.setMaximumSize(new Dimension(110, 24));
@@ -833,7 +833,7 @@ public class AozoraEpub3Applet extends JFrame
 			jComboDstPath.setForeground(jCheckSamePath.isSelected()?Color.gray:Color.black);
 			jComboDstPath.repaint();
 		}});
-		jComboDstPath = new JComboBox();
+		jComboDstPath = new JComboBox<String>();
 		jComboDstPath.setToolTipText("出力先を指定します。変換時に履歴に追加されます。フォルダのドロップでも設定できます");
 		jComboDstPath.setEditable(false);
 		jComboDstPath.setForeground(Color.gray);
@@ -890,8 +890,8 @@ public class AozoraEpub3Applet extends JFrame
 		label = new JLabel("入力文字コード");
 		label.setBorder(padding0);
 		panel1.add(label);
-	//	jComboEncType = new JComboBox(new String[]{"MS932", "UTF-8"});
-		jComboEncType = new JComboBox(new String[]{"AUTO","MS932", "UTF-8"});
+	//	jComboEncType = new JComboBox<String>(new String[]{"MS932", "UTF-8"});
+		jComboEncType = new JComboBox<String>(new String[]{"AUTO","MS932", "UTF-8"});
 		jComboEncType.setToolTipText("入力ファイルのテキストファイルの文字コード。青空文庫の標準はMS932(SJIS)です");
 		jComboEncType.setFocusable(false);
 		jComboEncType.setPreferredSize(new Dimension(70, 22));
@@ -900,7 +900,7 @@ public class AozoraEpub3Applet extends JFrame
 		label = new JLabel("言語");
 		label.setBorder(padding0);
 		panel1.add(label);
-		jComboLangType = new JComboBox(new String[]{"ja", "en"});
+		jComboLangType = new JComboBox<String>(new String[]{"ja", "en"});
 		jComboLangType.setToolTipText("出力するEPUBの言語を選択する。");
 		jComboLangType.setEditable(true);
 		//jComboLangType.setFocusable(false);
@@ -1100,7 +1100,7 @@ public class AozoraEpub3Applet extends JFrame
 
 		label = new JLabel(" 配置");
 		panel.add(label);
-		jComboImageFloatType = new JComboBox(new String[]{"上/左","下/右"});
+		jComboImageFloatType = new JComboBox<String>(new String[]{"上/左","下/右"});
 		jComboImageFloatType.setFocusable(false);
 		jComboImageFloatType.setBorder(padding0);
 		jComboImageFloatType.setPreferredSize(new Dimension(text4.width+24, 20));
@@ -1334,7 +1334,7 @@ public class AozoraEpub3Applet extends JFrame
 		label = new JLabel(" 自動回転");
 		label.setBorder(padding2H);
 		panel.add(label);
-		jComboRotateImage = new JComboBox(new String[]{"なし","右","左"});
+		jComboRotateImage = new JComboBox<String>(new String[]{"なし","右","左"});
 		jComboRotateImage.setToolTipText("単ページ時画面の縦横比に合わせて画像を回転します");
 		jComboRotateImage.setFocusable(false);
 		jComboRotateImage.setBorder(padding0);
@@ -1433,7 +1433,7 @@ public class AozoraEpub3Applet extends JFrame
 		label = new JLabel("ノンブル除去 (位置");
 		label.setBorder(padding2H);
 		panel.add(label);
-		jComboAutoMarginNombre = new JComboBox(new String[]{"なし","上","下","上下"});
+		jComboAutoMarginNombre = new JComboBox<String>(new String[]{"なし","上","下","上下"});
 		jComboAutoMarginNombre.setToolTipText("ノンブルを除去します。除去した場合は除去制限が5%追加されます");
 		jComboAutoMarginNombre.setFocusable(false);
 		jComboAutoMarginNombre.setMaximumSize(new Dimension(text3.width+24, 20));
@@ -1619,7 +1619,7 @@ public class AozoraEpub3Applet extends JFrame
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBorder(new NarrowTitledBorder("空行除去"));
 		tabPanel.add(panel);
-		jComboxRemoveEmptyLine = new JComboBox(new String[]{"0", "1", "2", "3", "4", "5"});
+		jComboxRemoveEmptyLine = new JComboBox<String>(new String[]{"0", "1", "2", "3", "4", "5"});
 		jComboxRemoveEmptyLine.setToolTipText("空行の行数を減らします 見出し行の後ろ3行以内は1行残します");
 		jComboxRemoveEmptyLine.setFocusable(false);
 		jComboxRemoveEmptyLine.setBorder(padding0);
@@ -1634,7 +1634,7 @@ public class AozoraEpub3Applet extends JFrame
 		label = new JLabel(" 最大");
 		label.setBorder(padding2);
 		panel.add(label);
-		jComboxMaxEmptyLine = new JComboBox(new String[]{"-", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
+		jComboxMaxEmptyLine = new JComboBox<String>(new String[]{"-", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"});
 		jComboxMaxEmptyLine.setToolTipText("空行の連続を指定行数以下に制限します");
 		jComboxMaxEmptyLine.setFocusable(false);
 		jComboxMaxEmptyLine.setBorder(padding0);
@@ -1693,7 +1693,7 @@ public class AozoraEpub3Applet extends JFrame
 		jCheckPageBreakEmpty.setFocusPainted(false);
 		jCheckPageBreakEmpty.setBorder(padding2);
 		panel.add(jCheckPageBreakEmpty);
-		jComboxPageBreakEmptyLine = new JComboBox(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"});
+		jComboxPageBreakEmptyLine = new JComboBox<String>(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"});
 		jComboxPageBreakEmptyLine.setSelectedIndex(1);
 		jComboxPageBreakEmptyLine.setFocusable(false);
 		jComboxPageBreakEmptyLine.setBorder(padding0);
@@ -1903,7 +1903,7 @@ public class AozoraEpub3Applet extends JFrame
 			jComboChapterPattern.setEditable(jCheckChapterPattern.isSelected()); jComboChapterPattern.repaint();
 		}});
 		panel.add(jCheckChapterPattern);
-		jComboChapterPattern = new JComboBox(new String[]{
+		jComboChapterPattern = new JComboBox<String>(new String[]{
 				"^(見出し１|見出し２|見出し３)$",
 				"^(†|【|●|▼|■)",
 				"^(0-9|０-９|一|二|三|四|五|六|七|八|九|十|〇)",
@@ -1929,7 +1929,7 @@ public class AozoraEpub3Applet extends JFrame
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBorder(new NarrowTitledBorder("行の高さ"));
 		tabPanel.add(panel);
-		jComboLineHeight = new JComboBox(new String[]{"1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "2.0"});
+		jComboLineHeight = new JComboBox<String>(new String[]{"1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "2.0"});
 		jComboLineHeight.setBorder(padding0);
 		jComboLineHeight.setMaximumSize(combo3);
 		jComboLineHeight.setPreferredSize(combo3);
@@ -1945,7 +1945,7 @@ public class AozoraEpub3Applet extends JFrame
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBorder(new NarrowTitledBorder("文字サイズ"));
 		tabPanel.add(panel);
-		jComboFontSize = new JComboBox(new String[]{"75", "80", "85", "90", "95", "100", "105", "110", "115", "120", "125"});
+		jComboFontSize = new JComboBox<String>(new String[]{"75", "80", "85", "90", "95", "100", "105", "110", "115", "120", "125"});
 		jComboFontSize.setToolTipText("標準フォントからの倍率を設定します");
 		jComboFontSize.setBorder(padding0);
 		jComboFontSize.setMaximumSize(combo3);
