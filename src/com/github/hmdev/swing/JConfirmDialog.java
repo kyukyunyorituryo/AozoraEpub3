@@ -57,7 +57,7 @@ public class JConfirmDialog extends JDialog
 	JTextField jTextDstFileName;
 	
 	/** 表題再取得 順番 */
-	JComboBox jComboTitle;
+	JComboBox<String> jComboTitle;
 	JCheckBox jCheckPubFirst;
 	/** 表題再取得 順番 */
 	JButton jButtonTitle;
@@ -239,7 +239,7 @@ public class JConfirmDialog extends JDialog
 		panel.setBorder(padding4T);
 		label = new JLabel("本文内");
 		panel.add(label);
-		jComboTitle = new JComboBox(BookInfo.TitleType.titleTypeNames);
+		jComboTitle = new JComboBox<String>(BookInfo.TitleType.titleTypeNames);
 		jComboTitle.setFocusable(false);
 		jComboTitle.setMaximumSize(new Dimension(200, 22));
 		jComboTitle.setPreferredSize(new Dimension(200, 22));
