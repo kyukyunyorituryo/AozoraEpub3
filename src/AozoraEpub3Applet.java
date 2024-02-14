@@ -40,7 +40,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -404,7 +406,7 @@ public class AozoraEpub3Applet extends JFrame
 	}
 */
 	/** アプレット初期化 */
-	public void init()
+	public void init() throws MalformedURLException, URISyntaxException
 	{
 	//	super.init();
 		this.setSize(new Dimension(520, 460));
@@ -3864,7 +3866,7 @@ public class AozoraEpub3Applet extends JFrame
 	/** Web変換
 	 * @param vecUrlString 青空文庫テキストのzipまたは対応サイトのリンクURL
 	 * @param vecUrlSrcFile ショートカットファイルのURLならファイルが指定されている */
-	private void convertWeb(Vector<String> vecUrlString, Vector<File> vecUrlSrcFile, File dstPath) throws IOException
+	private void convertWeb(Vector<String> vecUrlString, Vector<File> vecUrlSrcFile, File dstPath) throws IOException, URISyntaxException
 	{
 		for (int i=0; i<vecUrlString.size(); i++) {
 			String urlString = vecUrlString.get(i);
@@ -3881,7 +3883,7 @@ public class AozoraEpub3Applet extends JFrame
 				LogAppender.println("出力先にダウンロードします : "+srcFile.getCanonicalPath());
 				srcFile.getParentFile().mkdirs();
 				//ダウンロード
-				BufferedInputStream bis = new BufferedInputStream(new URL(urlString).openStream(), 8192);
+				BufferedInputStream bis = new BufferedInputStream(new URI(urlString).toURL().openStream(), 8192);
 				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(srcFile));
 				IOUtils.copy(bis, bos);
 				bos.close();
@@ -4747,8 +4749,9 @@ public class AozoraEpub3Applet extends JFrame
 	//	final AozoraEpub3Applet applet = new AozoraEpub3Applet(jFrame);
 		jFrame.setIconImage(new ImageIcon( AozoraEpub3Applet.class.getResource("images/icon.png")).getImage());
 		jFrame.setTitle("AozoraEpub3");
-		jFrame.init();
-
+		try {
+			jFrame.init();
+		} catch(Exception e) { e.printStackTrace(); }
 		//アイコン設定
 	//	jFrame.setIconImage(applet.iconImage);
 		//最小サイズ
