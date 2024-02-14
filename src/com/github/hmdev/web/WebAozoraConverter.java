@@ -297,7 +297,7 @@ public class WebAozoraConverter
 			if (toc_index != null) {
 				//LogAppender.println("目次がある");
 			}
-			Elements next_page = getExtractElements(doc, this.queryMap.get(ExtractId.NEXTPAGE));
+			Elements next_page = getExtractElements(doc, this.queryMap.get(ExtractId.NEXT_PAGE));
 			if (next_page == null) {
 				LogAppender.println("ページャーがありません");
 			}
@@ -309,8 +309,7 @@ public class WebAozoraConverter
 			if (pagerele != null && pagerele.length > 0) pagerMax = pagerele[0].query;
 			LogAppender.println("ページャー最大値は"+pagerMax);
 			//LogAppender.println(String.valueOf(toc_index));
-					//boolean pager = toc_index.isEmpty();
-					boolean href = next_page.attr("href").isEmpty();
+					boolean href;
 					//link=n00000/?p=2
 					//baseUri=https://ncode.syosetu.com/
 					String link = next_page.attr("href");
@@ -340,13 +339,13 @@ public class WebAozoraConverter
 						Elements index = getExtractElements(pagedoc, this.queryMap.get(ExtractId.INDEX)).first().children().clone();
 						//Elements index = pagedoc.getElementsByClass("index_box").first().children().clone();
 						toc_index.append(String.valueOf(index));
-						//Elements next_page = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXTPAGE));
-						href = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXTPAGE)).attr("href").isEmpty();
+						//Elements next_page = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXT_PAGE));
+						href = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXT_PAGE)).attr("href").isEmpty();
 						if (href) {
 							LogAppender.println("目次最終ページ");
 							break;
 						}
-						link = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXTPAGE)).attr("href");
+						link = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXT_PAGE)).attr("href");
 					}
 
 				}
