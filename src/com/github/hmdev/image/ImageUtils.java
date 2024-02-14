@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.util.Iterator;
 
 import javax.imageio.IIOImage;
@@ -83,7 +83,7 @@ public class ImageUtils
 		try {
 			InputStream is;
 			if (path.startsWith("http")) {
-				is = new BufferedInputStream(new URL(path).openStream(), 8192);
+				is = new BufferedInputStream(new URI(path).toURL().openStream(), 8192);
 			} else {
 				File file = new File(path);
 				if (!file.exists()) return null;

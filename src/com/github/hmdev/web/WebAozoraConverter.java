@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -216,7 +217,7 @@ public class WebAozoraConverter
 		if (!urlString.endsWith("/") && !urlString.endsWith(".html") && !urlString.endsWith(".htm") && urlString.indexOf("?") == -1 ) {
 			HttpURLConnection connection = null;
 			try {
-				connection = (HttpURLConnection) new URL(urlString+"/").openConnection();
+				connection = (HttpURLConnection) new URI(urlString+"/").toURL().openConnection();
 				if (connection.getResponseCode() == 200) {
 					urlString += "/";
 					LogAppender.println("URL修正 : "+urlString);
@@ -308,7 +309,7 @@ public class WebAozoraConverter
 			if (pagerele != null && pagerele.length > 0) pagerMax = pagerele[0].query;
 			LogAppender.println("ページャー最大値は"+pagerMax);
 			//LogAppender.println(String.valueOf(toc_index));
-					boolean pager = toc_index.isEmpty();
+					//boolean pager = toc_index.isEmpty();
 					boolean href = next_page.attr("href").isEmpty();
 					//link=n00000/?p=2
 					//baseUri=https://ncode.syosetu.com/
@@ -1291,7 +1292,7 @@ public class WebAozoraConverter
 
 	////////////////////////////////////////////////////////////////
 	/** htmlをキャッシュ すでにあれば何もしない */
-	private boolean cacheFile(String urlString, File cacheFile, String referer) throws IOException
+	private boolean cacheFile(String urlString, File cacheFile, String referer) throws IOException, URISyntaxException
 	{
 		//if (!replace && cacheFile.exists()) return false;
 		try { if (cacheFile.isDirectory()) cacheFile.delete(); } catch (Exception e) {} //空のディレクトリなら消す
@@ -1303,7 +1304,7 @@ public class WebAozoraConverter
 		}
 		cacheFile.getParentFile().mkdirs();
 		//ダウンロード
-		URLConnection conn = new URL(urlString).openConnection();
+		URLConnection conn = new URI(urlString).toURL().openConnection();
 		ExtractInfo[] cookie = this.queryMap.get(ExtractId.COOKIE);
 		if (cookie != null && cookie.length > 0) conn.setRequestProperty("Cookie", cookie[0].query);
 		if (referer != null) conn.setRequestProperty("Referer", referer);

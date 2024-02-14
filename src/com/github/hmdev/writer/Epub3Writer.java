@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.net.URL;
+import java.net.URI;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
@@ -603,7 +603,7 @@ public class Epub3Writer
 				}
 				BufferedInputStream bis;
 				if (bookInfo.coverFileName.startsWith("http")) {
-					bis = new BufferedInputStream(new URL(bookInfo.coverFileName).openStream(), 8192);
+					bis = new BufferedInputStream(new URI(bookInfo.coverFileName).toURL().openStream(), 8192);
 				} else {
 					bis = new BufferedInputStream(new FileInputStream(new File(bookInfo.coverFileName)), 8192);
 				}
