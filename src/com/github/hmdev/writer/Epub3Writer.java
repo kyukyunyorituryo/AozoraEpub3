@@ -888,8 +888,7 @@ public class Epub3Writer
 				try {
 				for (FileHeader fileHeader : archive.getFileHeaders()) {
 					if (!fileHeader.isDirectory()) {
-						String entryName = fileHeader.getFileNameW();
-						if (entryName.length() == 0) entryName = fileHeader.getFileNameString();
+						String entryName = fileHeader.getFileName();
 						entryName = entryName.replace('\\', '/');
 						//アーカイブ内のサブフォルダは除外してテキストからのパスにする
 						String srcImageFileName = entryName.substring(archivePathLength);
@@ -910,7 +909,7 @@ public class Epub3Writer
 				ZipArchiveInputStream zis = new ZipArchiveInputStream(new BufferedInputStream(new FileInputStream(srcFile), 65536), "MS932", false);
 				try {
 				ArchiveEntry entry;
-				while( (entry = zis.getNextZipEntry()) != null ) {
+				while( (entry = zis.getNextEntry()) != null ) {
 					//アーカイブ内のサブフォルダは除外してテキストからのパスにする
 					String srcImageFileName = entry.getName().substring(archivePathLength);
 					if (outImageFileNames.contains(srcImageFileName)) {

@@ -257,8 +257,7 @@ public class ImageInfoReader
 		for (FileHeader fileHeader : archive.getFileHeaders()) {
 			if (idx++ % 10 == 0) LogAppender.append(".");
 			if (!fileHeader.isDirectory()) {
-				String entryName = fileHeader.getFileNameW();
-				if (entryName.length() == 0) entryName = fileHeader.getFileNameString();
+				String entryName = fileHeader.getFileName();
 				entryName = entryName.replace('\\', '/');
 				String lowerName = entryName.toLowerCase();
 				if (lowerName.endsWith(".png") || lowerName.endsWith(".jpg") || lowerName.endsWith(".jpeg") || lowerName.endsWith(".gif")) {
@@ -342,8 +341,7 @@ public class ImageInfoReader
 				FileHeader fileHeader = archive.nextFileHeader();
 				while (fileHeader != null) {
 					if (!fileHeader.isDirectory()) {
-						String entryName = fileHeader.getFileNameW();
-						if (entryName.length() == 0) entryName = fileHeader.getFileNameString();
+						String entryName = fileHeader.getFileName();
 						entryName = entryName.replace('\\', '/');
 						if (srcImageFileName.equals(entryName)) {
 							is = archive.getInputStream(fileHeader);
@@ -358,21 +356,18 @@ public class ImageInfoReader
 				}
 				
 			} else {
-				ZipFile zf = new ZipFile(this.srcFile, "MS932");
-				ZipArchiveEntry entry = zf.getEntry(srcImageFileName);
-				if (entry == null) {
-					srcImageFileName = this.correctExt(srcImageFileName);
-					entry = zf.getEntry(srcImageFileName);
-					if (entry == null) return null;
-				}
-				InputStream is = zf.getInputStream(entry);
-				try {
-					return ImageUtils.readImage(srcImageFileName.substring(srcImageFileName.lastIndexOf('.')+1).toLowerCase(), is);
+				try (ZipFile zf = new ZipFile(this.srcFile, "MS932")) {
+					ZipArchiveEntry entry = zf.getEntry(srcImageFileName);
+					if (entry == null) {
+						srcImageFileName = this.correctExt(srcImageFileName);
+						entry = zf.getEntry(srcImageFileName);
+						if (entry == null) return null;
+					}
+					try (InputStream is = zf.getInputStream(entry)) {
+						return ImageUtils.readImage(srcImageFileName.substring(srcImageFileName.lastIndexOf('.')+1).toLowerCase(), is);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
-				} finally {
-					is.close();
-					zf.close();
 				}
 			}
 		}
