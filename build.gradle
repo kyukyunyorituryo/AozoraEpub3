@@ -66,7 +66,7 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
 
     // https://mvnrepository.com/artifact/com.github.junrar/junrar
-    implementation group: 'com.github.junrar', name: 'junrar', version: '7.5.4'
+    implementation group: 'com.github.junrar', name: 'junrar', version: '7.5.5'
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.16.1'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
