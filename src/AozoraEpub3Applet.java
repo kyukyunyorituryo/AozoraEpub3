@@ -46,15 +46,7 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Vector;
+import java.util.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -3469,7 +3461,7 @@ public class AozoraEpub3Applet extends JFrame
 		String encType = (String)jComboEncType.getSelectedItem();
 		try {
 			encauto=AozoraEpub3.getTextCharset(srcFile, ext, imageInfoReader, txtIdx);
-			if (encauto=="SHIFT_JIS")encauto="MS932";
+			if (Objects.equals(encauto, "SHIFT_JIS"))encauto="MS932";
 		} catch (IOException | RarException e1) {
 			// TODO 自動生成された catch ブロック
 			e1.printStackTrace();
