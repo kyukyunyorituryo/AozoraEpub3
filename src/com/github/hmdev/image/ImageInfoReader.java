@@ -53,8 +53,8 @@ public class ImageInfoReader
 	
 	/** 初期化 画像情報格納用のvectorとマップを生成
 	 * @param isFile 圧縮ファイル内ならfalse
-	 * @param srcParentPath 変換するソースの親のパス
-	 * @param archiveTextParentPath Zipならテキストファイルのentryの親のパス 圧縮ファイルで無い場合やルートならnull */
+	 //* @param srcParentPath 変換するソースの親のパス
+	 //* @param archiveTextParentPath Zipならテキストファイルのentryの親のパス 圧縮ファイルで無い場合やルートならnull */
 	public ImageInfoReader(boolean isFile, File srcFile)
 	{
 		this.isFile = isFile;
