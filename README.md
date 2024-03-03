@@ -297,13 +297,13 @@ https://github.com/kyukyunyorituryo/AozoraEpub3/wiki/
     ダブルクリックまたは"java -jar AozoraEpub3.jar"で実行
 * AozoraEpub3.ico
     ショートカットを作成時にこのアイコンを指定してください（jarなので設定できない）
-* lib/以下の *.jar ファイル
-    利用ライブラリ (commons-cli, commons-compress, Velocity, JAI)
+* 利用ライブラリ
+    利用ライブラリ (commons-cli, commons-compress, Velocity, JAI) は build.gradle ファイルにて指定
 
 #### ePub3テンプレート
 * template/*
     ePub3テンプレート
-* template/OPS/css/*.css
+* template/item/style/*.css
     ePub3スタイル
 
 #### 変換用設定ファイル
