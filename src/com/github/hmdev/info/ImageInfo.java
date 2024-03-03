@@ -33,9 +33,6 @@ public class ImageInfo
 	/** 出力画像高さ */
 	int outHeight = -1;
 	
-	/** Zip内ファイルentryの位置 */
-	int zipIndex = -1;
-	
 	/** カバー画像ならtrue */
 	boolean isCover;
 	
@@ -44,36 +41,26 @@ public class ImageInfo
 	
 	/** 画像の情報を生成
 	 * @param ext png jpg gif の文字列 */
-	public ImageInfo(String ext, int width, int height, int zipIndex)
+	public ImageInfo(String ext, int width, int height)
 	{
 		super();
 		this.ext = ext.toLowerCase();
 		this.width = width;
 		this.height = height;
-		this.zipIndex = zipIndex;
 	}
 	
 	/** ファイルから画像情報を生成 */
 	static public ImageInfo getImageInfo(File imageFile) throws IOException
 	{
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(imageFile));
-		ImageInfo imageInfo = ImageInfo.getImageInfo(bis, -1);
+		ImageInfo imageInfo = ImageInfo.getImageInfo(bis);
 		bis.close();
 		return imageInfo;
 	}
 	
-	/** 画像ストリームから画像情報を生成 */
-	static public ImageInfo getImageInfo(InputStream is) throws IOException
-	{
-		return getImageInfo(is, -1);
-	}
-	
-	
-	
 	/** 画像ストリームから画像情報を生成
-	 * @param zipIndex Zipファイルの場合はエントリの位置 (再読込や読み飛ばし時のファイル名比較の省略用)
 	 * @throws IOException */
-	static public ImageInfo getImageInfo(InputStream is, int zipIndex) throws IOException
+	static public ImageInfo getImageInfo(InputStream is) throws IOException
 	{
 		ImageInfo imageInfo = null;
 		ImageInputStream iis = ImageIO.createImageInputStream(is);
@@ -83,15 +70,15 @@ public class ImageInfo
 			if (readers.hasNext() && reader.getClass().getName().endsWith("CLibPNGImageReader")) readers.next();
 			reader.setInput(iis);
 			String ext = reader.getFormatName();
-			imageInfo = new ImageInfo(ext, reader.getWidth(0), reader.getHeight(0), zipIndex);
+			imageInfo = new ImageInfo(ext, reader.getWidth(0), reader.getHeight(0));
 			reader.dispose();
 		}
 		return imageInfo;
 	}
 	
-	static public ImageInfo getImageInfo(String ext, BufferedImage image, int zipIndex) throws IOException
+	static public ImageInfo getImageInfo(String ext, BufferedImage image) throws IOException
 	{
-		return new ImageInfo(ext, image.getWidth(), image.getHeight(), zipIndex);
+		return new ImageInfo(ext, image.getWidth(), image.getHeight());
 	}
 	
 	public String getId()
@@ -169,14 +156,5 @@ public class ImageInfo
 	public void setOutHeight(int outHeight)
 	{
 		this.outHeight = outHeight;
-	}
-	
-	public int getZipIndex()
-	{
-		return zipIndex;
-	}
-	public void setZipIndex(int zipIndex)
-	{
-		this.zipIndex = zipIndex;
 	}
 }

@@ -642,7 +642,7 @@ public class Epub3Writer
 				if (imageInfo != null) ext = imageInfo.getExt();
 			}
 			if (isKindle || ext.equals("jpeg")) ext = "jpg";
-			coverImageInfo = ImageInfo.getImageInfo(ext, bookInfo.coverImage, -1);
+			coverImageInfo = ImageInfo.getImageInfo(ext, bookInfo.coverImage);
 			coverImageInfo.setId("0000");
 			coverImageInfo.setOutFileName("0000."+ext);
 			coverImageInfo.setIsCover(true);
