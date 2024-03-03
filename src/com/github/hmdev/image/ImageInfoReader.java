@@ -232,7 +232,7 @@ public class ImageInfoReader
 			if (lowerName.endsWith(".png") || lowerName.endsWith(".jpg") || lowerName.endsWith(".jpeg") || lowerName.endsWith(".gif")) {
 				ImageInfo imageInfo = null;
 				try {
-					imageInfo = ImageInfo.getImageInfo(zis, zis.getCount());
+					imageInfo = ImageInfo.getImageInfo(zis);
 				} catch (Exception e) {
 					LogAppender.error("画像が読み込めませんでした: "+srcFile.getPath());
 					e.printStackTrace();
