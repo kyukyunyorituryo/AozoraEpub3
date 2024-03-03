@@ -263,13 +263,13 @@ ePub 3 conversion tool
 Double click or "java -jar AozoraEpub3.jar"
 * AozoraEpub 3.ico
 Specify this icon when creating a shortcut (jar, cannot be set)
-* lib/The following * .jar files
-Usage library (commons-cli, commons-compress, Velocity, JAI)
+* External libraries
+Used external libraries (commons-cli, commons-compress, Velocity, JAI) are specified in build.gradle file.
 
 #### ePub 3 template
 * template/*
 ePub 3 template
-* template/OPS/css /*. css
+* template/item/style/*. css
 ePub 3 style
 
 #### Conversion Configuration File
