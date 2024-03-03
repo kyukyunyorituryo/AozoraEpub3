@@ -113,7 +113,7 @@ public class AozoraEpub3Applet extends JFrame
 	private static final long serialVersionUID = 1L;
 
 	/** アプレットが表示されているフレーム */
-	JFrame jFrameParent;
+	//JFrame jFrameParent;
 	/** アプリケーションのアイコン画像 */
 	Image iconImage;
 
@@ -169,8 +169,8 @@ public class AozoraEpub3Applet extends JFrame
 	JRadioButton jRadioVertical;
 	JRadioButton jRadioHorizontal;
 
-	JRadioButton jRadioLtR;
-	JRadioButton jRadioRtL;
+	//JRadioButton jRadioLtR;
+	//JRadioButton jRadioRtL;
 
 	//入力ファイルエンコード
 	JComboBox<String> jComboEncType;
