@@ -1304,6 +1304,8 @@ public class WebAozoraConverter
 		cacheFile.getParentFile().mkdirs();
 		//ダウンロード
 		URLConnection conn = new URI(urlString).toURL().openConnection();
+		ExtractInfo[] ua = this.queryMap.get(ExtractId.USER_AGENT);
+		if (ua != null && ua.length > 0) conn.setRequestProperty("User-Agent", ua[0].query);
 		ExtractInfo[] cookie = this.queryMap.get(ExtractId.COOKIE);
 		if (cookie != null && cookie.length > 0) conn.setRequestProperty("Cookie", cookie[0].query);
 		if (referer != null) conn.setRequestProperty("Referer", referer);
