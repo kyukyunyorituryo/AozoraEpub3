@@ -30,7 +30,7 @@ AozoraEpub3-*.zip を任意のフォルダに解凍します。
 -----------------------------------------------------------------------------------------
 ■使い方
 -----------------------------------------------------------------------------------------
-AozoraEpub3.jar をダブルクリックして実行します。 　またはコンソールから "java -jar AozoraEpub3.jar" でも実行可。 　※javaが見えなければフルパスで指定 　　例: "C:\Program Files\AdoptOpenJDK\jre-11.0.5.10-hotspot\bin/java.exe" -jar AozoraEpub3.jar
+AozoraEpub3.jar をダブルクリックして実行します。 　またはコンソールから "java -jar AozoraEpub3.jar" でも実行可。 　※javaが見えなければフルパスで指定 　　例: "C:/Program Files/Eclipse Adoptium/jre-21.0.2.13-hotspot/bin/java.exe" -jar AozoraEpub3.jar
 
 ■例として青空文庫の「吾輩は猫である」をEPUBに変換する。
 下記リンクから、テキストファイルのZIPファイルをダウンロードする
