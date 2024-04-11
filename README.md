@@ -59,7 +59,7 @@ Read this in other languages: [English](https://github.com/kyukyunyorituryo/Aozo
 
 動作環境
 ------------
-OpenJDKでJava 21を推奨　https://adoptium.net/temurin/releases/
+Java 21 以降のOpenJDKでJava 21を推奨　https://adoptium.net/temurin/releases/
 
 Javaライセンスの問題からAdoptiumでビルドすることにします。Oracle JAVAまたは、OpenJDKを利用してください。AdoptiumのJavaではインストール時にパスが通るので使いやすい。
 
