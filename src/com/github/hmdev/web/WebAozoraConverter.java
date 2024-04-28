@@ -1048,6 +1048,7 @@ public class WebAozoraConverter
 	/** ルビを青空ルビにして出力 */
 	private void printRuby(BufferedWriter bw, Element ruby) throws IOException
 	{
+		/*
 		Elements rb = ruby.getElementsByTag("rb");
 		Elements rt = ruby.getElementsByTag("rt");
 		if (rb.size() > 0) {
@@ -1059,6 +1060,34 @@ public class WebAozoraConverter
 				bw.append('》');
 			} else {
 				printText(bw, rb.get(0).text());
+			}
+		}
+		*/
+
+		for (Node childNode : ruby.childNodes()) {
+			if (childNode instanceof Element) {
+				Element element = (Element) childNode;
+				switch (element.nodeName()) {
+					case "rp":
+						break;
+					case "rt":
+						bw.append('《');
+						printText(bw, element.text());
+						bw.append('》');
+						//bw = bw + "《" + element.text() + "》";
+						break;
+					case "rb":
+						bw.append('｜');
+						printText(bw, element.text());
+						//bw = bw + "｜" + element.text();
+						break;
+					default:
+						System.out.println("ruby error");
+				}
+			} else if (childNode instanceof TextNode) {
+				TextNode element = (TextNode) childNode;
+				bw.append('｜');
+				printText(bw, element.text());
 			}
 		}
 	}
