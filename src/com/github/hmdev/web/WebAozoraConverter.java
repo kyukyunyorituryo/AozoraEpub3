@@ -1074,12 +1074,10 @@ public class WebAozoraConverter
 						bw.append('《');
 						printText(bw, element.text());
 						bw.append('》');
-						//bw = bw + "《" + element.text() + "》";
 						break;
 					case "rb":
 						bw.append('｜');
 						printText(bw, element.text());
-						//bw = bw + "｜" + element.text();
 						break;
 					default:
 						System.out.println("ruby error");
