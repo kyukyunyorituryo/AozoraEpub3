@@ -2,7 +2,7 @@ Modified AozoraEpub3
 ============
 description of the modified version
 ------------
-This is a fork version that aims to be close to the EPUB of the JASRAC. When using Aozora Epub 3 for electronic publishing purposes, the original version may not pass the review. Through EPUB validation, we ensure that many EPUB viewers have no display problems.
+This is a fork version that aims to be close to the "[EBPAJ EPUB 3 File Creation Guide](http://ebpaj.jp/counsel/guide)". When using Aozora Epub 3 for electronic publishing purposes, the original version may not pass the review. Through EPUB validation, we ensure that many EPUB viewers have no display problems.
 
 Due to a Java licensing issue, we decided to build with the AdoptOpenJDK. https://adoptopenjdk.net/releases.html OpenJDK 21 (LTS), HotSpot, OS, and Install JRE.
 
