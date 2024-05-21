@@ -290,7 +290,7 @@ public class AozoraEpub3Converter
 
 	/** コンストラクタ
 	 * 変換テーブルやクラスがstaticで初期化されていなければ初期化
-	 * @param _msgBuf ログ出力用バッファ
+	 * //@param _msgBuf ログ出力用バッファ
 	 * @throws IOException */
 	public AozoraEpub3Converter(Epub3Writer writer, String jarPath) throws IOException
 	{
@@ -487,7 +487,7 @@ public class AozoraEpub3Converter
 		this.autoYokoEQ1 = autoYokoEQ1;
 	}
 	/** 文字出力設定
-	 * @param dakuten 濁点出力設定 0=そのまま 1=重ねる 2=フォント利用 */
+	 * //@param dakuten 濁点出力設定 0=そのまま 1=重ねる 2=フォント利用 */
 	public void setCharOutput(int dakutenType, boolean printIvsBMP, boolean printIvsSSP)
 	{
 		this.dakutenType = dakutenType;
@@ -603,7 +603,7 @@ public class AozoraEpub3Converter
 	 * @param src 青空テキストファイルのReader
 	 * @param imageInfoReader テキスト内の画像ファイル名を格納して返却
 	 * @param titleType 表題種別
-	 * @param coverFileName 表紙ファイル名 nullなら表紙無し ""は先頭ファイル "*"は同じファイル名 */
+	 * //@param coverFileName 表紙ファイル名 nullなら表紙無し ""は先頭ファイル "*"は同じファイル名 */
 	public BookInfo getBookInfo(File srcFile, BufferedReader src, ImageInfoReader imageInfoReader, TitleType titleType, boolean pubFirst) throws Exception
 	{
 		try {
@@ -2427,8 +2427,8 @@ public class AozoraEpub3Converter
 	 * 特殊文字は※が前についているので※｜※《※》はルビ処理しない
 	 * ・ルビ （前｜漢字《かんじ》 → 前<ruby>漢字<rt>かんじ</rt></ruby>）
 	 * ・</ruby><ruby> と連続する場合はタグを除去
-	 * @param buf 出力先バッファ
-	 * @param ch ルビ変換前の行文字列 */
+	 * //@param buf 出力先バッファ
+	 * //@param ch ルビ変換前の行文字列 */
 	StringBuilder convertRubyText(String line) throws IOException
 	{
 		StringBuilder buf = new StringBuilder();
@@ -3217,7 +3217,7 @@ public class AozoraEpub3Converter
 	/** 改ページ用のトリガを設定
 	 * 設定済みだが連続行で書かれていたり空行除外で改行されていない場合は上書きされて無視される
 	 * @param trigger 改ページトリガ nullなら改ページ設定キャンセル
-	 * @param 改ページの後ろに文字がある場合に改行を出すならfalse */
+	 * //@param 改ページの後ろに文字がある場合に改行を出すならfalse */
 	void setPageBreakTrigger(PageBreakType trigger)
 	{
 		//改ページ前の空行は無視
@@ -3231,7 +3231,7 @@ public class AozoraEpub3Converter
 	 * @param out 出力先
 	 * @param buf 出力する行
 	 * @param noBr pタグで括れない次以降の行で閉じるブロック注記がある場合
-	 * @param chapterLevel Chapterレベル 指定無し=0, 大見出し=1, 中見出し=2, 見出し=2, 小見出し=3 (パターン抽出時は設定に合わせるか目次リストで選択したレベル)
+	 * //@param chapterLevel Chapterレベル 指定無し=0, 大見出し=1, 中見出し=2, 見出し=2, 小見出し=3 (パターン抽出時は設定に合わせるか目次リストで選択したレベル)
 	 * @throws IOException */
 	private void printLineBuffer(BufferedWriter out, StringBuilder buf, int lineNum, boolean noBr) throws IOException
 	{
