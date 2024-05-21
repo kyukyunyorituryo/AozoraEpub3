@@ -29,17 +29,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -88,8 +78,6 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
 
-import org.apache.commons.compress.utils.IOUtils;
-
 import com.github.hmdev.converter.AozoraEpub3Converter;
 import com.github.hmdev.image.ImageInfoReader;
 import com.github.hmdev.info.BookInfo;
@@ -110,6 +98,7 @@ import com.github.junrar.exception.RarException;
  */
 public class AozoraEpub3Applet extends JFrame
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/** アプレットが表示されているフレーム */
@@ -422,7 +411,7 @@ public class AozoraEpub3Applet extends JFrame
 			fos.close();
 		} catch (Exception e) { }
 		String path = props.getProperty("LastDir");
-		if (path != null && path.length() >0) this.currentPath = new File(path);
+		if (path != null && !path.isEmpty()) this.currentPath = new File(path);
 
 		JPanel tabPanel;
 		JPanel panel;
@@ -591,7 +580,7 @@ public class AozoraEpub3Applet extends JFrame
 				fos.close();
 			} catch (Exception e) {}
 			String name = presetProps.getProperty("PresetName");
-			if (name != null && name.length() > 0) {
+			if (name != null && !name.isEmpty()) {
 				JMenuItem menu = new JMenuItem(name);
 				String iconName = presetProps.getProperty("PresetIcon");
 				if (iconName != null) {
@@ -2417,7 +2406,7 @@ public class AozoraEpub3Applet extends JFrame
 				fos.close();
 			} catch (Exception e) { }
 			String name = profileProps.getProperty("ProfileName");
-			if (name != null && name.length() > 0) {
+			if (name != null && !name.isEmpty()) {
 				jComboProfile.addItem(new ProfileInfo(profile.getName(), name, profileProps));
 				//選択
 				if (profile.getName().equals(selectedProfileFileName)) {
@@ -3093,7 +3082,7 @@ public class AozoraEpub3Applet extends JFrame
 				//ローカルファイルはFileのみ
 				@SuppressWarnings("unchecked")
 				List<File> files = (List<File>)transfer.getTransferData(DataFlavor.javaFileListFlavor);
-				if (files.size() > 0) {
+				if (!files.isEmpty()) {
 					for (File file : files) {
 						if (file.exists()) {
 							if (dstPath == null && !isCacheFile(file)) dstPath = file.getParentFile();
@@ -3144,8 +3133,8 @@ public class AozoraEpub3Applet extends JFrame
 	protected void addDstPath()
 	{
 		String dstPath = this.jComboDstPath.getEditor().getItem().toString().trim();
-		if (dstPath.equals("") && jComboDstPath.getSelectedItem() != null) dstPath = this.jComboDstPath.getSelectedItem().toString().trim();
-		if (dstPath.equals("")) return;
+		if (dstPath.isEmpty() && jComboDstPath.getSelectedItem() != null) dstPath = this.jComboDstPath.getSelectedItem().toString().trim();
+		if (dstPath.isEmpty()) return;
 
 		int count = Math.min(10, this.jComboDstPath.getItemCount());
 		for (int i=0; i<count; i++) {
