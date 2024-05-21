@@ -2777,10 +2777,9 @@ public class AozoraEpub3Applet extends JFrame
 			Object obj = jCheckSamePath.isSelected() ? jComboDstPath.getSelectedItem() : jComboDstPath.getEditor().getItem();
 			if (obj != null) dstPath = obj.toString();
 			//パス修正
-			if (dstPath == null || "".equals(dstPath)) path = currentPath;
+			if (dstPath == null || dstPath.isEmpty()) path = currentPath;
 			else {
 				path = new File(dstPath);
-				if (path != null && !path.isDirectory()) path = path.getParentFile();
 				if (path != null && !path.isDirectory()) path = path.getParentFile();
 				if (path != null && !path.isDirectory()) path = currentPath;
 			}
@@ -3113,7 +3112,7 @@ public class AozoraEpub3Applet extends JFrame
 			}
 
 			//何も変換しなければfalse
-			if (vecFiles.size() == 0 && vecUrlString.size() == 0) return false;
+			if (vecFiles.isEmpty() && vecUrlString.isEmpty()) return false;
 			//変換実行
 			startConvertWorker(vecFiles, vecUrlString, vecUrlSrcFile, dstPath);
 
