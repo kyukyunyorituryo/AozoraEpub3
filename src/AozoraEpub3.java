@@ -580,7 +580,8 @@ public class AozoraEpub3
 						FileOutputStream fos = new FileOutputStream(tmpFile);
 						InputStream is = archive.getInputStream(fileHeader);
 						try {
-							IOUtils.copy(is, fos);
+							//IOUtils.copy(is, fos);
+							is.transferTo(fos);
 						} finally {
 							is.close();
 							fos.close();
@@ -653,7 +654,8 @@ public class AozoraEpub3
 						FileOutputStream fos = new FileOutputStream(tmpFile);
 						InputStream is = archive.getInputStream(fileHeader);
 						try {
-							IOUtils.copy(is, fos);
+							//IOUtils.copy(is, fos);
+							is.transferTo(fos);
 						} finally {
 							is.close();
 							fos.close();

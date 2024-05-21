@@ -3877,10 +3877,9 @@ public class AozoraEpub3Applet extends JFrame
 				BufferedInputStream bis = new BufferedInputStream(new URI(urlString).toURL().openStream(), 8192);
 				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(srcFile));
 				//IOUtils.copy(bis, bos);
-				//bos.close();
-				//bis.close();
 				bis.transferTo(bos);
-
+				bos.close();
+				bis.close();
 				//変換実行
 				this.convertFiles(new File[]{srcFile}, dstPath);
 
