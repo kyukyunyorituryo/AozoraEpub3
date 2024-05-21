@@ -3469,7 +3469,7 @@ public class AozoraEpub3Applet extends JFrame
 
 //		LogAppender.append(encauto);
 		if (encauto==null)encauto="UTF-8";
-		 if (this.jComboEncType.getSelectedItem().toString().equals("AUTO")) {
+		if (this.jComboEncType.getSelectedItem().toString().equals("AUTO")) {
 			 encType=encauto;
 		 }
 		//BookInfo取得
@@ -3877,9 +3877,10 @@ public class AozoraEpub3Applet extends JFrame
 				//ダウンロード
 				BufferedInputStream bis = new BufferedInputStream(new URI(urlString).toURL().openStream(), 8192);
 				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(srcFile));
-				IOUtils.copy(bis, bos);
-				bos.close();
-				bis.close();
+				//IOUtils.copy(bis, bos);
+				//bos.close();
+				//bis.close();
+				bis.transferTo(bos);
 
 				//変換実行
 				this.convertFiles(new File[]{srcFile}, dstPath);
@@ -4736,7 +4737,7 @@ public class AozoraEpub3Applet extends JFrame
 		} catch(Exception e) { e.printStackTrace(); }
 
 		//フレーム初期化
-		final AozoraEpub3Applet jFrame = new AozoraEpub3Applet();
+		AozoraEpub3Applet jFrame = new AozoraEpub3Applet();
 		//アップレット生成と初期化
 	//	final AozoraEpub3Applet applet = new AozoraEpub3Applet(jFrame);
 		jFrame.setIconImage(new ImageIcon( AozoraEpub3Applet.class.getResource("images/icon.png")).getImage());

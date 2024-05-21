@@ -45,11 +45,11 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
-/*
+/*        */
 tasks.withType(JavaCompile) {
-    options.compilerArgs << '-Xlint:unchecked'
+    options.compilerArgs << '-Xlint:deprecation'
 }
-*/
+
 ant.importBuild 'ant.xml'
 
 dependencies {
