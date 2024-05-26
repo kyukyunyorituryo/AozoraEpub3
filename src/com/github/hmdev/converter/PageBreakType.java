@@ -54,8 +54,8 @@ public class PageBreakType
 	
 	/**
 	 * @param ignoreEmptyPage
-	 * @param isMiddle
-	 * @param isImage 	 */
+	 * //@param isMiddle
+	 * //@param isImage 	 */
 	public PageBreakType(boolean ignoreEmptyPage, int pageType, int imagePageType)
 	{
 		this(ignoreEmptyPage, pageType, imagePageType, false);

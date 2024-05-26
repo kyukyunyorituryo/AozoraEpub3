@@ -374,7 +374,7 @@ public class ImageUtils
 		}
 	}
 	/** 画像を出力 マージン指定があればカット
-	 * @param margin カットするピクセル数(left, top, right, bottom) */
+	 * //@param margin カットするピクセル数(left, top, right, bottom) */
 	static private void _writeImage(ZipArchiveOutputStream zos, BufferedImage srcImage, String ext, float jpegQuality) throws IOException
 	{
 		if ("png".equals(ext)) {

@@ -54,7 +54,7 @@ public class Epub3ImageWriter extends Epub3Writer
 	ZipArchiveOutputStream zos;
 
 	/** コンストラクタ
-	 * @param templatePath epubテンプレート格納パス文字列 最後は"/"
+	 * //@param templatePath epubテンプレート格納パス文字列 最後は"/"
 	 */
 	public Epub3ImageWriter(String jarPath)
 	{
