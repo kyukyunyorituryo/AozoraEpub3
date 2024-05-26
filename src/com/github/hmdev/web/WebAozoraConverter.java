@@ -1340,7 +1340,8 @@ public class WebAozoraConverter
 		conn.setReadTimeout(10000);//10秒
 		BufferedInputStream bis = new BufferedInputStream(conn.getInputStream(), 8192);
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cacheFile));
-		IOUtils.copy(bis, bos);
+		//IOUtils.copy(bis, bos);
+		bis.transferTo(bos);
 		bos.close();
 		bis.close();
 		return true;

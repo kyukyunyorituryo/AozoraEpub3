@@ -405,7 +405,8 @@ public class Epub3Writer
 			if (customFile.exists()) file = customFile;
 		}
 		FileInputStream fis = new FileInputStream(file);
-		IOUtils.copy(fis, zos);
+		//IOUtils.copy(fis, zos);
+		fis.transferTo(zos);
 		fis.close();
 		zos.closeArchiveEntry();
 	}
@@ -608,7 +609,8 @@ public class Epub3Writer
 					bis = new BufferedInputStream(new FileInputStream(new File(bookInfo.coverFileName)), 8192);
 				}
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				IOUtils.copy(bis, baos);
+				//IOUtils.copy(bis, baos);
+				bis.transferTo(baos);
 				coverImageBytes = baos.toByteArray();
 				bis.close();
 				baos.close();
@@ -793,7 +795,8 @@ public class Epub3Writer
 					String outFileName = OPS_PATH+FONTS_PATH+fontFile.getName();
 					zos.putArchiveEntry(new ZipArchiveEntry(outFileName));
 					fis = new FileInputStream(new File(templatePath+outFileName));
-					IOUtils.copy(fis, zos);
+					//IOUtils.copy(fis, zos);
+					fis.transferTo(zos);
 					fis.close();
 					zos.closeArchiveEntry();
 				}
@@ -807,7 +810,8 @@ public class Epub3Writer
 				String outFileName = OPS_PATH+GAIJI_PATH+gaijiFile.getName();
 				zos.putArchiveEntry(new ZipArchiveEntry(outFileName));
 				fis = new FileInputStream(gaijiFile);
-				IOUtils.copy(fis, zos);
+				//IOUtils.copy(fis, zos);
+				fis.transferTo(zos);
 				fis.close();
 				zos.closeArchiveEntry();
 			}
@@ -960,7 +964,8 @@ public class Epub3Writer
 				zos.putArchiveEntry(new ZipArchiveEntry(OPS_PATH+IMAGES_PATH+imageInfo.getOutFileName()));
 				//Zip,Rarからの直接読み込みは失敗するので一旦バイト配列にする
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				IOUtils.copy(new BufferedInputStream(is, 16384), baos);
+				//IOUtils.copy(new BufferedInputStream(is, 16384), baos);
+				new BufferedInputStream(is, 16384).transferTo(baos);
 				byte[] bytes = baos.toByteArray();
 				baos.close();
 				ByteArrayInputStream bais = new ByteArrayInputStream(bytes);

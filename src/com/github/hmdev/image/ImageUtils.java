@@ -150,7 +150,8 @@ public class ImageUtils
 			//画像がなければ読み込み 変更なしの時にそのまま出力できるように一旦バッファに読み込む
 			if (srcImage == null) {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				IOUtils.copy(is, baos);
+				//IOUtils.copy(is, baos);
+				is.transferTo(baos);
 				imgBuf = baos.toByteArray();
 				ByteArrayInputStream bais = new ByteArrayInputStream(imgBuf);
 				try { srcImage = readImage(ext, bais); } finally { bais.close(); }
@@ -191,12 +192,13 @@ public class ImageUtils
 		if (scale >= 1 && (gammaOp == null || srcImage.getType() == BufferedImage.TYPE_INT_RGB)) {
 			if (srcImage == null) {
 				//変更なしならそのままファイル出力
-				IOUtils.copy(is, zos);
+				//IOUtils.copy(is, zos);
+				is.transferTo(zos);
 			} else {
 				if (margin == null && imgBuf != null && imageInfo.rotateAngle==0) {
 					//余白除去が無く画像も編集されていなければバッファからそのまま出力
 					ByteArrayInputStream bais = new ByteArrayInputStream(imgBuf);
-					try { IOUtils.copy(bais, zos); } finally { bais.close(); }
+					try { bais.transferTo(zos);} finally { bais.close(); }
 				} else {
 					//編集済の画像なら同じ画像形式で書き出し 余白があれば切り取る
 					if (imageInfo.rotateAngle != 0) {
