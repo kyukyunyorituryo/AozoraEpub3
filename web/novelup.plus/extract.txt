@@ -6,6 +6,13 @@
 ## 変換対象URLパターン
 ##PAGE_REGEX		https://novelup.plus/story/\d+/\d+"
 
+##ページャーの上限
+PAGER_MAX	100
+##目次のクラスネーム
+INDEX	.episode_list:0
+##ページャーリンクのクラスネーム
+LAST_PAGE	.js-gtag:-1
+
 ################################
 ## 一覧ページの抽出設定
 ## タイトル

@@ -297,13 +297,28 @@ public class WebAozoraConverter
 			if (toc_index != null) {
 				//LogAppender.println("目次がある");
 			}
-			Elements next_page = getExtractElements(doc, this.queryMap.get(ExtractId.NEXT_PAGE));
-			if (next_page == null) {
+			Elements last_page = getExtractElements(doc, this.queryMap.get(ExtractId.LAST_PAGE));
+			if (last_page == null) {
 				LogAppender.println("ページャーがありません");
 			}
-			//なろうページネーション対応
+			//ページネーション対応
 			//ページャーがありリンクがある場合
-			if(next_page != null) {
+
+			//最終ページ番号
+			String links = last_page.attr("href").split("\\?")[1].replaceAll("[^0-9]", "");
+			Integer last_num = Integer.parseInt(links);
+			System.out.println(last_num);
+			//base_url
+			String base_url = last_page.attr("href").split("=")[0];
+			List<String> url_list = new ArrayList<>();
+			for (int i = 2; i <= last_num; i++) {
+				String str = base_url + "=" + i;
+				url_list.add(str);
+			}
+			System.out.println(Arrays.toString(url_list.toArray()));
+
+			//|| last_page != null
+			if(!links.isEmpty()) {
 			ExtractInfo[] pagerele = this.queryMap.get(ExtractId.PAGER_MAX);
 			String pagerMax ="";
 			if (pagerele != null && pagerele.length > 0) pagerMax = pagerele[0].query;
@@ -312,11 +327,11 @@ public class WebAozoraConverter
 					boolean href;
 					//link=n00000/?p=2
 					//baseUri=https://ncode.syosetu.com/
-					String link = next_page.attr("href");
+					//String link = next_page.attr("href");
 					//System.out.println(baseUri+link);/
 					//目次２ページ目から１０ページ目までの取得処理ループ
-					for (int i = 0; i < Integer.parseInt(pagerMax); i++) {
-						String pagerurl = baseUri + link;
+					for (int i = 0; i < url_list.size(); i++) {
+						String pagerurl = url_list.get(i);
 						String pagerurlFilePath = CharUtils.escapeUrlToFile(pagerurl.substring(pagerurl.indexOf("//") + 2));
 						//urlStringのファイルをキャッシュ
 						File pagercacheFile = new File(cachePath.getAbsolutePath() + "/" + pagerurlFilePath);
@@ -339,13 +354,6 @@ public class WebAozoraConverter
 						Elements index = getExtractElements(pagedoc, this.queryMap.get(ExtractId.INDEX)).first().children().clone();
 						//Elements index = pagedoc.getElementsByClass("index_box").first().children().clone();
 						toc_index.append(String.valueOf(index));
-						//Elements next_page = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXT_PAGE));
-						href = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXT_PAGE)).attr("href").isEmpty();
-						if (href) {
-							LogAppender.println("目次最終ページ");
-							break;
-						}
-						link = getExtractElements(pagedoc, this.queryMap.get(ExtractId.NEXT_PAGE)).attr("href");
 					}
 
 				}
