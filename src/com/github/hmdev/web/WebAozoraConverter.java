@@ -309,6 +309,9 @@ public class WebAozoraConverter
 				//System.out.println(lastNum);
 				//末尾の数字以外のページャーURL、base_url
 				String pagerBseUrl = lastPage.attr("href").split("=")[0];
+				if (!pagerBseUrl.startsWith("http")) {
+					pagerBseUrl=baseUri+pagerBseUrl;
+				}
 				List<String> pagerUrlList = new ArrayList<>();
 				for (int i = 2; i <= lastNum; i++) {
 					String str = pagerBseUrl + "=" + i;
