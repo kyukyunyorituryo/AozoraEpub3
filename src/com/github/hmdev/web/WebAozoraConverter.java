@@ -297,66 +297,64 @@ public class WebAozoraConverter
 			if (toc_index != null) {
 				//LogAppender.println("目次がある");
 			}
-			Elements last_page = getExtractElements(doc, this.queryMap.get(ExtractId.LAST_PAGE));
-			if (last_page == null) {
+			Elements lastPage = getExtractElements(doc, this.queryMap.get(ExtractId.LAST_PAGE));
+			if (lastPage == null) {
 				LogAppender.println("ページャーがありません");
 			}
-			//ページネーション対応
-			//ページャーがありリンクがある場合
+			//ページャーのリンクがある場合
+			if(lastPage != null) {
+				//最終ページ番号
+				String links = lastPage.attr("href").split("\\?")[1].replaceAll("[^0-9]", "");
+				int lastNum = Integer.parseInt(links);
+				//System.out.println(lastNum);
+				//末尾の数字以外のページャーURL、base_url
+				String pagerBseUrl = lastPage.attr("href").split("=")[0];
+				List<String> pagerUrlList = new ArrayList<>();
+				for (int i = 2; i <= lastNum; i++) {
+					String str = pagerBseUrl + "=" + i;
+					pagerUrlList.add(str);
+				}
+				//System.out.println(Arrays.toString(url_list.toArray()));
 
-			//最終ページ番号
-			String links = last_page.attr("href").split("\\?")[1].replaceAll("[^0-9]", "");
-			Integer last_num = Integer.parseInt(links);
-			System.out.println(last_num);
-			//base_url
-			String base_url = last_page.attr("href").split("=")[0];
-			List<String> url_list = new ArrayList<>();
-			for (int i = 2; i <= last_num; i++) {
-				String str = base_url + "=" + i;
-				url_list.add(str);
-			}
-			System.out.println(Arrays.toString(url_list.toArray()));
-
-			//|| last_page != null
-			if(!links.isEmpty()) {
-			ExtractInfo[] pagerele = this.queryMap.get(ExtractId.PAGER_MAX);
-			String pagerMax ="";
-			if (pagerele != null && pagerele.length > 0) pagerMax = pagerele[0].query;
-			LogAppender.println("ページャー最大値は"+pagerMax);
-			//LogAppender.println(String.valueOf(toc_index));
-					boolean href;
-					//link=n00000/?p=2
-					//baseUri=https://ncode.syosetu.com/
-					//String link = next_page.attr("href");
-					//System.out.println(baseUri+link);/
-					//目次２ページ目から１０ページ目までの取得処理ループ
-					for (int i = 0; i < url_list.size(); i++) {
-						String pagerurl = url_list.get(i);
-						String pagerurlFilePath = CharUtils.escapeUrlToFile(pagerurl.substring(pagerurl.indexOf("//") + 2));
-						//urlStringのファイルをキャッシュ
-						File pagercacheFile = new File(cachePath.getAbsolutePath() + "/" + pagerurlFilePath);
+				ExtractInfo[] pagerEle = this.queryMap.get(ExtractId.PAGER_MAX);
+				String pagerMax ="";
+				if (pagerEle != null && pagerEle.length > 0) pagerMax = pagerEle[0].query;
+				LogAppender.println("ページャー最大値は"+pagerMax);
+				//LogAppender.println(String.valueOf(toc_index));
+				boolean href;
+				//link=n00000/?p=2
+				//baseUri=https://ncode.syosetu.com/
+				//System.out.println(baseUri+link);/
+				//pagerMaxと最終ページの小さい方
+				int page = Math.min(pagerUrlList.size(), Integer.parseInt(pagerMax));
+				//目次２ページ目から最終ページまでの取得処理ループ
+				for (int i = 0; i < page; i++) {
+					String pagerUrl = pagerUrlList.get(i);
+					String pagerurlFilePath = CharUtils.escapeUrlToFile(pagerUrl.substring(pagerUrl.indexOf("//") + 2));
+					//urlStringのファイルをキャッシュ
+					File pagerCacheFile = new File(cachePath.getAbsolutePath() + "/" + pagerurlFilePath);
+					try {
+						LogAppender.append(pagerUrl);
 						try {
-							LogAppender.append(pagerurl);
-							try {
-								Thread.sleep(this.interval);
-							} catch (InterruptedException e) {
-							}
-							cacheFile(pagerurl, pagercacheFile, null);
-							LogAppender.println(" : List Loaded.");
-						} catch (Exception e) {
+							Thread.sleep(this.interval);
+						} catch (InterruptedException e) {
+						}
+						cacheFile(pagerUrl, pagerCacheFile, null);
+						LogAppender.println(" : List Loaded.");
+					} catch (Exception e) {
 							e.printStackTrace();
 							LogAppender.println("一覧ページの取得に失敗しました。 ");
-							if (!pagercacheFile.exists()) return null;
+							if (!pagerCacheFile.exists()) return null;
 
 							LogAppender.println("キャッシュファイルを利用します。");
-						}
-						Document pagedoc = Jsoup.parse(pagercacheFile, null);
-						Elements index = getExtractElements(pagedoc, this.queryMap.get(ExtractId.INDEX)).first().children().clone();
-						//Elements index = pagedoc.getElementsByClass("index_box").first().children().clone();
-						toc_index.append(String.valueOf(index));
 					}
-
+					Document pagedoc = Jsoup.parse(pagerCacheFile, null);
+					Elements index = getExtractElements(pagedoc, this.queryMap.get(ExtractId.INDEX)).first().children().clone();
+					//Elements index = pagedoc.getElementsByClass("index_box").first().children().clone();
+					toc_index.append(String.valueOf(index));
 				}
+
+			}
 
 
 			//カクヨムのJSON取得してHTMLに変換
