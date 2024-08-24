@@ -5,7 +5,10 @@
 
 ## 変換対象URLパターン
 ##PAGE_REGEX	^\/Novel/\d+/$
-
+##送信するクッキー 複数はセミコロン区切り key1=value1; key2=value2
+#COOKIE	over18=off
+##ユーザーエージェント
+#USER_AGENT	Chrome
 ################################
 ##一覧ページの抽出設定
 ## シリーズタイトル
