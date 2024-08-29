@@ -999,7 +999,7 @@ public class WebAozoraConverter
 				} else if ("p".equals(elem.tagName())) {
 					if (elem.previousSibling() != null && !isBlockNode(elem.previousSibling())) ;
 					_printNode(bw, node); //子を出力
-					if (elem.nextSibling() != null) bw.append('\n');
+				//	if (elem.nextSibling() != null) bw.append('\n');
 				} else if ("ruby".equals(elem.tagName())) {
 					//ルビ注記出力
 					printRuby(bw, elem);
