@@ -9,7 +9,7 @@ xml:lang="ja"
 <meta charset="UTF-8"/>
 <title>${title}</title>
 <link rel="stylesheet" type="text/css" href="../style/fixed-layout-jp.css"/>
-<meta name="viewport" content="width=${coverImage.Width}, height=${imageInfo.OutHeight}"/>
+<meta name="viewport" content="width=${coverImage.Width}, height=${coverImage.Height}"/>
 </head>
 <body epub:type="cover">
 <div class="main">
