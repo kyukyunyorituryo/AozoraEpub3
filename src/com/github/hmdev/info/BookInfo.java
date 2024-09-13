@@ -588,7 +588,7 @@ public class BookInfo
 			//連続行数取得
 			int linesLength = 0;
 			for (int i=0; i<metaLines.length; i++) {
-				if (metaLines[i] == null || metaLines[i].length() == 0) {
+				if (metaLines[i] == null || metaLines[i].isEmpty()) {
 					linesLength = i; break;
 				}
 			}
@@ -734,9 +734,8 @@ public class BookInfo
 						this.titleLine = metaLineStart;
 						this.title = metaLines[0+arrIndex];
 						if (titleType.hasAuthor()) {
-							if (firstCommentLineNum > 0 && firstCommentLineNum <= 6 && metaLines[3+arrIndex] != null && metaLines[3+arrIndex].length() > 0 && (metaLines[4+arrIndex] == null || metaLines[4+arrIndex].length() == 0)) {
-								this.titleLine = metaLineStart;
-								this.subTitleLine = metaLineStart+1;
+							if (firstCommentLineNum > 0 && firstCommentLineNum <= 6 && metaLines[3+arrIndex] != null && !metaLines[3 + arrIndex].isEmpty() && (metaLines[4+arrIndex] == null || metaLines[4 + arrIndex].isEmpty())) {
+                                this.subTitleLine = metaLineStart+1;
 								this.title = metaLines[0+arrIndex]+" "+metaLines[1+arrIndex];
 								this.creatorLine = metaLineStart+3;
 								this.creator = metaLines[2+arrIndex];
@@ -763,7 +762,7 @@ public class BookInfo
 						this.title = metaLines[0+arrIndex];
 						titleEndLine = metaLineStart;
 						if (titleType.hasAuthor()) {
-							if (metaLines[2+arrIndex] != null && metaLines[2+arrIndex].length() > 0 && (metaLines[3+arrIndex] == null || metaLines[3+arrIndex].length() == 0)) {
+							if (metaLines[2+arrIndex] != null && !metaLines[2 + arrIndex].isEmpty() && (metaLines[3+arrIndex] == null || metaLines[3 + arrIndex].isEmpty())) {
 								this.creatorLine = metaLineStart+2;
 								this.creator = metaLines[2+arrIndex];
 								titleEndLine = metaLineStart+2;
@@ -774,7 +773,7 @@ public class BookInfo
 						this.creator = metaLines[0+arrIndex];
 						titleEndLine = metaLineStart;
 						if (titleType.hasTitle()) {
-							if (metaLines[2+arrIndex] != null && metaLines[2+arrIndex].length() > 0 && (metaLines[3+arrIndex] == null || metaLines[3+arrIndex].length() == 0)) {
+							if (metaLines[2+arrIndex] != null && !metaLines[2 + arrIndex].isEmpty() && (metaLines[3+arrIndex] == null || metaLines[3 + arrIndex].isEmpty())) {
 								this.titleLine = metaLineStart+2;
 								this.title = metaLines[2+arrIndex];
 								titleEndLine = metaLineStart+2;
@@ -826,11 +825,11 @@ public class BookInfo
 		//trimして長さが0ならnullにする
 		if (titleCreator[0] != null) {
 			titleCreator[0] = titleCreator[0].trim();
-			if (titleCreator[0].length() == 0) titleCreator[0] = null;
+			if (titleCreator[0].isEmpty()) titleCreator[0] = null;
 		}
 		if (titleCreator[1] != null) {
 			titleCreator[1] = titleCreator[1].trim();
-			if (titleCreator[1].length() == 0) titleCreator[1] = null;
+			if (titleCreator[1].isEmpty()) titleCreator[1] = null;
 		}
 		return titleCreator;
 	}
