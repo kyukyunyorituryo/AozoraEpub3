@@ -36,7 +36,7 @@ public class AozoraEpub3
 	public static final String VERSION = "1.1.1b25Q";
 
 	/** コマンドライン実行用 */
-	public static void main(String args[])
+	public static void main(String[] args)
 	{
 		String jarPath = System.getProperty("java.class.path");
 		int idx = jarPath.indexOf(";");
@@ -354,11 +354,11 @@ public class AozoraEpub3
 
 					BookInfo bookInfo = null;
 					//文字コード判別
-					String encauto ="";
+					String encauto;
 
 					encauto=AozoraEpub3.getTextCharset(srcFile, ext, imageInfoReader, txtIdx);
-					if (encauto=="SHIFT_JIS")encauto="MS932";
-					 if (encType.equals("AUTO")) encType =encauto;
+					if (Objects.equals(encauto, "SHIFT_JIS"))encauto="MS932";
+					if (encType.equals("AUTO")) encType =encauto;
 					if (!imageOnly) {
 						bookInfo = AozoraEpub3.getBookInfo(srcFile, ext, txtIdx, imageInfoReader, aozoraConverter, encType, BookInfo.TitleType.indexOf(titleIndex), false);
 						bookInfo.vertical = vertical;
@@ -613,7 +613,7 @@ public class AozoraEpub3
 	 * @throws RarException
 	 */
 	static public String getTextCharset(File srcFile, String ext, ImageInfoReader imageInfoReader, int txtIdx) throws IOException, RarException
-	{	String cs ="";
+	{	String cs;
 		if ("txt".equals(ext)) {
 			InputStream is =new FileInputStream(srcFile);
 			cs = Detector.getCharset(is);
