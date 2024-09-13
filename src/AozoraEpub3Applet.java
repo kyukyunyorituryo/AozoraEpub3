@@ -815,7 +815,7 @@ public class AozoraEpub3Applet extends JFrame
 		//vecDstPath.add("[入力ファイルと同じ場所]");
 		String propValue = props.getProperty("DstPathList");
 		String dstPath = props.getProperty("DstPath");
-		if (propValue!=null && propValue.length()>0) {
+		if (propValue!=null && !propValue.isEmpty()) {
 			for (String listPath : propValue.split(",")) {
 				if (!"".equals(listPath)) jComboDstPath.addItem(listPath);
 			}
@@ -2656,7 +2656,7 @@ public class AozoraEpub3Applet extends JFrame
 				if (transfer.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 					@SuppressWarnings("unchecked")
 					List<File> files = (List<File>)transfer.getTransferData(DataFlavor.javaFileListFlavor);
-					if (files.size() > 0) {
+					if (!files.isEmpty()) {
 						jComboCover.setSelectedItem(files.get(0).getAbsolutePath());
 						return;
 					}
@@ -3561,9 +3561,9 @@ public class AozoraEpub3Applet extends JFrame
 			if (titleCreator[1] != null) bookInfo.creator = titleCreator[1];
 		} else {
 			//テキストから取得できなければファイル名を利用
-			if (bookInfo.title == null || bookInfo.title.length() == 0) {
+			if (bookInfo.title == null || bookInfo.title.isEmpty()) {
 				bookInfo.title = titleCreator[0]==null?"":titleCreator[0];
-				if (bookInfo.creator == null || bookInfo.creator.length() == 0) bookInfo.creator = titleCreator[1]==null?"":titleCreator[1];
+				if (bookInfo.creator == null || bookInfo.creator.isEmpty()) bookInfo.creator = titleCreator[1]==null?"":titleCreator[1];
 			}
 		}
 
@@ -3575,7 +3575,7 @@ public class AozoraEpub3Applet extends JFrame
 		//前回の変換設定を反映
 		BookInfoHistory history = this.getBookInfoHistory(bookInfo);
 		if (history != null) {
-			if (bookInfo.title.length() == 0) bookInfo.title = history.title;
+			if (bookInfo.title.isEmpty()) bookInfo.title = history.title;
 			bookInfo.titleAs = history.titleAs;
 			if (bookInfo.creator.length() == 0) bookInfo.creator = history.creator;
 			bookInfo.creatorAs = history.creatorAs;
@@ -3666,7 +3666,7 @@ public class AozoraEpub3Applet extends JFrame
 			bookInfo.publisher = this.jConfirmDialog.getMetaPublisher();
 
 			//著者が空欄なら著者行もクリア
-			if (bookInfo.creator.length() == 0) bookInfo.creatorLine = -1;
+			if (bookInfo.creator.isEmpty()) bookInfo.creatorLine = -1;
 
 			//プレビューでトリミングされていたらbookInfo.coverImageにBufferedImageを設定 それ以外はnullにする
 			BufferedImage coverImage = this.jConfirmDialog.jCoverImagePanel.getModifiedImage(this.coverW, this.coverH);
@@ -3774,7 +3774,7 @@ public class AozoraEpub3Applet extends JFrame
 				int cnt = 0;
 				String msg = "";
 				while ((line = br.readLine()) != null) {
-					if (line.length() > 0) {
+					if (!line.isEmpty()) {
 						System.out.println(line);
 						if (msg.startsWith("Error")) msg += line;
 						else msg = line;
@@ -3935,7 +3935,7 @@ public class AozoraEpub3Applet extends JFrame
 	private File getCachePath()
 	{
 		String cachePathString = this.jTextCachePath.getText().trim();
-		if("".equals(cachePathString)) cachePathString = this.jarPath+".cache";
+		if(cachePathString.isEmpty()) cachePathString = this.jarPath+".cache";
 		return new File(cachePathString);
 	}
 	/** キャッシュパスを以下のファイルならtrue */
@@ -3956,8 +3956,8 @@ public class AozoraEpub3Applet extends JFrame
 		if (dstPath == null && jCheckSamePath.isSelected() || !jCheckSamePath.isSelected() && "".equals(jComboDstPath.getEditor().getItem().toString().trim())) {
 			if (dstPath != null) this.currentPath = dstPath;
 			dstPathChooser.actionPerformed(null);
-			if (jCheckSamePath.isSelected() || "".equals(jComboDstPath.getEditor().getItem().toString().trim())) {
-				LogAppender.println("変換処理を中止しました : "+(vecFiles.size()>0?vecFiles.get(0).getAbsoluteFile():vecUrlString.size()>0?vecUrlString.get(0):""));
+			if (jCheckSamePath.isSelected() || jComboDstPath.getEditor().getItem().toString().trim().isEmpty()) {
+				LogAppender.println("変換処理を中止しました : "+(!vecFiles.isEmpty() ?vecFiles.get(0).getAbsoluteFile(): !vecUrlString.isEmpty() ?vecUrlString.get(0):""));
 				return;
 			}
 		}
@@ -3978,7 +3978,7 @@ public class AozoraEpub3Applet extends JFrame
 					return;
 				}
 			} else {
-				LogAppender.error("変換処理を中止しました : "+(vecFiles.size()>0?vecFiles.get(0).getAbsoluteFile():vecUrlString.size()>0?vecUrlString.get(0):""));
+				LogAppender.error("変換処理を中止しました : "+(!vecFiles.isEmpty() ?vecFiles.get(0).getAbsoluteFile(): !vecUrlString.isEmpty() ?vecUrlString.get(0):""));
 				return;
 			}
 		}
@@ -4029,10 +4029,10 @@ public class AozoraEpub3Applet extends JFrame
 			try {
 
 				//ファイルの変換
-				if (this.vecFiles != null && vecFiles.size() >0) {
+				if (this.vecFiles != null && !vecFiles.isEmpty()) {
 					this.applet.convertFiles(vecFiles, dstPath);
 				}
-				if (vecUrlString != null && vecUrlString.size() >0) {
+				if (vecUrlString != null && !vecUrlString.isEmpty()) {
 					this.applet.convertWeb(vecUrlString, vecUrlSrcFile, dstPath);
 				}
 			} catch (Exception e) {
@@ -4225,7 +4225,7 @@ public class AozoraEpub3Applet extends JFrame
 	{
 		if (name == null) return;
 		name = name.trim();
-		if (name.length() == 0) return;
+		if (name.isEmpty()) return;
 		ProfileInfo propInfo = (ProfileInfo)jComboProfile.getSelectedItem();
 		Properties profileProps = propInfo.getProperties();
 		//名前設定
@@ -4257,7 +4257,7 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsSelected(jCheckPubFirst, props, "PubFirst");
 		setPropsSelected(jCheckUseFileName, props, "UseFileName");
 		//表紙
-		if (props.getProperty("Cover")==null||props.getProperty("Cover").length()==0) jComboCover.setSelectedIndex(0);
+		if (props.getProperty("Cover")==null|| props.getProperty("Cover").isEmpty()) jComboCover.setSelectedIndex(0);
 		else jComboCover.setSelectedItem(props.getProperty("Cover"));
 		//表紙履歴
 		setPropsSelected(jCheckCoverHistory, props, "CoverHistory");
@@ -4295,7 +4295,7 @@ public class AozoraEpub3Applet extends JFrame
 		//入力文字コード
 		try { jComboEncType.setSelectedIndex(Integer.parseInt(props.getProperty("EncType"))); } catch (Exception e) {}
 		//言語設定
-		if (props.getProperty("LangType") != null && props.getProperty("LangType").length() > 0)
+		if (props.getProperty("LangType") != null && !props.getProperty("LangType").isEmpty())
 			jComboLangType.setSelectedItem(props.getProperty("LangType"));
 
 		////////////////////////////////////////////////////////////////
@@ -4747,7 +4747,7 @@ public class AozoraEpub3Applet extends JFrame
 			File file = new File(fileName);
 			Vector<File> vecFiles = new Vector<File>();
 			if (file.exists()) vecFiles.add(file);
-			if (vecFiles.size() > 0) {
+			if (!vecFiles.isEmpty()) {
 				File[] files = new File[vecFiles.size()];
 				for (int i=0; i<files.length; i++) files[i] = vecFiles.get(i);
 				jFrame.startConvertWorker(vecFiles, null, null, null);
@@ -4793,7 +4793,7 @@ public class AozoraEpub3Applet extends JFrame
 		try {
 			this.props.setProperty("SamePath", this.jCheckSamePath.isSelected()?"1":"");
 			String dstPath = this.jComboDstPath.getEditor().getItem().toString().trim();
-			if (dstPath.equals("") && jComboDstPath.getSelectedItem() != null) dstPath = this.jComboDstPath.getSelectedItem().toString().trim();
+			if (dstPath.isEmpty() && jComboDstPath.getSelectedItem() != null) dstPath = this.jComboDstPath.getSelectedItem().toString().trim();
 			this.props.setProperty("DstPath", ""+dstPath);
 			//履歴
 			String dstPathList = this.props.getProperty("DstPathList");
