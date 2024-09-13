@@ -2,10 +2,9 @@ package com.github.hmdev.swing;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.io.Serial;
 
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -14,9 +13,10 @@ import com.github.hmdev.info.ChapterLineInfo;
 
 public class JTocTable extends JTable
 {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
-	TocTableDataModel model = null;
+	TocTableDataModel model;
 	
 	public JTocTable()
 	{
@@ -32,13 +32,7 @@ public class JTocTable extends JTable
 		columnModel.getColumn(3).setMaxWidth(60);
 		columnModel.getColumn(3).setPreferredWidth(35);
 		
-		this.model.addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent e)
-			{
-				model.table.repaint();
-			}
-		});
+		this.model.addTableModelListener(e -> model.table.repaint());
 	}
 	
 	@Override
@@ -58,6 +52,7 @@ public class JTocTable extends JTable
 	
 	public class TocTableDataModel extends DefaultTableModel
 	{
+		@Serial
 		private static final long serialVersionUID = 1L;
 		
 		JTocTable table;
@@ -96,12 +91,12 @@ public class JTocTable extends JTable
 		}
 		public boolean isPageBreak(int row)
 		{
-			return "改".equals((String)this.getValueAt(row, 1));
+			return "改".equals(this.getValueAt(row, 1));
 		}
 		public int getChapterType(int row)
 		{
 			String value = (String)this.getValueAt(row, 2);
-			if (value.length() == 0) return 0;
+			if (value.isEmpty()) return 0;
 			return ChapterLineInfo.getChapterType(value.charAt(0));
 		}
 		public int getLineNum(int row)
