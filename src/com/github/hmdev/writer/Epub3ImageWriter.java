@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -83,35 +84,30 @@ public class Epub3ImageWriter extends Epub3Writer
 		if (this.bookInfo.textEntryName != null) archivePathLength = this.bookInfo.textEntryName.indexOf('/')+1;
 
 		if ("rar".equals(srcExt)) {
-			Archive archive = new Archive(srcFile);
-			try {
-			for (FileHeader fileHeader : archive.getFileHeaders()) {
-				if (!fileHeader.isDirectory()) {
-					String entryName = fileHeader.getFileName();
-					entryName = entryName.replace('\\', '/');
-					//アーカイブ内のサブフォルダは除外
-					String srcImageFileName = entryName.substring(archivePathLength);
-					InputStream is = archive.getInputStream(fileHeader);
-					try {
-						this.writeArchiveImage(srcImageFileName, is);
-					} finally {
-						is.close();
-					}
-				}
-				if (this.canceled) return;
-			}
-			} finally { archive.close(); }
+            try (Archive archive = new Archive(srcFile)) {
+                for (FileHeader fileHeader : archive.getFileHeaders()) {
+                    if (!fileHeader.isDirectory()) {
+                        String entryName = fileHeader.getFileName();
+                        entryName = entryName.replace('\\', '/');
+                        //アーカイブ内のサブフォルダは除外
+                        String srcImageFileName = entryName.substring(archivePathLength);
+                        try (InputStream is = archive.getInputStream(fileHeader)) {
+                            this.writeArchiveImage(srcImageFileName, is);
+                        }
+                    }
+                    if (this.canceled) return;
+                }
+            }
 		} else {
-			ZipArchiveInputStream zis = new ZipArchiveInputStream(new BufferedInputStream(new FileInputStream(srcFile), 65536), "MS932", false);
-			try {
-			ArchiveEntry entry;
-			while( (entry = zis.getNextEntry()) != null ) {
-				//アーカイブ内のサブフォルダは除外
-				String srcImageFileName = entry.getName().substring(archivePathLength);
-				this.writeArchiveImage(srcImageFileName, zis);
-				if (this.canceled) return;
-			}
-			} finally { zis.close(); }
+            try (ZipArchiveInputStream zis = new ZipArchiveInputStream(new BufferedInputStream(new FileInputStream(srcFile), 65536), "MS932", false)) {
+                ArchiveEntry entry;
+                while ((entry = zis.getNextEntry()) != null) {
+                    //アーカイブ内のサブフォルダは除外
+                    String srcImageFileName = entry.getName().substring(archivePathLength);
+                    this.writeArchiveImage(srcImageFileName, zis);
+                    if (this.canceled) return;
+                }
+            }
 		}
 
 		//画像xhtmlを出力
@@ -176,7 +172,7 @@ public class Epub3ImageWriter extends Epub3Writer
 		if (this.sectionIndex ==1 || this.sectionIndex % 5 == 0) this.addChapter(null, ""+this.sectionIndex, 0); //目次追加
 		super.zos.putArchiveEntry(new ZipArchiveEntry(OPS_PATH+XHTML_PATH+sectionId+".xhtml"));
 		//ヘッダ出力
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(super.zos, "UTF-8"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(super.zos, StandardCharsets.UTF_8));
 		//出力開始するセクションに対応したSectionInfoを設定
 		this.velocityContext.put("sectionInfo", sectionInfo);
 		Velocity.getTemplate(this.templatePath+OPS_PATH+XHTML_PATH+XHTML_HEADER_VM).merge(this.velocityContext, bw);
@@ -198,7 +194,7 @@ public class Epub3ImageWriter extends Epub3Writer
 		if (this.sectionIndex ==1 || this.sectionIndex % 5 == 0) this.addChapter(null, ""+this.sectionIndex, 0); //目次追加
 		super.zos.putArchiveEntry(new ZipArchiveEntry(OPS_PATH+XHTML_PATH+sectionId+".xhtml"));
 		//ヘッダ出力
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(super.zos, "UTF-8"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(super.zos, StandardCharsets.UTF_8));
 		//出力開始するセクションに対応したSectionInfoを設定
 		this.velocityContext.put("sectionInfo", sectionInfo);
 		this.velocityContext.put("imageInfo", imageInfo);
