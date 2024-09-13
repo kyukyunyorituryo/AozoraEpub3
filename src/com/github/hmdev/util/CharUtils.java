@@ -166,7 +166,7 @@ public class CharUtils
 			if (0xD87E == c && 0xDc00 <= suf && suf <= 0xDE1F) return true;
 			int code = c<<16|suf&0xFFFF;
 			if (0xD840DC00 <= code && code <= 0xD869DEDF) return true;
-			if (0xD869DF00 <= code && code <= 0xD86EDC1F) return true;
+            return 0xD869DF00 <= code && code <= 0xD86EDC1F;
 		}
 		return false;
 	}
@@ -209,7 +209,7 @@ public class CharUtils
 					else inRuby = true;
 					break;
 				default:
-					if (!inRuby) buf.append(ch[i]);
+                    buf.append(ch[i]);
 				}
 			}
 		}
@@ -250,9 +250,9 @@ public class CharUtils
 	static public String getChapterName(String line, int maxLength, boolean reduce)
 	{
 		String name = line.replaceAll("［＃.+?］", "")//注記除去
-				.replaceAll("※(※|《|》|［|］|〔|〕|〔|〕|〔|〕|｜)", "$1") //エスケープ文字から※除外
+				.replaceAll("※([※《》［］〔〕｜])", "$1") //エスケープ文字から※除外
 				.replaceAll("\t", " ").replaceFirst("^[ |　]+", "").replaceFirst("[ |　]+$",""); //前後の不要な文字所除去
-		if (reduce) name = name.replaceAll("(=|＝|-|―|─)+", "$1");//連続する記号は1つに
+		if (reduce) name = name.replaceAll("([=＝\\-―─])+", "$1");//連続する記号は1つに
 		//タグはimgとaを削除
 		name = chapterTagOpenPattern.matcher(name).replaceAll("");
 		name = chapterTagClosePattern.matcher(name).replaceAll("");
@@ -286,7 +286,7 @@ public class CharUtils
 	/** BOMが文字列の先頭にある場合は除去 */
 	static public String removeBOM(String str)
 	{
-		if (str != null && str.length() > 0) {
+		if (str != null && !str.isEmpty()) {
 			if (str.charAt(0) == 0xFEFF) {
 				return str.substring(1);
 			} else {
