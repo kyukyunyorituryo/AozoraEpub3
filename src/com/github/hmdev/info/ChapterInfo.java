@@ -102,7 +102,7 @@ public class ChapterInfo
 	 */
 	public static void setTocNestLevel(boolean navNest, boolean ncxNest, List<ChapterInfo> chapterInfos, boolean insertTitleToc)
 	{
-		if (chapterInfos.size() < 1) {
+		if (chapterInfos.isEmpty()) {
 			return;
 		}
 
@@ -143,7 +143,7 @@ public class ChapterInfo
 		//----------------------------------------------
 		// Velocity用のフィールド設定
 		//----------------------------------------------
-		ChapterInfo curr = chapterInfos.get(0);
+		ChapterInfo curr = chapterInfos.getFirst();
 		curr.levelStart = 0;
 
 		ChapterInfo prev = curr;
@@ -151,14 +151,12 @@ public class ChapterInfo
 		// ループは 2番目の要素から開始
 		for (int i = 1; i < chapterInfos.size(); i++) {
 			curr = chapterInfos.get(i);
-			assert prev != null;
 
-			int diff = curr.chapterLevel - prev.chapterLevel;
+            int diff = curr.chapterLevel - prev.chapterLevel;
 			assert diff <= 1; //上記の処理を経て diff > 1 となることはない
 			if (diff > 0) {
 				// 前より深い場合
-				assert diff == 1;
-				curr.levelStart = diff;
+                curr.levelStart = diff;
 				prev.levelEnd = 0;
 			} else {
 				// 前より深くない場合
@@ -172,30 +170,28 @@ public class ChapterInfo
 
 		if (ncxNest) {
 			prev = null;
-			for (int i = 0; i < chapterInfos.size(); i++) {
-				curr = chapterInfos.get(i);
-				curr.navClose = curr.levelEnd + 1;
-				if (curr.levelStart > 0 && prev != null) {
-					//前が親ノードなら、前のノードの navClose を 0 にする
-					prev.navClose = 0;
-				}
-				prev = curr;
-			}
+            for (ChapterInfo chapterInfo : chapterInfos) {
+                curr = chapterInfo;
+                curr.navClose = curr.levelEnd + 1;
+                if (curr.levelStart > 0 && prev != null) {
+                    //前が親ノードなら、前のノードの navClose を 0 にする
+                    prev.navClose = 0;
+                }
+                prev = curr;
+            }
 		}
 
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{chapterLevel: ").append(chapterLevel);
-		sb.append(", levelStart: ").append(levelStart);
-		sb.append(", levelEnd: ").append(levelEnd);
-		sb.append(", navClose: ").append(navClose);
-		sb.append(", sectionId: \"").append(sectionId);
-		sb.append("\", chapterId: \"").append(chapterId);
-		sb.append("\", chapterName: \"").append(chapterName);
-		sb.append("\"}");
-		return sb.toString();
+        return "{chapterLevel: " + chapterLevel +
+                ", levelStart: " + levelStart +
+                ", levelEnd: " + levelEnd +
+                ", navClose: " + navClose +
+                ", sectionId: \"" + sectionId +
+                "\", chapterId: \"" + chapterId +
+                "\", chapterName: \"" + chapterName +
+                "\"}";
 	}
 }
