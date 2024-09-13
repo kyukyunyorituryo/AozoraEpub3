@@ -76,8 +76,7 @@ public class ImageInfo
 		return imageInfo;
 	}
 	
-	static public ImageInfo getImageInfo(String ext, BufferedImage image) throws IOException
-	{
+	static public ImageInfo getImageInfo(String ext, BufferedImage image) {
 		return new ImageInfo(ext, image.getWidth(), image.getHeight());
 	}
 	

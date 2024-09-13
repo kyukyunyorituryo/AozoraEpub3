@@ -22,7 +22,7 @@ public class ProfileInfo
 	}
 	
 	/** 更新 */
-	public void update(File profilePath) throws FileNotFoundException, IOException
+	public void update(File profilePath) throws IOException
 	{
 		if (fileName != null) {
 			FileOutputStream fos = new FileOutputStream(profilePath+"/"+fileName);
