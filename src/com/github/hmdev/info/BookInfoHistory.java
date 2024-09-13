@@ -12,7 +12,7 @@ public class BookInfoHistory
 	/** 表紙に使う挿絵の本文内Index -1なら本文内の挿絵は使わない */
 	public int coverImageIndex = -1;
 	/** imageにしたとき用の元ファイルの拡張子 */
-	public String coverExt = null;
+	public String coverExt;
 	
 	public String title;
 	public String titleAs;
