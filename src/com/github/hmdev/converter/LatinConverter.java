@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import com.github.hmdev.util.LogAppender;
@@ -24,26 +25,23 @@ public class LatinConverter
 	public LatinConverter(File file) throws IOException
 	{
 		//String srcFileName = "chuki_latin.txt";
-		BufferedReader src = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-		String line;
-		int lineNum = 0;
-		try {
-			while ((line = src.readLine()) != null) {
-				lineNum++;
-				if (line.length() > 0 && line.charAt(0)!='#') {
-					try {
-						String[] values = line.split("\t");
-						char ch = values[1].charAt(0);
-						if (values[0].length() > 0) latinMap.put(values[0], ch);
-						if (values.length > 3) latinCidMap.put(ch, new String[]{values[2], values[3]});
-					} catch (Exception e) {
-						LogAppender.error(lineNum, file.getName(), line);
-					}
-				}
-			}
-		} finally {
-			src.close();
-		}
+        try (BufferedReader src = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+            String line;
+            int lineNum = 0;
+            while ((line = src.readLine()) != null) {
+                lineNum++;
+                if (!line.isEmpty() && line.charAt(0) != '#') {
+                    try {
+                        String[] values = line.split("\t");
+                        char ch = values[1].charAt(0);
+                        if (!values[0].isEmpty()) latinMap.put(values[0], ch);
+                        if (values.length > 3) latinCidMap.put(ch, new String[]{values[2], values[3]});
+                    } catch (Exception e) {
+                        LogAppender.error(lineNum, file.getName(), line);
+                    }
+                }
+            }
+        }
 	}
 	
 	/** 分解表記の文字単体をUTF-8文字に変換 */
@@ -79,12 +77,10 @@ public class LatinConverter
 	{
 		String[] cid = latinCidMap.get(ch);
 		if (cid == null) return null;
-		StringBuilder buf = new StringBuilder();
-		buf.append("<glyph system=\"Adobe-Japan1-6\" code=\"");
-		buf.append(cid[0]);
-		buf.append("\" v_code=\"");
-		buf.append(cid[1]);
-		buf.append("\"/>");
-		return buf.toString();
+        return "<glyph system=\"Adobe-Japan1-6\" code=\"" +
+                cid[0] +
+                "\" v_code=\"" +
+                cid[1] +
+                "\"/>";
 	}
 }
