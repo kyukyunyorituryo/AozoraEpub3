@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +28,7 @@ import javax.swing.border.Border;
 public class JProfileDialog extends JDialog
 {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	JTextField jTextProfileName;
@@ -77,12 +79,10 @@ public class JProfileDialog extends JDialog
 		jButtonCreate.setBorder(paddingButton);
 		//jButtonCreate.setPreferredSize(new Dimension(80, 26));
 		jButtonCreate.setIcon(new ImageIcon(new URI(imageURLPath+"add.png").toURL()));
-		jButtonCreate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (linstener != null) linstener.actionPerformed(new ActionEvent(jTextProfileName.getText(), 1, "create"));
-				setVisible(false);
-			}
-		});
+		jButtonCreate.addActionListener(e -> {
+            if (linstener != null) linstener.actionPerformed(new ActionEvent(jTextProfileName.getText(), 1, "create"));
+            setVisible(false);
+        });
 		panel = new JPanel();
 		panel.setBorder(padding4H);
 		panel.add(jButtonCreate);
@@ -92,12 +92,10 @@ public class JProfileDialog extends JDialog
 		jButtonEdit.setBorder(paddingButton);
 		//jButtonEdit.setPreferredSize(new Dimension(80, 26));
 		jButtonEdit.setIcon(new ImageIcon(new URI(imageURLPath+"edit.png").toURL()));
-		jButtonEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (linstener != null) linstener.actionPerformed(new ActionEvent(jTextProfileName.getText(), 2, "edit"));
-				setVisible(false);
-			}
-		});
+		jButtonEdit.addActionListener(e -> {
+            if (linstener != null) linstener.actionPerformed(new ActionEvent(jTextProfileName.getText(), 2, "edit"));
+            setVisible(false);
+        });
 		panel = new JPanel();
 		panel.setBorder(padding4H);
 		panel.add(jButtonEdit);
@@ -107,17 +105,15 @@ public class JProfileDialog extends JDialog
 		jButtonDelete.setBorder(paddingButton);
 		//jButtonDelete.setPreferredSize(new Dimension(80, 26));
 		jButtonDelete.setIcon(new ImageIcon(new URI(imageURLPath+"delete.png").toURL()));
-		jButtonDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (linstener != null) {
-					int ret = JOptionPane.showConfirmDialog(jButtonDelete, orgName+" を削除しますか？", "プロファイル削除", JOptionPane.YES_NO_OPTION);
-					if (ret == JOptionPane.YES_OPTION) {
-						linstener.actionPerformed(new ActionEvent(jTextProfileName.getText(), 3, "delete"));
-						setVisible(false);
-					}
-				}
-			}
-		});
+		jButtonDelete.addActionListener(e -> {
+            if (linstener != null) {
+                int ret = JOptionPane.showConfirmDialog(jButtonDelete, orgName+" を削除しますか？", "プロファイル削除", JOptionPane.YES_NO_OPTION);
+                if (ret == JOptionPane.YES_OPTION) {
+                    linstener.actionPerformed(new ActionEvent(jTextProfileName.getText(), 3, "delete"));
+                    setVisible(false);
+                }
+            }
+        });
 		panel = new JPanel();
 		panel.setBorder(padding4H);
 		panel.add(jButtonDelete);
@@ -127,12 +123,10 @@ public class JProfileDialog extends JDialog
 		jButtonCancel.setBorder(paddingButton);
 		//jButtonCancel.setPreferredSize(new Dimension(80, 26));
 		jButtonCancel.setIcon(new ImageIcon(new URI(imageURLPath+"cross.png").toURL()));
-		jButtonCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				jTextProfileName.setText("");
-				setVisible(false);
-			}
-		});
+		jButtonCancel.addActionListener(e -> {
+            jTextProfileName.setText("");
+            setVisible(false);
+        });
 		panel = new JPanel();
 		panel.setBorder(padding4H);
 		panel.add(jButtonCancel);
