@@ -26,7 +26,6 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
 
 import com.github.hmdev.info.ImageInfo;
 import com.github.hmdev.util.LogAppender;
@@ -124,8 +123,7 @@ public class ImageUtils
 	 * @param autoMarginPadding 余白除去後に追加するマージン */
 	static public void writeImage(InputStream is, BufferedImage srcImage, ZipArchiveOutputStream zos, ImageInfo imageInfo,
 			float jpegQuality, LookupOp gammaOp, int maxImagePixels, int maxImageW, int maxImageH, int dispW, int dispH,
-			int autoMarginLimitH, int autoMarginLimitV, int autoMarginWhiteLevel, float autoMarginPadding, int autoMarginNombre, float nombreSize) throws IOException
-	{
+			int autoMarginLimitH, int autoMarginLimitV, int autoMarginWhiteLevel, float autoMarginPadding, int autoMarginNombre, float nombreSize) {
 		try {
 		String ext = imageInfo.getExt();
 
@@ -153,8 +151,9 @@ public class ImageUtils
 				//IOUtils.copy(is, baos);
 				is.transferTo(baos);
 				imgBuf = baos.toByteArray();
-				ByteArrayInputStream bais = new ByteArrayInputStream(imgBuf);
-				try { srcImage = readImage(ext, bais); } finally { bais.close(); }
+                try (ByteArrayInputStream bais = new ByteArrayInputStream(imgBuf)) {
+                    srcImage = readImage(ext, bais);
+                }
 			}
 			margin = getPlainMargin(srcImage, autoMarginLimitH/100f, autoMarginLimitV/100f, autoMarginWhiteLevel/100f, autoMarginPadding/100f, startPixel, ignoreEdge, dustSize, autoMarginNombre, nombreSize);
 			if (margin[0]==0 && margin[1]==0 && margin[2]==0 && margin[3]==0) margin = null;
@@ -197,8 +196,9 @@ public class ImageUtils
 			} else {
 				if (margin == null && imgBuf != null && imageInfo.rotateAngle==0) {
 					//余白除去が無く画像も編集されていなければバッファからそのまま出力
-					ByteArrayInputStream bais = new ByteArrayInputStream(imgBuf);
-					try { bais.transferTo(zos);} finally { bais.close(); }
+                    try (ByteArrayInputStream bais = new ByteArrayInputStream(imgBuf)) {
+                        bais.transferTo(zos);
+                    }
 				} else {
 					//編集済の画像なら同じ画像形式で書き出し 余白があれば切り取る
 					if (imageInfo.rotateAngle != 0) {
