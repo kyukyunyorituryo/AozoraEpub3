@@ -2475,7 +2475,7 @@ public class AozoraEpub3Applet extends JFrame
 	class FloatInputVerifier extends InputVerifier
 	{
 		/** 基準値 */
-		float def = 0;
+		float def;
 		/** 最小値 */
 		float min = Float.MIN_VALUE;
 		/** 最大値 */
@@ -2521,7 +2521,7 @@ public class AozoraEpub3Applet extends JFrame
 	class NumberVerifier extends InputVerifier
 	{
 		/** 基準値 */
-		float def = 0;
+		float def;
 		/** 最小値 */
 		float min = Float.MIN_VALUE;
 		/** 最大値 */
@@ -2593,7 +2593,7 @@ public class AozoraEpub3Applet extends JFrame
 			JFileChooser fileChooser = new JFileChooser(currentPath);
 			fileChooser.setDialogTitle("表紙画像を選択");
 			fileChooser.setApproveButtonText("選択");
-			fileChooser.setFileFilter(new FileNameExtensionFilter("表紙画像(jpg,png,gif)", new String[]{"jpg","png","gif"}));
+			fileChooser.setFileFilter(new FileNameExtensionFilter("表紙画像(jpg,png,gif)", "jpg","png","gif"));
 			int state = fileChooser.showOpenDialog(parent);
             if (state == JFileChooser.APPROVE_OPTION) {
                 jComboCover.setSelectedItem(fileChooser.getSelectedFile().getAbsolutePath());
@@ -2990,7 +2990,7 @@ public class AozoraEpub3Applet extends JFrame
 				String urlString = null;
 				try {
 					Object transferData = transfer.getTransferData(DataFlavor.stringFlavor);
-					if (transferData != null) urlString = transferData.toString();
+                    urlString = transferData.toString();
 				} catch (Exception e) {}
 
 				if (urlString != null && urlString.startsWith("file://")) {
@@ -2999,7 +2999,7 @@ public class AozoraEpub3Applet extends JFrame
 						String[] fileNames = urlString.split("\n");
 						vecFiles = new Vector<File>();
 						for (String path : fileNames) {
-							File file = new File(URLDecoder.decode(path.substring(7).trim(),"UTF-8"));
+							File file = new File(URLDecoder.decode(path.substring(7).trim(), StandardCharsets.UTF_8));
 							if (file.exists()) {
 								if (dstPath == null && !isCacheFile(file)) dstPath = file.getParentFile();
 								if (file.getName().toLowerCase().endsWith(".url")) {
@@ -3078,16 +3078,13 @@ public class AozoraEpub3Applet extends JFrame
 	/** Windowsのインターネットショートカットを読み込み */
 	String readInternetShortCut(File file) throws IOException
 	{
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		try {
-			String line;
-			while ((line = br.readLine()) != null) {
-				if (line.startsWith("URL=")) return line.substring(4);
-			}
-			return null;
-		} finally {
-			br.close();
-		}
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("URL=")) return line.substring(4);
+            }
+            return null;
+        }
 	}
 
 	/** 変換実行時出力先リストの先頭に追加または移動 */
