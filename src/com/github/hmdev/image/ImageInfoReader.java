@@ -350,7 +350,7 @@ public class ImageInfoReader
 				}
 				
 			} else {
-				try (ZipFile zf = new ZipFile(this.srcFile, "MS932")) {
+				try (ZipFile zf = ZipFile.builder().setFile(this.srcFile).setUseUnicodeExtraFields(true).get()) {
 					ZipArchiveEntry entry = zf.getEntry(srcImageFileName);
 					if (entry == null) {
 						srcImageFileName = this.correctExt(srcImageFileName);
