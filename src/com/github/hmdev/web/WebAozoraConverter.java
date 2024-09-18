@@ -902,9 +902,11 @@ public class WebAozoraConverter
 				bw.append("［＃ここで字上げ終わり］\n［＃ここで字下げ終わり］\n");
 				bw.append("［＃区切り線］\n");
 				bw.append("\n\n");
+                preambleDivs.remove();
 			}
 			//本文
 			String separator = null;
+            contentDivs = getExtractElements(doc, this.queryMap.get(ExtractId.CONTENT_ARTICLE));
 			ExtractInfo[] separatorInfo = this.queryMap.get(ExtractId.CONTENT_ARTICLE_SEPARATOR);
 			if (separatorInfo != null && separatorInfo.length > 0) {
 				separator = separatorInfo[0].query;
