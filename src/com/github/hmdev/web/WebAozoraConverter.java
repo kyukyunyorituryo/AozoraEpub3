@@ -973,7 +973,7 @@ public class WebAozoraConverter
 			if (node.equals(endElement)) {
 				return;
 			}
-			if (node instanceof TextNode) printText(bw, ((TextNode)node).getWholeText());
+			if (node instanceof TextNode) printText(bw, ((TextNode)node).text());
 			else if (node instanceof Element elem) {
                 if ("br".equals(elem.tagName())) {
 					if (elem.nextSibling() != null) bw.append('\n');
@@ -984,7 +984,7 @@ public class WebAozoraConverter
 				} else if ("p".equals(elem.tagName())) {
 					//if (elem.previousSibling() != null && !isBlockNode(elem.previousSibling())) ;
 					_printNode(bw, node); //子を出力
-				//	if (elem.nextSibling() != null) bw.append('\n');
+					if (elem.nextSibling() != null) bw.append('\n');
 				} else if ("ruby".equals(elem.tagName())) {
 					//ルビ注記出力
 					printRuby(bw, elem);
