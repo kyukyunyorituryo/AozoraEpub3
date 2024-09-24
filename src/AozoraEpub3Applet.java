@@ -72,7 +72,6 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.FontUIResource;
@@ -821,7 +820,7 @@ public class AozoraEpub3Applet extends JFrame
 				if (!"".equals(listPath)) jComboDstPath.addItem(listPath);
 			}
 		}
-		if (dstPath!=null && !dstPath.equals("")) {
+		if (dstPath!=null && !dstPath.isEmpty()) {
 			jComboDstPath.setSelectedItem(dstPath);
 		}
 		panel.add(jComboDstPath);
@@ -1039,9 +1038,7 @@ public class AozoraEpub3Applet extends JFrame
 		jCheckImageFloat.setToolTipText("画像の実サイズが指定サイズ以下の画像を回り込み設定します");
 		jCheckImageFloat.setFocusPainted(false);
 		jCheckImageFloat.setBorder(padding2);
-		jCheckImageFloat.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) { jTextImageFloatW.setEditable(jCheckImageFloat.isSelected()); jTextImageFloatH.setEditable(jCheckImageFloat.isSelected());}
-		});
+		jCheckImageFloat.addChangeListener(e -> { jTextImageFloatW.setEditable(jCheckImageFloat.isSelected()); jTextImageFloatH.setEditable(jCheckImageFloat.isSelected());});
 		panel.add(jCheckImageFloat);
 		label = new JLabel("横");
 		panel.add(label);
@@ -2309,7 +2306,7 @@ public class AozoraEpub3Applet extends JFrame
 		//確認ダイアログ
 		////////////////////////////////////////////////////////////////
 		jConfirmDialog = new JConfirmDialog(
-			iconImage, AozoraEpub3Applet.class.getResource("images/icon.png").toString().replaceFirst("/icon\\.png", "/") );
+			iconImage, Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/icon.png")).toString().replaceFirst("/icon\\.png", "/") );
 		if ("1".equals(props.getProperty("ReplaceCover"))) jConfirmDialog.jCheckReplaceCover.setSelected(true);
 
 		////////////////////////////////////////////////////////////////
@@ -2991,7 +2988,7 @@ public class AozoraEpub3Applet extends JFrame
 				try {
 					Object transferData = transfer.getTransferData(DataFlavor.stringFlavor);
                     urlString = transferData.toString();
-				} catch (Exception e) {}
+				} catch (Exception ignored) {}
 
 				if (urlString != null && urlString.startsWith("file://")) {
 					//Linux等 ファイルのパスでファイルがあれば変換
@@ -3017,8 +3014,7 @@ public class AozoraEpub3Applet extends JFrame
 				}
 				else if (urlString != null) {
 					//ブラウザからのDnD
-					dstPath = null;
-					try {
+                    try {
 						String[] urlLines = urlString.split("[\n" +
                                 " ]");
 						for (String urlLine : urlLines) {
@@ -3134,9 +3130,9 @@ public class AozoraEpub3Applet extends JFrame
 		////////////////////////////////////////////////////////////////
 		//画面サイズと画像リサイズ
 		int resizeW = 0;
-		if (jCheckResizeW.isSelected()) try { resizeW = Integer.parseInt(jTextResizeNumW.getText()); } catch (Exception e) {}
+		if (jCheckResizeW.isSelected()) try { resizeW = Integer.parseInt(jTextResizeNumW.getText()); } catch (Exception ignored) {}
 		int resizeH = 0;
-		if (jCheckResizeH.isSelected()) try { resizeH = Integer.parseInt(jTextResizeNumH.getText()); } catch (Exception e) {}
+		if (jCheckResizeH.isSelected()) try { resizeH = Integer.parseInt(jTextResizeNumH.getText()); } catch (Exception ignored) {}
 		//int pixels = 0;
 		//if (jCheckPixel.isSelected()) try { pixels = Integer.parseInt(jTextPixelW.getText())*Integer.parseInt(jTextPixelH.getText()); } catch (Exception e) {}
 		int dispW = Integer.parseInt(jTextDispW.getText());
@@ -3951,7 +3947,7 @@ public class AozoraEpub3Applet extends JFrame
 			if (dstPath != null) this.currentPath = dstPath;
 			dstPathChooser.actionPerformed(null);
 			if (jCheckSamePath.isSelected() || jComboDstPath.getEditor().getItem().toString().trim().isEmpty()) {
-				LogAppender.println("変換処理を中止しました : "+(!vecFiles.isEmpty() ?vecFiles.get(0).getAbsoluteFile(): !vecUrlString.isEmpty() ?vecUrlString.get(0):""));
+				LogAppender.println("変換処理を中止しました : "+(!vecFiles.isEmpty() ?vecFiles.getFirst().getAbsoluteFile(): !vecUrlString.isEmpty() ?vecUrlString.getFirst():""));
 				return;
 			}
 		}
@@ -3959,7 +3955,7 @@ public class AozoraEpub3Applet extends JFrame
 			dstPath = new File(jComboDstPath.getEditor().getItem().toString());
 		}
 
-		if (!dstPath.isDirectory()) {
+		if (!Objects.requireNonNull(dstPath).isDirectory()) {
 			dstPath = new File(jComboDstPath.getEditor().getItem().toString());
 			String dstPathName = dstPath.getAbsolutePath();
 			if (dstPathName.length() > 70) dstPathName = dstPathName.substring(0, 32)+" ... "+dstPathName.substring(dstPathName.length()-32);
