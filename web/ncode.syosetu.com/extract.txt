@@ -43,7 +43,7 @@ CONTENT_UPDATE_LIST	.p-eplist__update	^([^<]+)(<span title=\"([^"]+)\".*)?$	$1 �
 ###各話の抽出設定
 
 ## 各話 Chapter 先頭の章のみ大見出しで出力
-CONTENT_CHAPTER	.chapter_title:0
+CONTENT_CHAPTER	.c-announce span:0
 ## 各話 章タイトル 中見出しで出力
 CONTENT_SUBTITLE	.p-novel__title--rensai:0	(（改稿版）)|(^.*</div>)
 
