@@ -4785,17 +4785,19 @@ public class AozoraEpub3Applet extends JFrame
 			if (dstPath.isEmpty() && jComboDstPath.getSelectedItem() != null) dstPath = this.jComboDstPath.getSelectedItem().toString().trim();
 			this.props.setProperty("DstPath", dstPath);
 			//履歴
-            new StringBuilder(this.props.getProperty("DstPathList"));
-            StringBuilder dstPathList;
-            //最大10件
-            dstPathList = new StringBuilder(dstPath);
-            int count = Math.min(10, this.jComboDstPath.getItemCount());
-            for (int i=0; i<count; i++) {
-                String item = this.jComboDstPath.getItemAt(i);
-                if (!dstPath.equals(item)) dstPathList.append(",").append(item);
-            }
-            if (dstPathList.toString().startsWith(",")) dstPathList = new StringBuilder(dstPathList.substring(1));
-            this.props.setProperty("DstPathList", dstPathList.toString());
+			String dstPathList = this.props.getProperty("DstPathList");
+			if (dstPathList == null) dstPathList = dstPath;
+			else {
+				//最大10件
+				dstPathList = dstPath;
+				int count = Math.min(10, this.jComboDstPath.getItemCount());
+				for (int i=0; i<count; i++) {
+					String item = (String)this.jComboDstPath.getItemAt(i);
+					if (!dstPath.equals(item)) dstPathList += ","+item;
+				}
+				if (dstPathList.startsWith(",")) dstPathList = dstPathList.substring(1);
+			}
+			this.props.setProperty("DstPathList", dstPathList);
 		} catch (Exception e) { e.printStackTrace(); }
 		this.props.setProperty("LastDir", this.currentPath==null?"":this.currentPath.getAbsolutePath());
 
