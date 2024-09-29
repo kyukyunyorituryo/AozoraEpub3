@@ -33,7 +33,7 @@ import com.github.junrar.rarfile.FileHeader;
 /** コマンドライン実行用mainとePub3変換関数 */
 public class AozoraEpub3
 {
-	public static final String VERSION = "1.1.1b26Q";
+	public static final String VERSION = "1.1.1b27Q";
 
 	/** コマンドライン実行用 */
 	public static void main(String[] args)
@@ -194,7 +194,7 @@ public class AozoraEpub3
 			try { pageMargin = props.getProperty("PageMargin").split(","); } catch (Exception e) {}
 			if (pageMargin.length != 4) pageMargin = new String[]{"0", "0", "0", "0"};
 			else {
-				String pageMarginUnit = Objects.equals(props.getProperty("PageMarginUnit"), "0") ?"em":"%";;
+				String pageMarginUnit = Objects.equals(props.getProperty("PageMarginUnit"), "0") ?"em":"%";
 				for (int i=0; i<4; i++) { pageMargin[i] += pageMarginUnit; }
 			}
 			String[] bodyMargin = {};
