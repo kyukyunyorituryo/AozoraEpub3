@@ -67,6 +67,7 @@ public class WebAozoraConverter
 	//変換設定
 	/** 取得間隔 ミリ秒 */
 	int interval = 500;
+    String UserAgent ="";
 
 	/** 未更新時は変換スキップ */
 	boolean convertUpdated = false;
@@ -188,6 +189,7 @@ public class WebAozoraConverter
 	 * @param urlString
 	 * @param cachePath
 	 * @param interval
+     * @param UserAgent
 	 * @param modifiedExpire この時間以内のキャッシュを更新分として扱う
 	 * @param convertUpdated 更新時のみ出力
 	 * @param convertModifiedOnly 追加更新分のみ変換
@@ -195,13 +197,14 @@ public class WebAozoraConverter
 	 * @param beforeChapter 指定話数のみ変換 0は指定無し
 	 * @return 変換スキップやキャンセルならnullを返す */
 	public File convertToAozoraText(String urlString, File cachePath, int interval, float modifiedExpire,
-		boolean convertUpdated, boolean convertModifiedOnly, boolean convertModifiedTail, int beforeChapter) throws IOException
+		boolean convertUpdated, boolean convertModifiedOnly, boolean convertModifiedTail, int beforeChapter,String UserAgent) throws IOException
 	{
 		this.canceled = false;
 		//日付一覧が取得できない場合は常に更新
 		this.updated = true;
 
 		this.interval = Math.max(500, interval);
+        this.UserAgent=UserAgent;
 		this.modifiedExpire = Math.max(0, modifiedExpire);
 		this.convertUpdated = convertUpdated;
 		this.convertModifiedOnly = convertModifiedOnly;
@@ -1324,6 +1327,7 @@ public class WebAozoraConverter
 		//ダウンロード
 		URLConnection conn = new URI(urlString).toURL().openConnection();
 		ExtractInfo[] ua = this.queryMap.get(ExtractId.USER_AGENT);
+        if (this.UserAgent != null) conn.setRequestProperty("User-Agent", this.UserAgent);
 		if (ua != null && ua.length > 0) conn.setRequestProperty("User-Agent", ua[0].query);
 		ExtractInfo[] cookie = this.queryMap.get(ExtractId.COOKIE);
 		if (cookie != null && cookie.length > 0) conn.setRequestProperty("Cookie", cookie[0].query);

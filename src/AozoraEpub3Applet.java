@@ -324,6 +324,7 @@ public class AozoraEpub3Applet extends JFrame
 	JCheckBox jCheckWebModifiedOnly;
 	JCheckBox jCheckWebModifiedTail;
 	JTextField jTextWebModifiedExpire;
+	JComboBox<String> jComboUa;
 
 	//テキストエリア
 	//JScrollPane jScrollPane;
@@ -2088,6 +2089,21 @@ public class AozoraEpub3Applet extends JFrame
 		label.setBorder(padding1);
 		panel.add(label);
 
+		//UA設定
+		panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.setBorder(new NarrowTitledBorder("UA設定"));
+		tabPanel.add(panel);
+		label = new JLabel("UA: ");
+		panel.add(label);
+		jComboUa = new JComboBox<String>(new String[]{"","Chrome", "Safari", "Firefox"});
+		jComboUa.setToolTipText("ユーザーエージェントを設定します");
+		jComboUa.setEditable(true);
+		jComboUa.setMaximumSize(new Dimension(110, 24));
+		jComboUa.setPreferredSize(new Dimension(110, 24));
+		panel.add(jComboUa);
+		label = new JLabel("  ");
+		panel.add(label);
 		//キャッシュ保存先
 		panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -3847,8 +3863,10 @@ public class AozoraEpub3Applet extends JFrame
 					continue;
 				}
 
-				int interval = 500;
+				int interval = 500;				
 				try { interval = (int)(Float.parseFloat(jTextWebInterval.getText())*1000); } catch (Exception e) {}
+				String Ua="";
+				try { Ua = (jComboUa.getSelectedItem().toString()); } catch (Exception e) {}
 				int beforeChapter = 0;
 				if (this.jCheckWebBeforeChapter.isSelected()) {
 					try { beforeChapter = Integer.parseInt(jTextWebBeforeChapterCount.getText()); } catch (Exception e) {}
@@ -3867,7 +3885,7 @@ public class AozoraEpub3Applet extends JFrame
 
 				File srcFile = webConverter.convertToAozoraText(urlString, this.cachePath, interval, modifiedExpire,
 					this.jCheckWebConvertUpdated.isSelected(), this.jCheckWebModifiedOnly.isSelected(), jCheckWebModifiedTail.isSelected(),
-					beforeChapter);
+					beforeChapter,Ua);
 
 				if (srcFile == null) {
 					LogAppender.append(urlString);
@@ -4458,6 +4476,8 @@ public class AozoraEpub3Applet extends JFrame
 		////////////////////////////////////////////////////////////////
 		//Web
 		setPropsFloatText(jTextWebInterval, props, "WebInterval");
+		if (props.getProperty("UserAgent") != null && !props.getProperty("UserAgent").isEmpty())
+			jComboUa.setSelectedItem(props.getProperty("UserAgent"));
 		setPropsText(jTextCachePath, props, "CachePath");
 		if ("".equals(jTextCachePath.getText())) jTextCachePath.setText(".cache");
 		setPropsNumberText(jTextWebModifiedExpire, props, "WebModifiedExpire");
@@ -4612,6 +4632,7 @@ public class AozoraEpub3Applet extends JFrame
 
 		//Web
 		props.setProperty("WebInterval", this.jTextWebInterval.getText());
+		props.setProperty("UserAgent", this.jComboUa.getEditor().getItem().toString().trim());
 		props.setProperty("CachePath", this.jTextCachePath.getText());
 		props.setProperty("WebModifiedExpire", this.jTextWebModifiedExpire.getText());
 		props.setProperty("WebConvertUpdated", this.jCheckWebConvertUpdated.isSelected()?"1":"");
