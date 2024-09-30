@@ -7,7 +7,7 @@
 ##PAGE_REGEX		.*/n\d+[^\/]*/$
 
 ##ユーザーエージェント
-USER_AGENT	Chrome
+#USER_AGENT	Chrome
 
 ##ページャーの上限
 PAGER_MAX	100
