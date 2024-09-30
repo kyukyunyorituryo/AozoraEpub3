@@ -973,7 +973,7 @@ public class WebAozoraConverter
 			if (node.equals(endElement)) {
 				return;
 			}
-			if (node instanceof TextNode) printText(bw, ((TextNode)node).text());
+			if (node instanceof TextNode) printText(bw, ((TextNode)node).getWholeText());
 			else if (node instanceof Element elem) {
                 if ("br".equals(elem.tagName())) {
 					if (elem.nextSibling() != null) bw.append('\n');
@@ -1152,7 +1152,7 @@ public class WebAozoraConverter
 			case '＃': bw.append("※［＃井げた、1-1-84］"); break;
 			case '※': bw.append("※［＃米印、1-2-8］"); break;
 			case '\t': bw.append(' '); break;
-//			case '\n':
+			case '\n':
 			case '\r': break;
 			default: bw.append(ch);
 			}
