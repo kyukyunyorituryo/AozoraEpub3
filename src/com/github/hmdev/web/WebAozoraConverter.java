@@ -1102,7 +1102,20 @@ public class WebAozoraConverter
 			imagePath = CharUtils.escapeUrlToFile(src.substring(idx+2));
 		} else if(idx == 0 && src.indexOf("mitemin") != 0) { // なろう様 changes to new image provider
 			src = "https:" + src;
-			imagePath = CharUtils.escapeUrlToFile(src);
+            if(true) {
+                String ImageUrl = src.replace("userpageimage/viewimagebig/icode/", "");
+                String imagePagePath = CharUtils.escapeUrlToFile(ImageUrl);
+                File imagePageFile = new File(this.dstPath + "images/" + imagePagePath + "/index.html");
+                try {
+                    cacheFile(ImageUrl, imagePageFile, this.urlString);
+                    Document imagepagedoc = Jsoup.parse(imagePageFile, null);
+                    ImageUrl = imagepagedoc.getElementsByClass("imageview").first().children().attr("href");
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+                src = ImageUrl;
+            }
+            imagePath = CharUtils.escapeUrlToFile(src);
 		} else if (src.charAt(0) == '/') {
 			imagePath = "_"+CharUtils.escapeUrlToFile(src);
 			src = this.baseUri+src;
