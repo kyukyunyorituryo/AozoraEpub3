@@ -101,8 +101,6 @@ public class AozoraEpub3Applet extends JFrame
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	/** アプレットが表示されているフレーム */
-	//JFrame jFrameParent;
 	/** アプリケーションのアイコン画像 */
 	Image iconImage;
 
@@ -389,9 +387,8 @@ public class AozoraEpub3Applet extends JFrame
 	}
 */
 	/** アプレット初期化 */
-	public void init() throws MalformedURLException, URISyntaxException
+	 AozoraEpub3Applet() throws MalformedURLException, URISyntaxException
 	{
-	//	super.init();
 		this.setSize(new Dimension(520, 460));
 
 		//パス関連初期化
@@ -4694,8 +4691,7 @@ public class AozoraEpub3Applet extends JFrame
 	// JFrame
 	////////////////////////////////////////////////////////////////
 	/** Jar実行用 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) throws MalformedURLException, URISyntaxException {
 		//LookAndFeel変更
 		try {
 			String lafName = UIManager.getSystemLookAndFeelClassName();
@@ -4722,9 +4718,6 @@ public class AozoraEpub3Applet extends JFrame
 		AozoraEpub3Applet jFrame = new AozoraEpub3Applet();
 		jFrame.setIconImage(new ImageIcon(Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/icon.png"))).getImage());
 		jFrame.setTitle("AozoraEpub3");
-		try {
-			jFrame.init();
-		} catch(Exception e) { e.printStackTrace(); }
 		//アイコン設定
 		//最小サイズ
 		jFrame.setMinimumSize(new Dimension(540, 320));
