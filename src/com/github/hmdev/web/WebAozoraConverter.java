@@ -1051,21 +1051,6 @@ public class WebAozoraConverter
 	/** ルビを青空ルビにして出力 */
 	private void printRuby(BufferedWriter bw, Element ruby) throws IOException
 	{
-		/*
-		Elements rb = ruby.getElementsByTag("rb");
-		Elements rt = ruby.getElementsByTag("rt");
-		if (rb.size() > 0) {
-			if (rt.size() > 0) {
-				bw.append('｜');
-				printText(bw, rb.get(0).text());
-				bw.append('《');
-				printText(bw, rt.get(0).text());
-				bw.append('》');
-			} else {
-				printText(bw, rb.get(0).text());
-			}
-		}
-		*/
 
 		for (Node childNode : ruby.childNodes()) {
 			if (childNode instanceof Element element) {
