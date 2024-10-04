@@ -4741,7 +4741,9 @@ public class AozoraEpub3Applet extends JFrame
 			int w = (int)Float.parseFloat(jFrame.props.getProperty("SizeW"));
 			int h = (int)Float.parseFloat(jFrame.props.getProperty("SizeH"));
 			jFrame.setSize(w, h);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 		jFrame.addWindowListener(new WindowAdapter() {
 			@Override
@@ -4841,7 +4843,6 @@ public class AozoraEpub3Applet extends JFrame
 		this.props.store(fos, "AozoraEpub3 Parameters");
 		fos.close();
 
-		//super.finalize();
 	}
 
 	////////////////////////////////////////////////////////////////
