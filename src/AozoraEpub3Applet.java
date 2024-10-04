@@ -4724,16 +4724,24 @@ public class AozoraEpub3Applet extends JFrame
 		jFrame.setPreferredSize(new Dimension(540, 400));
 
 		try {
-			int x = (int)Float.parseFloat(jFrame.props.getProperty("PosX"));
-			int y = (int)Float.parseFloat(jFrame.props.getProperty("PosY"));
-			jFrame.setLocation(x, y);
-		} catch (Exception e) {}
+			int x;int y;
+			if(jFrame.props.getProperty("PosX")!=null || jFrame.props.getProperty("PosY")!=null){
+				x = (int)Float.parseFloat(jFrame.props.getProperty("PosX"));
+				y = (int)Float.parseFloat(jFrame.props.getProperty("PosY"));
+				jFrame.setLocation(x, y);
+			}	
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 		jFrame.setSize(jFrame.getSize());
 		try {
-			int w = (int)Float.parseFloat(jFrame.props.getProperty("SizeW"));
-			int h = (int)Float.parseFloat(jFrame.props.getProperty("SizeH"));
-			jFrame.setSize(w, h);
+			int w;int h;
+			if(jFrame.props.getProperty("SizeW")!=null || jFrame.props.getProperty("SizeH")!=null){
+				 w = (int)Float.parseFloat(jFrame.props.getProperty("SizeW"));
+				 h = (int)Float.parseFloat(jFrame.props.getProperty("SizeH"));
+				jFrame.setSize(w, h);
+			}			
 		} catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -4756,6 +4764,7 @@ public class AozoraEpub3Applet extends JFrame
 				System.exit(0);
 			}
 		});
+		
 		jFrame.setVisible(true);
 
 		//引数にファイルが指定されていたら変換実行
