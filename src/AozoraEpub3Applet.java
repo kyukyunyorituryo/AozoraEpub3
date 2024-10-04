@@ -4720,15 +4720,12 @@ public class AozoraEpub3Applet extends JFrame
 
 		//フレーム初期化
 		AozoraEpub3Applet jFrame = new AozoraEpub3Applet();
-		//アップレット生成と初期化
-	//	final AozoraEpub3Applet applet = new AozoraEpub3Applet(jFrame);
 		jFrame.setIconImage(new ImageIcon(Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/icon.png"))).getImage());
 		jFrame.setTitle("AozoraEpub3");
 		try {
 			jFrame.init();
 		} catch(Exception e) { e.printStackTrace(); }
 		//アイコン設定
-	//	jFrame.setIconImage(applet.iconImage);
 		//最小サイズ
 		jFrame.setMinimumSize(new Dimension(540, 320));
 		jFrame.setPreferredSize(new Dimension(540, 400));
@@ -4764,7 +4761,6 @@ public class AozoraEpub3Applet extends JFrame
 				System.exit(0);
 			}
 		});
-	//	jFrame.add(applet);
 		jFrame.setVisible(true);
 
 		//引数にファイルが指定されていたら変換実行
