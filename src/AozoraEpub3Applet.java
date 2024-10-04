@@ -318,6 +318,7 @@ public class AozoraEpub3Applet extends JFrame
 	JTextField jTextWebInterval;
 	JTextField jTextCachePath;
 	JButton jButtonCachePath;
+	JCheckBox jCheckWebLageImage;
 	JCheckBox jCheckWebConvertUpdated;
 	JCheckBox jCheckWebBeforeChapter;
 	JTextField jTextWebBeforeChapterCount;
@@ -2104,6 +2105,18 @@ public class AozoraEpub3Applet extends JFrame
 		panel.add(jComboUa);
 		label = new JLabel("  ");
 		panel.add(label);
+
+		//Web画像設定
+		panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.setBorder(new NarrowTitledBorder("Web画像設定"));
+		tabPanel.add(panel);
+		jCheckWebLageImage = new JCheckBox("画像大");
+		jCheckWebLageImage.setToolTipText("Web画像のオリジナルを取得");
+		jCheckWebLageImage.setFocusPainted(false);
+		jCheckWebLageImage.setBorder(padding2);
+		panel.add(jCheckWebLageImage);
+		
 		//キャッシュ保存先
 		panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -3885,7 +3898,7 @@ public class AozoraEpub3Applet extends JFrame
 
 				File srcFile = webConverter.convertToAozoraText(urlString, this.cachePath, interval, modifiedExpire,
 					this.jCheckWebConvertUpdated.isSelected(), this.jCheckWebModifiedOnly.isSelected(), jCheckWebModifiedTail.isSelected(),
-					beforeChapter,Ua);
+					beforeChapter,Ua,this.jCheckWebLageImage.isSelected());
 
 				if (srcFile == null) {
 					LogAppender.append(urlString);
@@ -4478,6 +4491,7 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsFloatText(jTextWebInterval, props, "WebInterval");
 		if (props.getProperty("UserAgent") != null && !props.getProperty("UserAgent").isEmpty())
 			jComboUa.setSelectedItem(props.getProperty("UserAgent"));
+		setPropsSelected(jCheckWebLageImage, props, "jCheckWebLageImage");
 		setPropsText(jTextCachePath, props, "CachePath");
 		if ("".equals(jTextCachePath.getText())) jTextCachePath.setText(".cache");
 		setPropsNumberText(jTextWebModifiedExpire, props, "WebModifiedExpire");
@@ -4633,6 +4647,7 @@ public class AozoraEpub3Applet extends JFrame
 		//Web
 		props.setProperty("WebInterval", this.jTextWebInterval.getText());
 		props.setProperty("UserAgent", this.jComboUa.getEditor().getItem().toString().trim());
+		props.setProperty("jCheckWebLageImage", this.jCheckWebLageImage.isSelected()?"1":"");
 		props.setProperty("CachePath", this.jTextCachePath.getText());
 		props.setProperty("WebModifiedExpire", this.jTextWebModifiedExpire.getText());
 		props.setProperty("WebConvertUpdated", this.jCheckWebConvertUpdated.isSelected()?"1":"");

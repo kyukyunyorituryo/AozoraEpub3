@@ -67,7 +67,10 @@ public class WebAozoraConverter
 	//変換設定
 	/** 取得間隔 ミリ秒 */
 	int interval = 500;
+    /** ユーザーエージェント */
     String UserAgent ="";
+    /** ウェブ画像の大きい画像を取得 */
+    boolean webLageImage =false;
 
 	/** 未更新時は変換スキップ */
 	boolean convertUpdated = false;
@@ -185,19 +188,23 @@ public class WebAozoraConverter
 	}
 
 	////////////////////////////////////////////////////////////////
-	/** 変換実行
-	 * @param urlString
-	 * @param cachePath
-	 * @param interval
-     * @param UserAgent
-	 * @param modifiedExpire この時間以内のキャッシュを更新分として扱う
-	 * @param convertUpdated 更新時のみ出力
-	 * @param convertModifiedOnly 追加更新分のみ変換
-	 * @param convertModifiedTail 最新話から連続したもののみ変換
-	 * @param beforeChapter 指定話数のみ変換 0は指定無し
-	 * @return 変換スキップやキャンセルならnullを返す */
+	/**
+     * 変換実行
+     *
+     * @param urlString
+     * @param cachePath
+     * @param interval
+     * @param modifiedExpire      この時間以内のキャッシュを更新分として扱う
+     * @param convertUpdated      更新時のみ出力
+     * @param convertModifiedOnly 追加更新分のみ変換
+     * @param convertModifiedTail 最新話から連続したもののみ変換
+     * @param beforeChapter       指定話数のみ変換 0は指定無し
+     * @param UserAgent ユーザー絵ジェント
+     * @param webLageImage ウェブ画像の大きい画像を取得
+     * @return 変換スキップやキャンセルならnullを返す
+     */
 	public File convertToAozoraText(String urlString, File cachePath, int interval, float modifiedExpire,
-		boolean convertUpdated, boolean convertModifiedOnly, boolean convertModifiedTail, int beforeChapter,String UserAgent) throws IOException
+                                    boolean convertUpdated, boolean convertModifiedOnly, boolean convertModifiedTail, int beforeChapter, String UserAgent, boolean webLageImage) throws IOException
 	{
 		this.canceled = false;
 		//日付一覧が取得できない場合は常に更新
@@ -205,6 +212,7 @@ public class WebAozoraConverter
 
 		this.interval = Math.max(500, interval);
         this.UserAgent=UserAgent;
+        this.webLageImage = webLageImage;
 		this.modifiedExpire = Math.max(0, modifiedExpire);
 		this.convertUpdated = convertUpdated;
 		this.convertModifiedOnly = convertModifiedOnly;
@@ -1102,7 +1110,7 @@ public class WebAozoraConverter
 			imagePath = CharUtils.escapeUrlToFile(src.substring(idx+2));
 		} else if(idx == 0 && src.indexOf("mitemin") != 0) { // なろう様 changes to new image provider
 			src = "https:" + src;
-            if(true) {
+            if(webLageImage) {
                 String ImageUrl = src.replace("userpageimage/viewimagebig/icode/", "");
                 String imagePagePath = CharUtils.escapeUrlToFile(ImageUrl);
                 File imagePageFile = new File(this.dstPath + "images/" + imagePagePath + "/index.html");
