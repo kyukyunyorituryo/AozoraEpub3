@@ -121,33 +121,8 @@ public class Epub3Writer
 	final static String TOC_VM = "toc.ncx.vm";
 
 	/** コピーのみのファイル */
-/** 	final static String[] TEMPLATE_FILE_NAMES_VERTICAL = new String[]{
-		"META-INF/container.xml",
-		//OPS_PATH+CSS_PATH+"vertical_text.css",
-		OPS_PATH+CSS_PATH+"vertical_middle.css",
-		OPS_PATH+CSS_PATH+"vertical_image.css",
-		OPS_PATH+CSS_PATH+"vertical_font.css",
-		OPS_PATH+CSS_PATH+"vertical.css",
-		OPS_PATH+CSS_PATH+"fixed-layout-jp.css",
-		OPS_PATH+CSS_PATH+"book-style.css",
-		OPS_PATH+CSS_PATH+"style-reset.css",
-		OPS_PATH+CSS_PATH+"style-standard.css",
-		OPS_PATH+CSS_PATH+"style-advance.css",
-	}; */
-/** 	final static String[] TEMPLATE_FILE_NAMES_HORIZONTAL = new String[]{
-		"META-INF/container.xml",
-		//OPS_PATH+CSS_PATH+"horizontal_text.css",
-		OPS_PATH+CSS_PATH+"horizontal_middle.css",
-		OPS_PATH+CSS_PATH+"horizontal_image.css",
-		OPS_PATH+CSS_PATH+"horizontal_font.css",
-		OPS_PATH+CSS_PATH+"horizontal.css",
-		OPS_PATH+CSS_PATH+"fixed-layout-jp.css"
-	}; */
 	final static String[] TEMPLATE_FILE_NAMES_STANDARD = new String[]{
 			"META-INF/container.xml",
-			//OPS_PATH+CSS_PATH+"vertical_text.css",
-//			OPS_PATH+CSS_PATH+"middle.css",
-//			OPS_PATH+CSS_PATH+"image.css",
 			OPS_PATH+CSS_PATH+"font.css",
 			OPS_PATH+CSS_PATH+"aozora.css",
 			OPS_PATH+CSS_PATH+"fixed-layout-jp.css",
@@ -159,8 +134,6 @@ public class Epub3Writer
 
 	String[] getTemplateFiles()
 	{
-//		if (this.bookInfo != null && this.bookInfo.vertical) return TEMPLATE_FILE_NAMES_VERTICAL;
-//		return TEMPLATE_FILE_NAMES_HORIZONTAL;
 		return TEMPLATE_FILE_NAMES_STANDARD;
 	}
 
@@ -525,21 +498,6 @@ public class Epub3Writer
 		velocityContext.put("vecGaijiInfo", this.vecGaijiInfo);
 
 		//スタイルと外字のcssを格納
-		/*
-		if (!bookInfo.imageOnly && bookInfo.vertical) {
-			zos.putArchiveEntry(new ZipArchiveEntry(OPS_PATH+CSS_PATH+VERTICAL_TEXT_CSS));
-			bw = new BufferedWriter(new OutputStreamWriter(zos, "UTF-8"));
-			Velocity.mergeTemplate(templatePath+OPS_PATH+CSS_PATH+VERTICAL_TEXT_CSS_VM, "UTF-8", velocityContext, bw);
-			bw.flush();
-			zos.closeArchiveEntry();
-		} else if(!bookInfo.imageOnly){
-			zos.putArchiveEntry(new ZipArchiveEntry(OPS_PATH+CSS_PATH+HORIZONTAL_TEXT_CSS));
-			bw = new BufferedWriter(new OutputStreamWriter(zos, "UTF-8"));
-			Velocity.mergeTemplate(templatePath+OPS_PATH+CSS_PATH+HORIZONTAL_TEXT_CSS_VM, "UTF-8", velocityContext, bw);
-			bw.flush();
-			zos.closeArchiveEntry();
-		}
-*/
 		if (!bookInfo.imageOnly) {
 			zos.putArchiveEntry(new ZipArchiveEntry(OPS_PATH+CSS_PATH+TEXT_CSS));
 			bw = new BufferedWriter(new OutputStreamWriter(zos, StandardCharsets.UTF_8));
