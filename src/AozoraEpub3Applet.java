@@ -493,7 +493,7 @@ public class AozoraEpub3Applet extends JFrame
                 break;
             }
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
 		////////////////////////////////
@@ -2331,7 +2331,9 @@ public class AozoraEpub3Applet extends JFrame
                 Clipboard systemClipboard = getToolkit().getSystemClipboard();
                 StringSelection responseURLString = new StringSelection(text1);
                 systemClipboard.setContents(responseURLString, null);
-            } catch (Exception e2) { e2.printStackTrace(); }
+            } catch (Exception e2) {
+                throw new RuntimeException(e2);
+            }
             if (!jButtonCancel.isEnabled()) {
                 jProgressBar.setValue(0);
                 jProgressBar.setStringPainted(false);
@@ -2372,9 +2374,9 @@ public class AozoraEpub3Applet extends JFrame
 			this.aozoraConverter = new AozoraEpub3Converter(this.epub3Writer, this.jarPath);
 
 		} catch (IOException e) {
-			e.printStackTrace();
 			jTextArea.append(e.getMessage());
-		}
+			throw new RuntimeException(e);			
+        }
 
 		////////////////////////////////////////////////////////////////
 		//すべて初期化にプロファイル読み込み
@@ -2426,7 +2428,9 @@ public class AozoraEpub3Applet extends JFrame
 		}
 		//何もなければデフォルト設定を追加
 		if (jComboProfile.getItemCount() == 0) {
-			try { addProfile("デフォルト"); } catch (Exception e) { e.printStackTrace(); }
+			try { addProfile("デフォルト"); } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 		}
 		//選択済プロファイル保存
 		selectedProfile = (ProfileInfo)jComboProfile.getSelectedItem();
@@ -2446,7 +2450,9 @@ public class AozoraEpub3Applet extends JFrame
 				}
 				//移動ボタン有効化
 				setProfileMoveEnable();
-			} catch (Exception e) { e.printStackTrace(); }
+			} catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 		});
 
 		//移動ボタン有効化
@@ -2707,8 +2713,8 @@ public class AozoraEpub3Applet extends JFrame
 					jComboCover.setSelectedItem(path);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
-			}
+                throw new RuntimeException(e);
+            }
         }
 	}
 
@@ -2749,8 +2755,8 @@ public class AozoraEpub3Applet extends JFrame
 					jComboDstPath.setSelectedItem(path);
                 }
 			} catch (Exception e) {
-				e.printStackTrace();
-			}
+                throw new RuntimeException(e);
+            }
         }
 	}
 
@@ -3054,7 +3060,7 @@ public class AozoraEpub3Applet extends JFrame
 								}
 							}
 						}
-					} catch (Exception e) { e.printStackTrace(); }
+					} catch (Exception e) { throw new RuntimeException(e); }
 				}
 				else if (urlString != null) {
 					//ブラウザからのDnD
@@ -3076,7 +3082,7 @@ public class AozoraEpub3Applet extends JFrame
 								}
 							}
 						}
-					} catch (Exception e) { e.printStackTrace(); }
+					} catch (Exception e) { throw new RuntimeException(e); }
 				}
 			}
 			else if (transfer.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
@@ -3109,6 +3115,7 @@ public class AozoraEpub3Applet extends JFrame
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+			
 		} finally {
 			jTextArea.setCaretPosition(jTextArea.getDocument().getLength());
 		}
@@ -3346,9 +3353,9 @@ public class AozoraEpub3Applet extends JFrame
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			LogAppender.append("エラーが発生しました : ");
 			LogAppender.println(e.getMessage());
+			throw new RuntimeException(e);
 		}
 		////////////////////////////////
 		System.gc();
@@ -3385,7 +3392,7 @@ public class AozoraEpub3Applet extends JFrame
                 try {
                     txtCount = AozoraEpub3.countZipText(srcFile);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
                 if (txtCount == 0) {
                     txtCount = 1;
@@ -3396,7 +3403,7 @@ public class AozoraEpub3Applet extends JFrame
                 try {
                     txtCount = AozoraEpub3.countRarText(srcFile);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
                 if (txtCount == 0) {
                     txtCount = 1;
@@ -3467,8 +3474,8 @@ public class AozoraEpub3Applet extends JFrame
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			LogAppender.error(e.getMessage());
+			throw new RuntimeException(e);			
 		}
 		//文字コード判別
 		String encauto ="";
@@ -3545,8 +3552,8 @@ public class AozoraEpub3Applet extends JFrame
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			LogAppender.error(e.getMessage());
+			throw new RuntimeException(e);			
 		}
 
 		if (bookInfo == null) {
@@ -3656,7 +3663,7 @@ public class AozoraEpub3Applet extends JFrame
 							bookInfo.loadCoverImage(bookInfo.coverFileName);
 						}
 						bookInfo.coverImage = this.jConfirmDialog.jCoverImagePanel.getModifiedImage(this.coverW, this.coverH);
-					} catch (Exception e) { e.printStackTrace(); }
+					} catch (Exception e) { throw new RuntimeException(e); }
 				}
 			}
 		}
@@ -3864,7 +3871,7 @@ public class AozoraEpub3Applet extends JFrame
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			if (this.kindleProcess != null) this.kindleProcess.destroy();
 			this.kindleProcess = null;
@@ -3993,7 +4000,8 @@ public class AozoraEpub3Applet extends JFrame
 				jComboCover.setSelectedItem(coverItem);
 
 			} catch (Exception e) {
-				e.printStackTrace(); LogAppender.println("エラーが発生しました : "+e.getMessage());
+				LogAppender.println("エラーが発生しました : "+e.getMessage());
+				throw new RuntimeException(e); 
 			}
 		}
 	}
@@ -4103,8 +4111,8 @@ public class AozoraEpub3Applet extends JFrame
 					this.applet.convertWeb(vecUrlString, vecUrlSrcFile, dstPath);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 				LogAppender.println("エラーが発生しました");
+				throw new RuntimeException(e);				
 			} finally {
 				this.applet.setConvertEnabled(true);
 				this.applet.running = false;
@@ -4763,7 +4771,7 @@ public class AozoraEpub3Applet extends JFrame
 				}
 			}
 
-		} catch(Exception e) { e.printStackTrace(); }
+		} catch(Exception e) { throw new RuntimeException(e); }
 
 		//フレーム初期化
 		AozoraEpub3Applet jFrame = new AozoraEpub3Applet();
@@ -4810,7 +4818,7 @@ public class AozoraEpub3Applet extends JFrame
 					jFrame.props.setProperty("SizeH", ""+size.getHeight());
 					jFrame.close();
 				} catch (Throwable e) {
-					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 				System.exit(0);
 			}
@@ -4864,7 +4872,7 @@ public class AozoraEpub3Applet extends JFrame
 			}
 			propList.deleteCharAt(0);
 			this.props.setProperty("ProfileList", propList.toString());
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) { throw new RuntimeException(e); }
 		//出力先と履歴保存
 		try {
 			this.props.setProperty("SamePath", this.jCheckSamePath.isSelected()?"1":"");
@@ -4885,7 +4893,7 @@ public class AozoraEpub3Applet extends JFrame
 				if (dstPathList.startsWith(",")) dstPathList = dstPathList.substring(1);
 			}
 			this.props.setProperty("DstPathList", dstPathList);
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) { throw new RuntimeException(e); }
 		this.props.setProperty("LastDir", this.currentPath==null?"":this.currentPath.getAbsolutePath());
 
 		//アプレットの設定をPropertiesに反映
