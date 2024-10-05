@@ -35,6 +35,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -405,9 +407,11 @@ public class AozoraEpub3Applet extends JFrame
 		//設定ファイル読み込み
 		props = new Properties();
 		try {
-			FileInputStream fos = new FileInputStream(this.jarPath+this.propFileName);
-			props.load(fos);
-			fos.close();
+			if (Files.exists(Path.of(this.jarPath + this.propFileName))) {
+				FileInputStream fos = new FileInputStream(this.jarPath + this.propFileName);
+				props.load(fos);
+				fos.close();
+			}
 		} catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -447,9 +451,8 @@ public class AozoraEpub3Applet extends JFrame
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
 		int dividerLocation = 230;
-		try { dividerLocation = Integer.parseInt(props.getProperty("DividerLocation")); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if (props.getProperty("DividerLocation") != null){
+		dividerLocation = Integer.parseInt(props.getProperty("DividerLocation")); }
 		jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		jSplitPane.setDividerLocation(dividerLocation);
 		jSplitPane.setDividerSize(3);
@@ -4325,9 +4328,8 @@ public class AozoraEpub3Applet extends JFrame
 		boolean selected;
 
 		//表題
-		try { jComboTitle.setSelectedIndex(Integer.parseInt(props.getProperty("TitleType"))); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(props.getProperty("TitleType")!=null){
+		jComboTitle.setSelectedIndex(Integer.parseInt(props.getProperty("TitleType")));};
 		setPropsSelected(jCheckPubFirst, props, "PubFirst");
 		setPropsSelected(jCheckUseFileName, props, "UseFileName");
 		//表紙
@@ -4367,9 +4369,9 @@ public class AozoraEpub3Applet extends JFrame
 		selected= setPropsSelected(jRadioVertical, props, "Vertical");
 		jRadioHorizontal.setSelected(!selected);
 		//入力文字コード
-		try { jComboEncType.setSelectedIndex(Integer.parseInt(props.getProperty("EncType"))); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(props.getProperty("EncType")!=null){
+		jComboEncType.setSelectedIndex(Integer.parseInt(props.getProperty("EncType"))); } 
+        
 		//言語設定
 		if (props.getProperty("LangType") != null && !props.getProperty("LangType").isEmpty())
 			jComboLangType.setSelectedItem(props.getProperty("LangType"));
@@ -4398,9 +4400,7 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsSelected(jCheckFitImage, props, "FitImage");
 		//SVG画像タグ出力
 		setPropsSelected(jCheckSvgImage, props, "SvgImage");
-		try { jComboRotateImage.setSelectedIndex(Integer.parseInt(props.getProperty("RotateImage"))); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(props.getProperty("RotateImage")!=null){ jComboRotateImage.setSelectedIndex(Integer.parseInt(props.getProperty("RotateImage"))); }
 		//画像倍率
 		setPropsSelected(jCheckImageScale, props, "ImageScaleChecked", false);
 		setPropsFloatText(jTextImageScale, props, "ImageScale");
@@ -4408,9 +4408,7 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsSelected(jCheckImageFloat, props, "ImageFloat");
 		setPropsIntText(jTextImageFloatW, props, "ImageFloatW");
 		setPropsIntText(jTextImageFloatH, props, "ImageFloatH");
-		try { jComboImageFloatType.setSelectedIndex(Integer.parseInt(props.getProperty("ImageFloatType"))); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(props.getProperty("ImageFloatType")!=null){ jComboImageFloatType.setSelectedIndex(Integer.parseInt(props.getProperty("ImageFloatType"))); }
 		//画像縮小指定
 		setPropsSelected(jCheckResizeW, props, "ResizeW");
 		setPropsIntText(jTextResizeNumW, props, "ResizeNumW");
@@ -4430,9 +4428,7 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsIntText(jTextAutoMarginLimitV, props, "AutoMarginLimitV");
 		setPropsIntText(jTextAutoMarginWhiteLevel, props, "AutoMarginWhiteLevel");
 		setPropsFloatText(jTextAutoMarginPadding, props, "AutoMarginPadding");
-		try { jComboAutoMarginNombre.setSelectedIndex(Integer.parseInt(props.getProperty("AutoMarginNombre"))); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(props.getProperty("AutoMarginNombre")!=null){ jComboAutoMarginNombre.setSelectedIndex(Integer.parseInt(props.getProperty("AutoMarginNombre"))); } 
 		setPropsFloatText(jTextAutoMarginNombreSize, props, "AutoMarginNombreSize");
 
 		////////////////////////////////////////////////////////////////
@@ -4463,20 +4459,14 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsSelected(jCheckCommentPrint, props, "CommentPrint");
 		setPropsSelected(jCheckCommentConvert, props, "CommentConvert");
 		//空行除去
-		try { jComboxRemoveEmptyLine.setSelectedIndex(Integer.parseInt(props.getProperty("RemoveEmptyLine"))); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(props.getProperty("RemoveEmptyLine")!=null){ jComboxRemoveEmptyLine.setSelectedIndex(Integer.parseInt(props.getProperty("RemoveEmptyLine"))); }
 		propValue = props.getProperty("MaxEmptyLine");
-		try { jComboxMaxEmptyLine.setSelectedIndex(Integer.parseInt(propValue)); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(propValue!=null){jComboxMaxEmptyLine.setSelectedIndex(Integer.parseInt(propValue)); } 
 		//行頭字下げ追加
 		setPropsSelected(jCheckForceIndent, props, "ForceIndent");
 		//強制改ページ
 		setPropsSelected(jCheckPageBreak, props, "PageBreak");
-		try { jTextPageBreakSize.setText(Integer.toString(Integer.parseInt(props.getProperty("PageBreakSize")))); } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if(props.getProperty("PageBreakSize")!=null){ jTextPageBreakSize.setText(Integer.toString(Integer.parseInt(props.getProperty("PageBreakSize")))); }
 		setPropsSelected(jCheckPageBreakEmpty, props, "PageBreakEmpty");
 		propValue = props.getProperty("PageBreakEmptyLine");
 		if (propValue != null) jComboxPageBreakEmptyLine.setSelectedItem(propValue);
