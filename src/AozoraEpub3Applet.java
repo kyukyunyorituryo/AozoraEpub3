@@ -408,7 +408,9 @@ public class AozoraEpub3Applet extends JFrame
 			FileInputStream fos = new FileInputStream(this.jarPath+this.propFileName);
 			props.load(fos);
 			fos.close();
-		} catch (Exception e) { }
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		String path = props.getProperty("LastDir");
 		if (path != null && !path.isEmpty()) this.currentPath = new File(path);
 
@@ -445,7 +447,9 @@ public class AozoraEpub3Applet extends JFrame
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
 		int dividerLocation = 230;
-		try { dividerLocation = Integer.parseInt(props.getProperty("DividerLocation")); } catch (Exception e) {}
+		try { dividerLocation = Integer.parseInt(props.getProperty("DividerLocation")); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		jSplitPane.setDividerLocation(dividerLocation);
 		jSplitPane.setDividerSize(3);
@@ -569,13 +573,17 @@ public class AozoraEpub3Applet extends JFrame
 				FileInputStream fos = new FileInputStream(presetFile);
 				presetProps.load(fos);
 				fos.close();
-			} catch (Exception e) {}
+			} catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 			String name = presetProps.getProperty("PresetName");
 			if (name != null && !name.isEmpty()) {
 				JMenuItem menu = new JMenuItem(name);
 				String iconName = presetProps.getProperty("PresetIcon");
 				if (iconName != null) {
-					try { menu.setIcon(new ImageIcon(Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/" + iconName)))); } catch (Exception r) {}
+					try { menu.setIcon(new ImageIcon(Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/" + iconName)))); } catch (Exception r) {
+                        throw new RuntimeException(r);
+                    }
 				}
 				menu.addActionListener(new LoadPresetActionListener(presetProps));
 				jPopupPreset.add(menu);
@@ -2398,7 +2406,9 @@ public class AozoraEpub3Applet extends JFrame
 				FileInputStream fos = new FileInputStream(profile);
 				profileProps.load(fos);
 				fos.close();
-			} catch (Exception e) { }
+			} catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 			String name = profileProps.getProperty("ProfileName");
 			if (name != null && !name.isEmpty()) {
 				jComboProfile.addItem(new ProfileInfo(profile.getName(), name, profileProps));
@@ -2534,7 +2544,9 @@ public class AozoraEpub3Applet extends JFrame
 					textField.setText(Float.toString(this.min));
 					return true;
 				}
-			} catch (NumberFormatException e) { }
+			} catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
 			textField.setText(Float.toString(this.def));
 			return true;
 		}
@@ -2580,7 +2592,9 @@ public class AozoraEpub3Applet extends JFrame
 					textField.setText(this.format.format(this.min));
 					return true;
 				}
-			} catch (NumberFormatException e) { }
+			} catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
 			textField.setText(this.format.format(this.def));
 			return true;
 		}
@@ -2652,6 +2666,7 @@ public class AozoraEpub3Applet extends JFrame
                         pathString = pathString.substring(rootPath.length() + 1);
                     }
                 } catch (IOException e1) {
+                    throw new RuntimeException(e1);
                 }
                 jTextCachePath.setText(pathString);
             }
@@ -3135,8 +3150,7 @@ public class AozoraEpub3Applet extends JFrame
 	////////////////////////////////////////////////////////////////
 	/** 複数ファイルを変換
 	 * @param dstPath srcFileがキャッシュで入力ファイルを同じ場所に出力先指定をする場合 */
-	private void convertFiles(Vector<File> vecSrcFiles, File dstPath)
-	{
+	private void convertFiles(Vector<File> vecSrcFiles, File dstPath) throws Exception {
 		File[] srcFiles = new File[vecSrcFiles.size()];
 		for (int i=0; i<srcFiles.length; i++) {
 			srcFiles[i] = vecSrcFiles.get(i);
@@ -3145,8 +3159,7 @@ public class AozoraEpub3Applet extends JFrame
 	}
 	/** 複数ファイルを変換
 	 * @param dstPath srcFileがキャッシュで入力ファイルを同じ場所に出力先指定をする場合 */
-	private void convertFiles(File[] srcFiles, File dstPath)
-	{
+	private void convertFiles(File[] srcFiles, File dstPath) throws Exception {
 		if (srcFiles.length == 0 ) return;
 
 		convertCanceled = false;
@@ -3170,17 +3183,27 @@ public class AozoraEpub3Applet extends JFrame
 		int singlePageWidth = Integer.parseInt(jTextSinglePageWidth.getText());
 
 		float imageScale = 0;
-		if (jCheckImageScale.isSelected()) try { imageScale = Float.parseFloat(jTextImageScale.getText()); } catch (Exception e) {}
+		if (jCheckImageScale.isSelected()) try { imageScale = Float.parseFloat(jTextImageScale.getText()); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		int imageFloatType = 0; //0=無効 1=上 2=下
 		int imageFloatW = 0;
 		int imageFloatH = 0;
 		if (jCheckImageFloat.isSelected()) {
 			imageFloatType = this.jComboImageFloatType.getSelectedIndex()+1;
-			try { imageFloatW =Integer.parseInt(jTextImageFloatW.getText()); } catch (Exception e) {}
-			try { imageFloatH =Integer.parseInt(jTextImageFloatH.getText()); } catch (Exception e) {}
+			try { imageFloatW =Integer.parseInt(jTextImageFloatW.getText()); } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+			try { imageFloatH =Integer.parseInt(jTextImageFloatH.getText()); } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 		}
-		float jpegQualty = 0.8f; try { jpegQualty = Integer.parseInt(jTextJpegQuality.getText())/100f; } catch (Exception e) {}
-		float gamma = 1.0f; if (jCheckGamma.isSelected()) try { gamma = Float.parseFloat(jTextGammaValue.getText()); } catch (Exception e) {}
+		float jpegQualty = 0.8f; try { jpegQualty = Integer.parseInt(jTextJpegQuality.getText())/100f; } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+		float gamma = 1.0f; if (jCheckGamma.isSelected()) try { gamma = Float.parseFloat(jTextGammaValue.getText()); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		int autoMarginLimitH = 0;
 		int autoMarginLimitV = 0;
 		int autoMarginWhiteLevel = 0;
@@ -3188,12 +3211,20 @@ public class AozoraEpub3Applet extends JFrame
 		int autoMarginNombre = 0;
 		float autoMarginNombreSize = 0.03f;
 		if (jCheckAutoMargin.isSelected()) {
-			try { autoMarginLimitH =Integer.parseInt(jTextAutoMarginLimitH.getText()); } catch (Exception e) {}
-			try { autoMarginLimitV =Integer.parseInt(jTextAutoMarginLimitV.getText()); } catch (Exception e) {}
-			try { autoMarginWhiteLevel =Integer.parseInt(jTextAutoMarginWhiteLevel.getText()); } catch (Exception e) {}
-			try { autoMarginPadding =Float.parseFloat(jTextAutoMarginPadding.getText()); } catch (Exception e) {}
+            autoMarginLimitH =Integer.parseInt(jTextAutoMarginLimitH.getText());
+            try { autoMarginLimitV =Integer.parseInt(jTextAutoMarginLimitV.getText()); } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+			try { autoMarginWhiteLevel =Integer.parseInt(jTextAutoMarginWhiteLevel.getText()); } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+			try { autoMarginPadding =Float.parseFloat(jTextAutoMarginPadding.getText()); } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 			autoMarginNombre = jComboAutoMarginNombre.getSelectedIndex();
-			try { autoMarginNombreSize =Float.parseFloat(jTextAutoMarginNombreSize.getText())*0.01f; } catch (Exception e) {}
+			try { autoMarginNombreSize =Float.parseFloat(jTextAutoMarginNombreSize.getText())*0.01f; } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 		}
 		int rorateAngle = 0; if (jComboRotateImage.getSelectedIndex() == 1) rorateAngle = 90; else if (jComboRotateImage.getSelectedIndex() == 2) rorateAngle = -90;
 
@@ -3225,9 +3256,13 @@ public class AozoraEpub3Applet extends JFrame
 			bodyMargin[i] = jTextBodyMargins[i].getText()+bodyMarginUnit;
 		}
 		float lineHeight = 1.8f;
-		try { lineHeight = Float.parseFloat(jComboLineHeight.getEditor().getItem().toString()); } catch (Exception e) {}
+		try { lineHeight = Float.parseFloat(jComboLineHeight.getEditor().getItem().toString()); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		int fontSize = 100;
-		try { fontSize = (int)Float.parseFloat(jComboFontSize.getEditor().getItem().toString()); } catch (Exception e) {}
+		try { fontSize = (int)Float.parseFloat(jComboFontSize.getEditor().getItem().toString()); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 		int dakutenType = jRadioDakutenType0.isSelected() ? 0 : (jRadioDakutenType1.isSelected() ? 1 : 2);
 
@@ -3285,7 +3320,9 @@ public class AozoraEpub3Applet extends JFrame
 
 			//目次設定
 			int maxLength = 64;
-			try { maxLength = Integer.parseInt((jTextMaxChapterNameLength.getText())); } catch (Exception e) {}
+			try { maxLength = Integer.parseInt((jTextMaxChapterNameLength.getText())); } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
 			this.aozoraConverter.setChapterLevel(maxLength, jCheckChapterExclude.isSelected(), jCheckChapterUseNextLine.isSelected(), jCheckChapterSection.isSelected(),
 					jCheckChapterH.isSelected(), jCheckChapterH1.isSelected(), jCheckChapterH2.isSelected(), jCheckChapterH3.isSelected(), jCheckSameLineChapter.isSelected(),
@@ -3562,7 +3599,9 @@ public class AozoraEpub3Applet extends JFrame
 				} else {
 					coverImageIndex = bookInfo.firstImageIdx;
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 		}
 
 		//表紙ページの情報をbookInfoに設定
@@ -3832,8 +3871,7 @@ public class AozoraEpub3Applet extends JFrame
 	/** Web変換
 	 * @param vecUrlString 青空文庫テキストのzipまたは対応サイトのリンクURL
 	 * @param vecUrlSrcFile ショートカットファイルのURLならファイルが指定されている */
-	private void convertWeb(Vector<String> vecUrlString, Vector<File> vecUrlSrcFile, File dstPath) throws IOException, URISyntaxException
-	{
+	private void convertWeb(Vector<String> vecUrlString, Vector<File> vecUrlSrcFile, File dstPath) throws Exception {
 		for (int i=0; i<vecUrlString.size(); i++) {
 			String urlString = vecUrlString.get(i);
 			File urSrcFile = null;
@@ -3874,15 +3912,23 @@ public class AozoraEpub3Applet extends JFrame
 				}
 
 				int interval = 500;				
-				try { interval = (int)(Float.parseFloat(jTextWebInterval.getText())*1000); } catch (Exception e) {}
+				try { interval = (int)(Float.parseFloat(jTextWebInterval.getText())*1000); } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 				String Ua="";
-				try { Ua = (jComboUa.getSelectedItem().toString()); } catch (Exception e) {}
+				try { Ua = (jComboUa.getSelectedItem().toString()); } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 				int beforeChapter = 0;
 				if (this.jCheckWebBeforeChapter.isSelected()) {
-					try { beforeChapter = Integer.parseInt(jTextWebBeforeChapterCount.getText()); } catch (Exception e) {}
+					try { beforeChapter = Integer.parseInt(jTextWebBeforeChapterCount.getText()); } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
 				}
 				float modifiedExpire = 0;
-				try { modifiedExpire = Float.parseFloat(jTextWebModifiedExpire.getText()); } catch (Exception e) {}
+				try { modifiedExpire = Float.parseFloat(jTextWebModifiedExpire.getText()); } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 				//キャッシュパス
 				if (!this.cachePath.isDirectory()) {
 					this.cachePath.mkdirs();
@@ -3962,8 +4008,9 @@ public class AozoraEpub3Applet extends JFrame
 		try {
 			return file.getCanonicalPath().startsWith(this.getCachePath().getCanonicalPath());
 		} catch (IOException e) {
-		}
-		return false;
+            throw new RuntimeException(e);
+        }
+		//return false;
 	}
 	////////////////////////////////////////////////////////////////
 	/** 別スレッド実行用SwingWorkerを実行
@@ -4165,7 +4212,9 @@ public class AozoraEpub3Applet extends JFrame
 		try {
 			if (!props.containsKey(name)) return;
 			jText.setText(props.getProperty(name));
-		} catch (Exception e) {}
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 	/** int値を設定 null なら設定しない */
 	private void setPropsIntText(JTextField jText, Properties props, String name)
@@ -4173,7 +4222,9 @@ public class AozoraEpub3Applet extends JFrame
 		try {
 			if (!props.containsKey(name)) return;
 			jText.setText(Integer.toString(Integer.parseInt(props.getProperty(name))));
-		} catch (Exception e) {}
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 	/** float値を設定 null なら設定しない */
 	private void setPropsFloatText(JTextField jText, Properties props, String name)
@@ -4181,7 +4232,9 @@ public class AozoraEpub3Applet extends JFrame
 		try {
 			if (!props.containsKey(name)) return;
 			jText.setText(Float.toString(Float.parseFloat(props.getProperty(name))));
-		} catch (Exception e) {}
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 	/** 数値を設定 null なら設定しない */
 	private void setPropsNumberText(JTextField jText, Properties props, String name)
@@ -4189,7 +4242,9 @@ public class AozoraEpub3Applet extends JFrame
 		try {
 			if (!props.containsKey(name)) return;
 			jText.setText(NumberFormat.getNumberInstance().format(Float.parseFloat(props.getProperty(name))));
-		} catch (Exception e) {}
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 
 	/** プロファイルを新規保存
@@ -4270,7 +4325,9 @@ public class AozoraEpub3Applet extends JFrame
 		boolean selected;
 
 		//表題
-		try { jComboTitle.setSelectedIndex(Integer.parseInt(props.getProperty("TitleType"))); } catch (Exception e) {}
+		try { jComboTitle.setSelectedIndex(Integer.parseInt(props.getProperty("TitleType"))); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		setPropsSelected(jCheckPubFirst, props, "PubFirst");
 		setPropsSelected(jCheckUseFileName, props, "UseFileName");
 		//表紙
@@ -4310,7 +4367,9 @@ public class AozoraEpub3Applet extends JFrame
 		selected= setPropsSelected(jRadioVertical, props, "Vertical");
 		jRadioHorizontal.setSelected(!selected);
 		//入力文字コード
-		try { jComboEncType.setSelectedIndex(Integer.parseInt(props.getProperty("EncType"))); } catch (Exception e) {}
+		try { jComboEncType.setSelectedIndex(Integer.parseInt(props.getProperty("EncType"))); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		//言語設定
 		if (props.getProperty("LangType") != null && !props.getProperty("LangType").isEmpty())
 			jComboLangType.setSelectedItem(props.getProperty("LangType"));
@@ -4339,7 +4398,9 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsSelected(jCheckFitImage, props, "FitImage");
 		//SVG画像タグ出力
 		setPropsSelected(jCheckSvgImage, props, "SvgImage");
-		try { jComboRotateImage.setSelectedIndex(Integer.parseInt(props.getProperty("RotateImage"))); } catch (Exception e) {}
+		try { jComboRotateImage.setSelectedIndex(Integer.parseInt(props.getProperty("RotateImage"))); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		//画像倍率
 		setPropsSelected(jCheckImageScale, props, "ImageScaleChecked", false);
 		setPropsFloatText(jTextImageScale, props, "ImageScale");
@@ -4347,7 +4408,9 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsSelected(jCheckImageFloat, props, "ImageFloat");
 		setPropsIntText(jTextImageFloatW, props, "ImageFloatW");
 		setPropsIntText(jTextImageFloatH, props, "ImageFloatH");
-		try { jComboImageFloatType.setSelectedIndex(Integer.parseInt(props.getProperty("ImageFloatType"))); } catch (Exception e) {}
+		try { jComboImageFloatType.setSelectedIndex(Integer.parseInt(props.getProperty("ImageFloatType"))); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		//画像縮小指定
 		setPropsSelected(jCheckResizeW, props, "ResizeW");
 		setPropsIntText(jTextResizeNumW, props, "ResizeNumW");
@@ -4367,7 +4430,9 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsIntText(jTextAutoMarginLimitV, props, "AutoMarginLimitV");
 		setPropsIntText(jTextAutoMarginWhiteLevel, props, "AutoMarginWhiteLevel");
 		setPropsFloatText(jTextAutoMarginPadding, props, "AutoMarginPadding");
-		try { jComboAutoMarginNombre.setSelectedIndex(Integer.parseInt(props.getProperty("AutoMarginNombre"))); } catch (Exception e) {}
+		try { jComboAutoMarginNombre.setSelectedIndex(Integer.parseInt(props.getProperty("AutoMarginNombre"))); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		setPropsFloatText(jTextAutoMarginNombreSize, props, "AutoMarginNombreSize");
 
 		////////////////////////////////////////////////////////////////
@@ -4398,14 +4463,20 @@ public class AozoraEpub3Applet extends JFrame
 		setPropsSelected(jCheckCommentPrint, props, "CommentPrint");
 		setPropsSelected(jCheckCommentConvert, props, "CommentConvert");
 		//空行除去
-		try { jComboxRemoveEmptyLine.setSelectedIndex(Integer.parseInt(props.getProperty("RemoveEmptyLine"))); } catch (Exception e) {}
+		try { jComboxRemoveEmptyLine.setSelectedIndex(Integer.parseInt(props.getProperty("RemoveEmptyLine"))); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		propValue = props.getProperty("MaxEmptyLine");
-		try { jComboxMaxEmptyLine.setSelectedIndex(Integer.parseInt(propValue)); } catch (Exception e) {}
+		try { jComboxMaxEmptyLine.setSelectedIndex(Integer.parseInt(propValue)); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		//行頭字下げ追加
 		setPropsSelected(jCheckForceIndent, props, "ForceIndent");
 		//強制改ページ
 		setPropsSelected(jCheckPageBreak, props, "PageBreak");
-		try { jTextPageBreakSize.setText(Integer.toString(Integer.parseInt(props.getProperty("PageBreakSize")))); } catch (Exception e) {}
+		try { jTextPageBreakSize.setText(Integer.toString(Integer.parseInt(props.getProperty("PageBreakSize")))); } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 		setPropsSelected(jCheckPageBreakEmpty, props, "PageBreakEmpty");
 		propValue = props.getProperty("PageBreakEmptyLine");
 		if (propValue != null) jComboxPageBreakEmptyLine.setSelectedItem(propValue);
