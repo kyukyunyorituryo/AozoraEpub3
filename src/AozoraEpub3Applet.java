@@ -4222,32 +4222,22 @@ public class AozoraEpub3Applet extends JFrame
 	/** int値を設定 null なら設定しない */
 	private void setPropsIntText(JTextField jText, Properties props, String name)
 	{
-		try {
-			if (!props.containsKey(name)) return;
-			jText.setText(Integer.toString(Integer.parseInt(props.getProperty(name))));
-		} catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+		if (!props.containsKey(name)) return;
+		if(!Objects.equals(props.getProperty(name), ""))jText.setText(Integer.toString(Integer.parseInt(props.getProperty(name))));
+		
 	}
 	/** float値を設定 null なら設定しない */
 	private void setPropsFloatText(JTextField jText, Properties props, String name)
 	{
-		try {
+
 			if (!props.containsKey(name)) return;
-			jText.setText(Float.toString(Float.parseFloat(props.getProperty(name))));
-		} catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+			if(!Objects.equals(props.getProperty(name), ""))jText.setText(Float.toString(Float.parseFloat(props.getProperty(name))));
 	}
 	/** 数値を設定 null なら設定しない */
 	private void setPropsNumberText(JTextField jText, Properties props, String name)
 	{
-		try {
 			if (!props.containsKey(name)) return;
-			jText.setText(NumberFormat.getNumberInstance().format(Float.parseFloat(props.getProperty(name))));
-		} catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+			if(!Objects.equals(props.getProperty(name), ""))jText.setText(NumberFormat.getNumberInstance().format(Float.parseFloat(props.getProperty(name))));
 	}
 
 	/** プロファイルを新規保存
