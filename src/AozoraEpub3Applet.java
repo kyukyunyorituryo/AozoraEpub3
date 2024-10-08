@@ -381,17 +381,18 @@ public class AozoraEpub3Applet extends JFrame
 	int coverW;
 	int coverH;
 
-	/** コンストラクタ
-	private AozoraEpub3Applet(String parent)
+	// コンストラクタ
+	/** コンストラクタ */
+	 AozoraEpub3Applet(String title) throws MalformedURLException, URISyntaxException
 	{
-		super();
-	//	this.jFrameParent = parent;
-	}
-*/
-	/** アプレット初期化 */
-	 AozoraEpub3Applet() throws MalformedURLException, URISyntaxException
-	{
-		this.setSize(new Dimension(520, 460));
+		setTitle(title);
+		//アイコン設定
+		setIconImage(new ImageIcon(Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/icon.png"))).getImage());
+		//最小サイズ
+		setMinimumSize(new Dimension(540, 320));
+		setPreferredSize(new Dimension(540, 400));
+
+		setSize(new Dimension(520, 460));
 
 		//パス関連初期化
 		//this.jarPath = getClass().getClassLoader().getResource("").getFile();
@@ -4774,14 +4775,8 @@ public class AozoraEpub3Applet extends JFrame
 		} catch(Exception e) { throw new RuntimeException(e); }
 
 		//フレーム初期化
-		AozoraEpub3Applet jFrame = new AozoraEpub3Applet();
-		jFrame.setIconImage(new ImageIcon(Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/icon.png"))).getImage());
-		jFrame.setTitle("AozoraEpub3");
-		//アイコン設定
-		//最小サイズ
-		jFrame.setMinimumSize(new Dimension(540, 320));
-		jFrame.setPreferredSize(new Dimension(540, 400));
-
+		AozoraEpub3Applet jFrame = new AozoraEpub3Applet("AozoraEpub3");
+		
 		try {
 			int x;int y;
 			if(jFrame.props.getProperty("PosX")!=null || jFrame.props.getProperty("PosY")!=null){
