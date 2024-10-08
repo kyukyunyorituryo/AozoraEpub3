@@ -574,9 +574,10 @@ public class AozoraEpub3Applet extends JFrame
 		for (File presetFile : Objects.requireNonNull(new File(jarPath + "presets").listFiles())) {
 			Properties presetProps = new Properties();
 			try {
+				if(presetFile!=null){
 				FileInputStream fos = new FileInputStream(presetFile);
 				presetProps.load(fos);
-				fos.close();
+				fos.close();}
 			} catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -874,13 +875,13 @@ public class AozoraEpub3Applet extends JFrame
 		label = new JLabel("入力文字コード");
 		label.setBorder(padding0);
 		panel1.add(label);
-	//	jComboEncType = new JComboBox<String>(new String[]{"MS932", "UTF-8"});
+		
 		jComboEncType = new JComboBox<String>(new String[]{"AUTO","MS932", "UTF-8"});
 		jComboEncType.setToolTipText("入力ファイルのテキストファイルの文字コード。青空文庫の標準はMS932(SJIS)です");
 		jComboEncType.setFocusable(false);
 		jComboEncType.setPreferredSize(new Dimension(70, 22));
 		panel1.add(jComboEncType);
-//		/*
+		
 		label = new JLabel("言語");
 		label.setBorder(padding0);
 		panel1.add(label);
@@ -890,7 +891,6 @@ public class AozoraEpub3Applet extends JFrame
 		//jComboLangType.setFocusable(false);
 		jComboLangType.setPreferredSize(new Dimension(70, 22));
 		panel1.add(jComboLangType);
-//		*/
 		panel.add(panel1);
 
 		//右パネル
