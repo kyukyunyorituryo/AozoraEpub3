@@ -3611,7 +3611,6 @@ public class AozoraEpub3Applet extends JFrame
 					coverImageIndex = bookInfo.firstImageIdx;
 				}
 			} catch (Exception e) {
-                throw new RuntimeException(e);
             }
 		}
 
