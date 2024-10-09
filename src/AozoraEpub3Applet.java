@@ -988,9 +988,9 @@ public class AozoraEpub3Applet extends JFrame
 		//横x縦
 		label = new JLabel("  表紙: 横");
 		panel.add(label);
-		jTextCoverW = new JTextField("1600");
+		jTextCoverW = new JTextField("0");
 		jTextCoverW.setHorizontalAlignment(JTextField.RIGHT);
-		jTextCoverW.setInputVerifier(new IntegerInputVerifier(600, 64, 4096));
+		jTextCoverW.setInputVerifier(new IntegerInputVerifier(600, 0, 4096));
 		jTextCoverW.setMaximumSize(text4);
 		jTextCoverW.setPreferredSize(text4);
 		jTextCoverW.addFocusListener(new TextSelectFocusListener(jTextCoverW));
@@ -1000,9 +1000,9 @@ public class AozoraEpub3Applet extends JFrame
 		panel.add(label);
 		label = new JLabel("縦");
 		panel.add(label);
-		jTextCoverH = new JTextField("2560");
+		jTextCoverH = new JTextField("0");
 		jTextCoverH.setHorizontalAlignment(JTextField.RIGHT);
-		jTextCoverH.setInputVerifier(new IntegerInputVerifier(800, 64, 4096));
+		jTextCoverH.setInputVerifier(new IntegerInputVerifier(800, 0, 4096));
 		jTextCoverH.setMaximumSize(text4);
 		jTextCoverH.setPreferredSize(text4);
 		jTextCoverH.addFocusListener(new TextSelectFocusListener(jTextCoverH));
