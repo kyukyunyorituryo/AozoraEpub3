@@ -1,15 +1,7 @@
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Toolkit;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -40,6 +32,7 @@ import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -393,6 +386,50 @@ public class AozoraEpub3Applet extends JFrame
 		setPreferredSize(new Dimension(540, 400));
 
 		setSize(new Dimension(520, 460));
+
+		JMenuBar menubar = new JMenuBar();
+
+		JMenu menu1 = new JMenu("ヘルプ");
+		
+		menubar.add(menu1);
+
+		JMenuItem menuitem1 = new JMenuItem("オンラインヘルプ");
+		JMenuItem menuitem2 = new JMenuItem("更新の確認");
+		JMenuItem menuitem3 = new JMenuItem("設定を保存せずに閉じる");
+		JMenuItem menuitem4 = new JMenuItem("作者のページ");
+		
+		menu1.add(menuitem1);
+		menu1.add(menuitem2);
+		menu1.add(menuitem3);
+		menu1.add(menuitem4);
+		
+
+		menuitem1.addActionListener(e -> {
+			Desktop desktop = Desktop.getDesktop();
+			try {
+				desktop.browse(new URI("https://github.com/kyukyunyorituryo/AozoraEpub3/wiki"));
+			} catch (IOException | URISyntaxException exx) {
+				exx.printStackTrace();
+			}
+		});
+		menuitem2.addActionListener(e -> {
+			Desktop desktop = Desktop.getDesktop();
+			try {
+				desktop.browse(new URI("https://github.com/kyukyunyorituryo/AozoraEpub3/releases"));
+			} catch (IOException | URISyntaxException exx) {
+				exx.printStackTrace();
+			}
+		});
+		menuitem3.addActionListener(e -> System.exit(0));
+		menuitem4.addActionListener(e -> {
+			Desktop desktop = Desktop.getDesktop();
+			try {
+				desktop.browse(new URI("https://kyukyunyorituryo.github.io/"));
+			} catch (IOException | URISyntaxException exx) {
+				exx.printStackTrace();
+			}
+		});
+		setJMenuBar(menubar);
 
 		//パス関連初期化
 		//this.jarPath = getClass().getClassLoader().getResource("").getFile();
