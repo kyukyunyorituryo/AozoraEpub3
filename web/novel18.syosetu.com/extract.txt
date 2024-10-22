@@ -51,7 +51,7 @@ CONTENT_CHAPTER	.c-announce span:0,.chapter_title:0
 CONTENT_SUBTITLE	.p-novel__title--rensai:0,.novel_subtitle:0	(（改稿版）)|(^.*</div>)	
 
 ## 各話 本文
-CONTENT_ARTICLE	.p-novel__text:0,#novel_honbun:0
+CONTENT_ARTICLE	*[id~=^L[0-9]+$],#novel_honbun:0
 
 ##本文タグ外に画像がある場合本文の前に出力
 #CONTENT_IMG
