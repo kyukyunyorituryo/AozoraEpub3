@@ -1,5 +1,78 @@
 @charset "utf-8";
 @namespace "http://www.w3.org/1999/xhtml";
+/* ファイル情報
+----------------------------------------------------------------
+KADOKAWA リフロー型標準スタイル
+
+【バージョン】
+ver.1.3.0
+
+/* 本扉（標準）
+---------------------------------------------------------------- */
+/* ページ全体の設定 */
+.p-titlepage {
+}
+.p-titlepage .main {
+  margin:         0 auto 0 auto;
+  padding:        4em 1em 1.5em 1em;
+  max-width:      22em;
+  text-align:     center;
+  line-height:    1.6;
+}
+/* 作品名 */
+.p-titlepage .book-title {
+  margin:         0;
+  padding:        0;
+}
+.p-titlepage .book-title-before {
+  margin:         0;
+  padding:        0;
+  font-size:      0.85em;
+}
+.p-titlepage .book-title-main {
+  margin:         0;
+  padding:        0;
+  font-size:      1.5em;
+}
+.p-titlepage .book-title-after {
+  margin:         0;
+  padding:        0;
+  font-size:      0.85em;
+}
+.p-titlepage .book-title-demo {
+  margin:         1.5em 0 0 0;
+  padding:        0;
+  font-size:      0.85em;
+}
+/* 著者名 */
+.p-titlepage .author {
+  margin:         1.5em 0 3em 0;
+  padding:        1.5em 0 0 0;
+  font-size:      0.85em;
+  border-top:     1px solid black;
+}
+.p-titlepage .author p {
+  margin:         0.5em 0 0 0;
+  padding:        0;
+}
+/* レーベルロゴ部分 */
+.p-titlepage .label {
+  margin:         0;
+  padding:        0.4em 0 0.3em 0;
+  line-height:    1.2;
+}
+/* レーベルロゴ部分のロゴ画像 */
+.p-titlepage .label-logo img {
+  height:         2em;
+}
+/* レーベルロゴ部分のレーベル名 */
+.p-titlepage .label-name {
+  margin:         0;
+  padding:        0;
+  font-size:      0.75em;
+  font-family:    sans-serif-jp, sans-serif;
+}
+
 
 /** 共用 ページ設定以外の基本部分 */
 p {

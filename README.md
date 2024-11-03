@@ -3,7 +3,7 @@
 
 改造版の説明
 ------------
-[電書協EPUB3制作ガイド](http://ebpaj.jp/counsel/guide)のEPUBに近づけることを目的としたフォーク版。
+[電書協EPUB3制作ガイド](http://ebpaj.jp/counsel/guide)のEPUBに近づけることを目的としたフォーク版。[KADOKAWA-EPUB 制作仕様](https://kadokawa-epub.bookwalker.co.jp/)も参考しにしています。
 AozoraEpub3を電子出版目的に使う場合に、審査が通るように修正している。EPUBバリデーションを通すのと、多くのEPUBビュワーで表示に問題がないようにすることを目的としている。
 
 
