@@ -20,42 +20,70 @@
 #if ($kindle)
 #set ($kindle_cls=" kindle")
 #end
+#if (${bookInfo.Vertical})
+#set ($vh_cls="height-100per vrtl")
+#else
+#set ($vh_cls="width-100per hltr")
+#end
 <body class="p-titlepage$!{kindle_cls}">
-<div class="main vrtl block-align-center">
+<div class="main ${vh_cls} block-align-center">
+
 #if (${PUBLISHER})
-	<div class="publisher">${PUBLISHER}</div>
-	<br/>
+<div class="label">
+<p class="label-name">${PUBLISHER}</p>
+</div>
 #end
 
+#if (${CREATOR} || ${SUBCREATOR})
+<div class="space author">
 #if (${CREATOR})
-	<br/>
+<p class="space creator"><br/></p>
 #end
 #if (${SUBCREATOR})
-	<br/>
+<p class="space subcreator"><br/></p>
+#end
+</div>
 #end
 
-<div class="book-title start-2em">
+<div class="book-title">
+
 #if (${SERIES})
-	<div class="series book-title-before""><p>${SERIES}</p></div>
+<div class="book-title-before">
+<p>${SERIES}</p>
+</div>
 #end
-	<div class="title book-title-main"><p>${TITLE}</p></div>
+
+<div class="book-title-main">
+<p>${TITLE}</p>
+</div>
+
+#if (${ORGTITLE} || ${SUBTITLE} || ${SUBORGTITLE})
+<div class="book-title-after">
 #if (${ORGTITLE})
-	<div class="orgtitle pt1">${ORGTITLE}</div>
+<p class="orgtitle">${ORGTITLE}</p>
 #end
 #if (${SUBTITLE})
-	<div class="subtitle pt1">${SUBTITLE}</div>
+<p class="subtitle">${SUBTITLE}</p>
 #end
 #if (${SUBORGTITLE})
-	<div class="suborgtitle pt2">${SUBORGTITLE}</div>
+<p class="suborgtitle">${SUBORGTITLE}</p>
 #end
 </div>
-#if (${CREATOR})
-	<div class="creator btm pb2 author">${CREATOR}</div>
-#end
-#if (${SUBCREATOR})
-	<div class="subcreator btm pb2 author">${SUBCREATOR}</div>
 #end
 
+</div><!-- book-title -->
+
+#if (${CREATOR} || ${SUBCREATOR})
+<div class="author">
+#if (${CREATOR})
+<p class="creator">${CREATOR}</p>
+#end
+#if (${SUBCREATOR})
+<p class="subcreator">${SUBCREATOR}</p>
+#end
 </div>
+#end
+
+</div><!-- main -->
 </body>
 </html>

@@ -4,46 +4,74 @@
 xmlns="http://www.w3.org/1999/xhtml"
 xmlns:epub="http://www.idpf.org/2007/ops"
 xml:lang="ja"
-class="hltr"
+class="hltr height-100per"
 >
 <head>
 <meta charset="UTF-8"/>
 <title>${title}</title>
 <link rel="stylesheet" type="text/css" href="../style/book-style.css"/>
 </head>
-<body class="p-titlepage">
-<div class="main">
+<body class="p-titlepage height-100per">
+<div class="main align-center height-100per">
 
 <div class="book-title">
+
 #if (${SERIES})
 <div class="book-title-before">
 <p>${SERIES}</p>
 </div>
+#else
+<p class="space book-title-before"><br/></p>
 #end
+
+#if (!${ORGTITLE})
+<p class="space orgtitle"><br/></p>
+#end
+#if (!${SUBTITLE})
+<p class="space subtitle"><br/></p>
+#end
+#if (!${SUBORGTITLE})
+<p class="space suborgtitle"><br/></p>
+#end
+
 <div class="book-title-main">
 <p>${TITLE}</p>
 </div>
-#if (${SUBTITLE})
+
+#if (${ORGTITLE} || ${SUBTITLE} || ${SUBORGTITLE})
 <div class="book-title-after">
-<p>${SUBTITLE}</p>
-</div>
+#if (${ORGTITLE})
+<p class="orgtitle">${ORGTITLE}</p>
+#end
+#if (${SUBTITLE})
+<p class="subtitle">${SUBTITLE}</p>
+#end
+#if (${SUBORGTITLE})
+<p class="suborgtitle">${SUBORGTITLE}</p>
 #end
 </div>
+#end
 
+</div><!-- book-title -->
+
+#if (${CREATOR} || ${SUBCREATOR})
 <div class="author">
 #if (${CREATOR})
-<p>${CREATOR}</p>
+<p class="creator">${CREATOR}</p>
 #end
 #if (${SUBCREATOR})
-<p>${SUBCREATOR}</p>
+<p class="subcreator">${SUBCREATOR}</p>
 #end
 </div>
+#end
+
 #if (${PUBLISHER})
 <div class="label">
 <p class="label-name">${PUBLISHER}</p>
 </div>
 #end
-</div>
+
+</div><!-- main -->
 </body>
 </html>
 

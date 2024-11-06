@@ -2,75 +2,166 @@
 @namespace "http://www.w3.org/1999/xhtml";
 /* ファイル情報
 ----------------------------------------------------------------
-KADOKAWA リフロー型標準スタイル
-
-【バージョン】
-ver.1.3.0
+参考： KADOKAWA リフロー型標準スタイル ver.1.3.0
 
 /* 本扉（標準）
+  本扉と奥付などを区別するため.p-titlepageセレクタを付ける。
+  （表題等があるのは、今のところ本扉しかないが、念のため付けている）
+  表題（本扉）は中央と横書きが設定できる。中央は縦書きと横書きがある。
+  中央と横書きで異なるスタイルは、
+  表題横書きのスタイルは.main.align-center、
+  中央共通のスタイルは.main.block-align-center、
+  中央横書きだけのスタイルは.main.hltr、
+  中央縦書きだけのスタイルは.main.vrtl の各セレクタを使う。
 ---------------------------------------------------------------- */
+
 /* ページ全体の設定 */
 .p-titlepage {
 }
 .p-titlepage .main {
-  margin:         0 auto 0 auto;
-  padding:        4em 1em 1.5em 1em;
-  max-width:      22em;
-  text-align:     center;
-  line-height:    1.6;
+  line-height:    1.25;
 }
+.p-titlepage p {
+  text-align:     inherit; /* 共用設定 p justify を打ち消す */
+}
+/* 副題や著者等の有無により挿入する改行を無効にする
+.p-titlepage .space {
+  display:        none;
+} */
+/* 旧版表題横書き (title_horizontal.vm) よりサイズ関係抜粋
+html { margin:0; padding:0; height:98%;/*ADE error in 100%* }
+body { margin:0; padding:0; height:98%; }
+.outer { margin:1.5% 2% 0 2%; width:96%; height:98.5%; } */
+/* 罫線囲みする場合
+.p-titlepage .main.align-center {
+  margin:         2%;
+  width:          96%;
+  height:         96%;
+  border-style:   solid;
+  border-width:   1px;
+} */
+
 /* 作品名 */
-.p-titlepage .book-title {
-  margin:         0;
-  padding:        0;
+/* 旧版表題横書き (title_horizontal.vm) よりサイズ関係抜粋
+.upper { padding:20% 5% 0 5%; height:50%; } */
+.p-titlepage .main.align-center .book-title {
+  padding-top:    20%;
+  padding-top:    20vh;
+  height:         50%;
 }
+.p-titlepage .main.hltr .book-title {
+  margin:         0 2.00em; /* start-2em end-2em */
+}
+.p-titlepage .main.vrtl .book-title {
+  margin:         2.00em 0; /* start-2em end-2em */
+}
+/* 表題横書き設定時、原題、副題、原副題が無い場合に釣り合いをとる改行 */
+.p-titlepage .book-title .space {
+  padding:        0;
+  font-size:      1em;
+}
+/* 旧 .series */
 .p-titlepage .book-title-before {
-  margin:         0;
-  padding:        0;
-  font-size:      0.85em;
+  margin-bottom:  0.5em;
+  font-size:      1.25em;
 }
+.p-titlepage .main.vrtl .book-title-before {
+  margin-bottom:  0;
+  margin-left:    0.5em;
+}
+/* 旧 .title */
 .p-titlepage .book-title-main {
-  margin:         0;
-  padding:        0;
-  font-size:      1.5em;
+  font-size:      1.75em;
 }
-.p-titlepage .book-title-after {
-  margin:         0;
-  padding:        0;
-  font-size:      0.85em;
+.p-titlepage .main.align-center .book-title-main {
+  margin:         0 1em; /* 左右１字アキ */
 }
-.p-titlepage .book-title-demo {
-  margin:         1.5em 0 0 0;
-  padding:        0;
-  font-size:      0.85em;
+.p-titlepage .book-title-main rt {
+  font-size:      0.4em;
+}
+/* .book-title-afterに原題、副題、原副題が入る */
+.p-titlepage .orgtitle {
+  margin-top:     0.5em;
+  font-size:      1.4em;
+}
+.p-titlepage .main.hltr .orgtitle {
+  margin-left:    1.00em; /* pt1 */
+}
+.p-titlepage .main.vrtl .orgtitle {
+  margin-top:     1.00em; /* pt1 */
+  margin-right:   0.5em;
+}
+.p-titlepage .subtitle {
+  margin-top:     0.25em;
+  font-size:      1.6em;
+}
+.p-titlepage .main.hltr .subtitle {
+  margin-left:    1.00em; /* pt1 */
+}
+.p-titlepage .main.vrtl .subtitle {
+  margin-top:     1.00em; /* pt1 */
+  margin-right:   0.25em;
+}
+.p-titlepage .suborgtitle {
+  margin-top:     0.25em;
+  font-size:      1.25em;
+}
+.p-titlepage .main.hltr .suborgtitle {
+  margin-left:    2.00em; /* pt2 */
+}
+.p-titlepage .main.vrtl .suborgtitle {
+  margin-top:     2.00em; /* pt2 */
+  margin-right:   0.25em;
+}
+.p-titlepage .book-title-after rt {
+  font-size:      0.5em;
 }
 /* 著者名 */
-.p-titlepage .author {
-  margin:         1.5em 0 3em 0;
-  padding:        1.5em 0 0 0;
-  font-size:      0.85em;
-  border-top:     1px solid black;
-}
 .p-titlepage .author p {
-  margin:         0.5em 0 0 0;
-  padding:        0;
+  font-size:      1.25em;
+}
+/* 旧版表題横書き (title_horizontal.vm) よりサイズ関係抜粋
+.lower { padding:0 5%; height:25%; } */
+.p-titlepage .main.align-center .author {
+  height:         20%;
+}
+/* align-end */
+.p-titlepage .main.block-align-center .author {
+  text-align:     right;
+  -webkit-text-align-last: auto;
+  -epub-text-align-last:   auto;
+}
+.p-titlepage .main.hltr .author {
+  margin-right:   2.00em; /* pb2 */
+  margin-left:    3.00em; /* start-3em */
+  margin-top:     1.5em;
+}
+.p-titlepage .main.vrtl .author {
+  margin-bottom:  2.00em; /* pb2 */
+  margin-top:     3.00em; /* start-3em */
+  margin-right:   1em;
+}
+.p-titlepage p.subcreator {
+  margin-top:     0.5em;
+}
+.p-titlepage .main.vrtl p.subcreator {
+  margin-top:     0;
+  margin-right:   0.5em;
 }
 /* レーベルロゴ部分 */
-.p-titlepage .label {
-  margin:         0;
-  padding:        0.4em 0 0.3em 0;
-  line-height:    1.2;
+.p-titlepage .main.hltr .label {
+  margin-bottom:  0.5em;
 }
-/* レーベルロゴ部分のロゴ画像 */
-.p-titlepage .label-logo img {
-  height:         2em;
+.p-titlepage .main.vrtl .label {
+  margin-left:    0.5em;
 }
 /* レーベルロゴ部分のレーベル名 */
 .p-titlepage .label-name {
-  margin:         0;
-  padding:        0;
-  font-size:      0.75em;
+  font-size:      1em;
   font-family:    sans-serif-jp, sans-serif;
+}
+.p-titlepage .main.vrtl .label-name {
+  font-family:    sans-serif-jp-v, sans-serif-jp, sans-serif;
 }
 
 
