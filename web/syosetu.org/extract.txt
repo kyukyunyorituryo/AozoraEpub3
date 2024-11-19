@@ -14,7 +14,7 @@ COOKIE	over18=off
 ## シリーズタイトル
 #SERIES
 ## タイトル
-TITLE	#maind .ss span:0,#maind .ss font a:0
+TITLE	span[itemprop="name"]:0,#maind .ss span:0
 ## 著者
 AUTHOR	#maind .ss a:0
 ## 説明
