@@ -141,6 +141,8 @@ public class BookInfo
 	public CoverEditInfo coverEditInfo;
 	/** 表紙ファイル名 フルパスかURL ""なら先頭の挿絵 nullなら表紙無し */
 	public String coverFileName;
+	/** SVG表紙画像ありならtrue */
+	public boolean svgCoverImage = false;
 	/** 表紙イメージがトリミングされた場合に設定される coverFileNameより優先される */
 	public BufferedImage coverImage = null;
 	/** 表紙に使う挿絵の本文内Index -1なら本文内の挿絵は使わない */
@@ -429,7 +431,15 @@ public class BookInfo
 	{
 		this.coverFileName = coverFileName;
 	}
-
+	
+	public boolean isSvgCoverImage()
+	{
+		return svgCoverImage;
+	}
+	public void setSvgCoverImage(boolean svgCoverImage)
+	{
+		this.svgCoverImage = svgCoverImage;
+	}
 	public boolean isInsertCoverPage()
 	{
 		return insertCoverPage;

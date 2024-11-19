@@ -9,15 +9,50 @@ xml:lang="ja"
 <meta charset="UTF-8"/>
 <title>${title}</title>
 <link rel="stylesheet" type="text/css" href="../style/fixed-layout-jp.css"/>
+#if (${bookInfo.svgCoverImage})
+<meta name="viewport" content="width=800, height=1200"/>
+#else
 <meta name="viewport" content="width=${coverImage.Width}, height=${coverImage.Height}"/>
+#end
 </head>
 <body epub:type="cover">
 <div class="main">
+#if (${bookInfo.svgCoverImage})
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+width="100%" height="100%" viewBox="0 0 800 1200">
+    <!-- ドロップシャドウ -->
+<filter id="dropshadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- 背景の四角形 -->
+    <rect width="100%" height="100%" fill="#f4f4f4" />
+    <rect x="80" y="80" width="80%" height="85%" fill="#1858DB" filter="url(#dropshadow)" rx="10" ry="10"/>
+    <!-- タイトル (横書き) -->
+      <text  x="50%" y="20%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="36" fill="#fff"  filter="url(#dropshadow)">
+        ${title}
+    </text>
+
+    <!-- 著者名 (横書き) -->
+    <text x="50%" y="70%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="36" fill="#fff"  filter="url(#dropshadow)">
+        ${creator}
+    </text>
+</svg>
+#else
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
 xmlns:xlink="http://www.w3.org/1999/xlink"
 width="100%" height="100%" viewBox="0 0 ${coverImage.Width} ${coverImage.Height}">
 <image width="${coverImage.Width}" height="${coverImage.Height}" xlink:href="../image/${coverImage.OutFileName}"/>
 </svg>
+#end
 </div>
 </body>
 </html>

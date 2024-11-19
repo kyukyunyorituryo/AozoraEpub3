@@ -665,6 +665,12 @@ public class Epub3Writer
 				Velocity.mergeTemplate(templatePath+OPS_PATH+XHTML_PATH+COVER_VM, "UTF-8", velocityContext, bw);
 				bw.flush();
 				zos.closeArchiveEntry();
+			} else if (bookInfo.svgCoverImage) {
+				zos.putArchiveEntry(new ZipArchiveEntry(OPS_PATH+XHTML_PATH+COVER_FILE));
+				bw = new BufferedWriter(new OutputStreamWriter(zos, StandardCharsets.UTF_8));
+				Velocity.mergeTemplate(templatePath+OPS_PATH+XHTML_PATH+COVER_VM, "UTF-8", velocityContext, bw);
+				bw.flush();
+				zos.closeArchiveEntry();
 			} else {
 				//画像がなかったら表紙ページ無し
 				bookInfo.insertCoverPage = false;

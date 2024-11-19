@@ -711,7 +711,7 @@ public class AozoraEpub3Applet extends JFrame
 		jLabelMaxCoverLine.setBorder(padding2H);
 		panel.add(jLabelMaxCoverLine);
 
-		jComboCover = new JComboBox<String>(new String[]{"[先頭の挿絵]", "[入力ファイル名と同じ画像(png,jpg)]", "[表紙無し]", "http://"});
+		jComboCover = new JComboBox<String>(new String[]{"[先頭の挿絵]", "[入力ファイル名と同じ画像(png,jpg)]", "[表紙無し]", "http://","[SVG表紙生成]"});
 		jComboCover.setEditable(true);
 		jComboCover.setPreferredSize(new Dimension(320, 24));
 		jComboCover.addActionListener(arg0 -> {
@@ -3485,7 +3485,9 @@ public class AozoraEpub3Applet extends JFrame
 			return;
 		}
 		//表紙にする挿絵の位置-1なら挿絵は使わない
-		int coverImageIndex = -1;
+		int coverImageIndex = -1;		
+		//表紙画像をSVGで生成するか
+		boolean coverSvg = false;
 		//表紙情報追加
 		String coverFileName = this.jComboCover.getEditor().getItem().toString();
 		if (coverFileName.equals(this.jComboCover.getItemAt(0))) {
@@ -3494,6 +3496,9 @@ public class AozoraEpub3Applet extends JFrame
 		} else if (coverFileName.equals(this.jComboCover.getItemAt(1))) {
 			coverFileName = AozoraEpub3.getSameCoverFileName(srcFile); //入力ファイルと同じ名前+.jpg/.png
 		} else if (coverFileName.equals(this.jComboCover.getItemAt(2))) {
+			coverFileName = null; //表紙無し
+		} else if (coverFileName.equals(this.jComboCover.getItemAt(4))) {
+			coverSvg=true; //SVG表紙画像
 			coverFileName = null; //表紙無し
 		}
 
@@ -3517,7 +3522,7 @@ public class AozoraEpub3Applet extends JFrame
 		}
 		//文字コード判別
 		String encauto ="";
-	//エンコード設定を一時退避する
+		//エンコード設定を一時退避する
 		String encType = (String)jComboEncType.getSelectedItem();
 		try {
 			encauto=AozoraEpub3.getTextCharset(srcFile, ext, imageInfoReader, txtIdx);
@@ -3527,7 +3532,7 @@ public class AozoraEpub3Applet extends JFrame
 			e1.printStackTrace();
 		}
 
-//		LogAppender.append(encauto);
+		//LogAppender.append(encauto);
 		if (encauto==null)encauto="UTF-8";
 		if (Objects.requireNonNull(this.jComboEncType.getSelectedItem()).toString().equals("AUTO")) {
 			 encType=encauto;
@@ -3654,6 +3659,7 @@ public class AozoraEpub3Applet extends JFrame
 		//表紙ページの情報をbookInfoに設定
 		bookInfo.coverFileName = coverFileName;
 		bookInfo.coverImageIndex = coverImageIndex;
+		bookInfo.svgCoverImage=coverSvg;
 
 		String[] titleCreator = BookInfo.getFileTitleCreator(srcFile.getName());
 		if (jCheckUseFileName.isSelected()) {
@@ -3848,7 +3854,7 @@ public class AozoraEpub3Applet extends JFrame
 			bookInfo, imageInfoReader, txtIdx
 		);
 		//設定を戻す
-	jComboEncType.setSelectedItem(encType);
+		jComboEncType.setSelectedItem(encType);
 		imageInfoReader = null;
 		//画像は除去
 		bookInfo.coverImage = null;
@@ -4611,9 +4617,10 @@ public class AozoraEpub3Applet extends JFrame
 		props.setProperty("Ext", this.jComboExt.getEditor().getItem().toString().trim());
 		props.setProperty("ChkConfirm", this.jCheckConfirm.isSelected()?"1":"");
 
-		//先頭の挿絵と表紙無しのみ記憶
-		if (this.jComboCover.getSelectedIndex() == 0) props.setProperty("Cover","");
-		else if (this.jComboCover.getSelectedIndex() == 1) props.setProperty("Cover", this.jComboCover.getEditor().getItem().toString().trim());
+		//先頭の挿絵と表紙無しのみ記憶を解除
+		//if (this.jComboCover.getSelectedIndex() == 0) props.setProperty("Cover","");
+		//else if (this.jComboCover.getSelectedIndex() == 1) 
+		props.setProperty("Cover", this.jComboCover.getEditor().getItem().toString().trim());
 		props.setProperty("CoverHistory", this.jCheckCoverHistory.isSelected()?"1":"");
 
 		props.setProperty("MaxCoverLine", this.jTextMaxCoverLine.getText());
