@@ -9,10 +9,10 @@
   （表題等があるのは、今のところ本扉しかないが、念のため付けている）
   表題（本扉）は中央と横書きが設定できる。中央は縦書きと横書きがある。
   中央と横書きで異なるスタイルは、
-  表題横書きのスタイルは.main.align-center、
-  中央共通のスタイルは.main.block-align-center、
-  中央横書きだけのスタイルは.main.hltr、
-  中央縦書きだけのスタイルは.main.vrtl の各セレクタを使う。
+    表題横書きのスタイルは.main.align-center、
+    中央共通のスタイルは.main.block-align-center、
+    中央横書きだけのスタイルは.main.hltr、
+    中央縦書きだけのスタイルは.main.vrtl の各セレクタを使う。
 ---------------------------------------------------------------- */
 
 /* ページ全体の設定 */
@@ -45,7 +45,7 @@ body { margin:0; padding:0; height:98%; }
 /* 旧版表題横書き (title_horizontal.vm) よりサイズ関係抜粋
 .upper { padding:20% 5% 0 5%; height:50%; } */
 .p-titlepage .main.align-center .book-title {
-  padding-top:    20%;
+  padding-top:    15%; /* kindleはvhを理解しない。20%だと広すぎるので狭めている */
   padding-top:    20vh;
   height:         50%;
 }
@@ -151,9 +151,11 @@ body { margin:0; padding:0; height:98%; }
 /* レーベルロゴ部分 */
 .p-titlepage .main.hltr .label {
   margin-bottom:  0.5em;
+  margin-left:    1.00em; /* start-1em */
 }
 .p-titlepage .main.vrtl .label {
   margin-left:    0.5em;
+  margin-top:     1.00em; /* start-1em */
 }
 /* レーベルロゴ部分のレーベル名 */
 .p-titlepage .label-name {

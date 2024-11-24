@@ -52,6 +52,10 @@ class="hltr height-100per"
 </div>
 #end
 
+<p class="space"><br/></p>
+<p class="space"><br/></p>
+<p class="space"><br/></p>
+
 </div><!-- book-title -->
 
 #if (${CREATOR} || ${SUBCREATOR})
@@ -61,6 +65,10 @@ class="hltr height-100per"
 #end
 #if (${SUBCREATOR})
 <p class="subcreator">${SUBCREATOR}</p>
+#end
+#if (${PUBLISHER})
+<p class="space"><br/></p>
+<p class="space"><br/></p>
 #end
 </div>
 #end
