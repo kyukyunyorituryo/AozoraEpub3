@@ -54,23 +54,23 @@ ant.importBuild 'ant.xml'
 
 dependencies {
 // https://mvnrepository.com/artifact/org.apache.velocity/velocity-engine-core
-    implementation group: 'org.apache.velocity', name: 'velocity-engine-core', version: '2.4'
+    implementation group: 'org.apache.velocity', name: 'velocity-engine-core', version: '2.4.1'
 
 // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
 
 // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.16'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.17'
 // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.16'
+    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.17'
 // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
-    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0-M2'
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0'
 
 
 // https://mvnrepository.com/artifact/com.github.junrar/junrar
     implementation group: 'com.github.junrar', name: 'junrar', version: '7.5.5'
 // https://mvnrepository.com/artifact/org.jsoup/jsoup
-    implementation group: 'org.jsoup', name: 'jsoup', version: '1.18.1'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.20.1'
 // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
     implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
 // https://mvnrepository.com/artifact/commons-cli/commons-cli
@@ -78,7 +78,7 @@ dependencies {
 // https://mvnrepository.com/artifact/com.github.albfernandez/juniversalchardet
     implementation group: 'com.github.albfernandez', name: 'juniversalchardet', version: '2.5.0'
 // https://mvnrepository.com/artifact/org.json/json
-    implementation group: 'org.json', name: 'json', version: '20240303'
+    implementation group: 'org.json', name: 'json', version: '20250107'
 
 
 }
