@@ -3334,7 +3334,9 @@ public class AozoraEpub3Converter
 		}
 
 		this.lineIdNum++;
-		if (noBr) {
+		boolean isBlockTag = line.matches("^\\s*<(h\\d|div|table|ul|ol|li|blockquote|section|article|header|footer)\\b.*");
+		
+		if (noBr || isBlockTag) {
 			//見出し用のID設定
 			if (chapterLineInfo != null) {
 				chapterId = "kobo."+this.lineIdNum+"."+(idIdx++);
@@ -3348,6 +3350,8 @@ public class AozoraEpub3Converter
 					line = line.substring(1);
 				}
 			}
+			out.write(line);
+			out.write("\n");
 		} else {
 			//改行用のp出力 見出しなら強制ID出力 koboの栞用IDに利用可能なkobo.のIDで出力
 			if (this.withMarkId || (chapterLineInfo != null && !chapterLineInfo.pageBreakChapter)) {
@@ -3359,14 +3363,14 @@ public class AozoraEpub3Converter
 				out.write("<p>");
 				this.pageByteSize += 7;
 			}
-		}
+		
 		out.write(line);
 		//ページバイト数加算
 		if (this.forcePageBreak) this.pageByteSize += line.getBytes(StandardCharsets.UTF_8).length;
 
 		//改行のpを閉じる
-		if (!noBr) {
-			out.write("</p>\n");
+		
+		out.write("</p>\n");
 		}
 
 		//見出しのChapterをWriterに追加 同じ行で数回呼ばれるので初回のみ
