@@ -1286,5 +1286,9 @@ public class Epub3Writer
 	{
 		return GAIJI_PATH;
 	}
+	public String getAlt(String srcFilePath)
+	{
 
+		return this.imageInfoReader.getImageAlt(srcFilePath);
+	}
 }

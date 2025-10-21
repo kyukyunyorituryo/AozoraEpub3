@@ -751,8 +751,18 @@ public class AozoraEpub3Converter
 					if (imageDotIdx > -1 && imageDotIdx < imageEndIdx) {
 						//画像ファイル名を取得し画像情報を格納
 						String imageFileName = this.getImageChukiFileName(chukiTag, imageStartIdx);
+						// --- ★ ここで説明文を抽出 ---
+						String imageDesc = null;
+						int startIdx = chukiTag.indexOf('＃') + 1; // 「＃」の次から
+						if (startIdx < imageStartIdx) {
+							imageDesc = chukiTag.substring(startIdx, imageStartIdx).trim();
+						}
 						if (imageFileName != null) {
 							imageInfoReader.addImageFileName(imageFileName);
+							// --- ★ alt情報を登録 ---
+							if (imageDesc != null && !imageDesc.isEmpty()) {
+								imageInfoReader.addImageAlt(imageFileName, imageDesc);
+							}
 							if (bookInfo.firstImageLineNum == -1) {
 								//小さい画像は無視
 								ImageInfo imageInfo = imageInfoReader.getImageInfo(imageInfoReader.correctExt(imageFileName));
@@ -777,6 +787,11 @@ public class AozoraEpub3Converter
 							}
 						}
 					}
+					String altText = this.getTagAttr(chukiTag, "alt");
+					if (altText == null || altText.isEmpty()) {
+						altText = ""; // ファイル名を代替
+					}
+					imageInfoReader.addImageAlt(imageFileName, altText);
 				}
 			}
 
@@ -2122,10 +2137,11 @@ public class AozoraEpub3Converter
 										LogAppender.info(lineNum, "挿絵除外", chukiTag);
 									} else {
 										String dstFileName = writer.getImageFilePath(srcFilePath, lineNum);
+										String altText = writer.getAlt(srcFilePath);
 										if (dstFileName != null) { //先頭に移動してここで出力しない場合はnull
 											if (bookInfo.isImageSectionLine(lineNum)) noBr = true;
 											//画像注記またはページ出力
-											if (printImageChuki(out, buf, srcFilePath, dstFileName, this.hasImageCaption(chukiTag), lineNum)) noBr = true;
+											if (printImageChuki(out, buf, srcFilePath, dstFileName, this.hasImageCaption(chukiTag), lineNum, altText)) noBr = true;
 										}
 									}
 								}
@@ -2140,6 +2156,7 @@ public class AozoraEpub3Converter
 						if (!noImage) {
 							//src=の値抽出
 							String srcFilePath = this.getTagAttr(chukiTag, "src");
+							String altText = this.getTagAttr(chukiTag, "alt");
 							if (srcFilePath == null) {
 								LogAppender.error(lineNum, "画像注記エラー", chukiTag);
 							} else {
@@ -2148,7 +2165,7 @@ public class AozoraEpub3Converter
 								if (dstFileName != null) { //先頭に移動してここで出力しない場合はnull
 									if (bookInfo.isImageSectionLine(lineNum)) noBr = true;
 									//画像注記またはページ出力
-									if (printImageChuki(out, buf, srcFilePath, dstFileName, this.hasImageCaption(chukiTag), lineNum)) noBr = true;
+									if (printImageChuki(out, buf, srcFilePath, dstFileName, this.hasImageCaption(chukiTag), lineNum, altText)) noBr = true;
 								}
 							}
 						}
@@ -2293,8 +2310,10 @@ public class AozoraEpub3Converter
 
 	/** 画像タグを出力
 	 * @return 単ページ出力ならtrue */
-	private boolean printImageChuki(BufferedWriter out, StringBuilder buf, String srcFileName, String dstFileName, boolean hasCaption, int lineNum) throws IOException
+	private boolean printImageChuki(BufferedWriter out, StringBuilder buf, String srcFileName, String dstFileName, boolean hasCaption, int lineNum, String altText) throws IOException
 	{
+		if (altText == null) altText = "";
+		altText = escapeHtml(altText);
 		//サイズを取得して画面サイズとの%を指定
 		int imagePageType = this.writer.getImagePageType(srcFileName, this.tagLevel, lineNum, hasCaption);
 
@@ -2302,39 +2321,39 @@ public class AozoraEpub3Converter
 		double ratio = this.writer.getImageWidthRatio(srcFileName, hasCaption);
 
 		if (imagePageType == PageBreakType.IMAGE_INLINE_W) {
-			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像横")[0], dstFileName));
-			else buf.append(String.format(chukiMap.get("画像幅")[0], ratio, dstFileName));
+			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像横")[0], dstFileName, altText));
+			else buf.append(String.format(chukiMap.get("画像幅")[0], ratio, dstFileName, altText));
 		} else if (imagePageType == PageBreakType.IMAGE_INLINE_H) {
-			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像縦")[0], dstFileName));
-			else buf.append(String.format(chukiMap.get("画像幅")[0], ratio, dstFileName));
+			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像縦")[0], dstFileName, altText));
+			else buf.append(String.format(chukiMap.get("画像幅")[0], ratio, dstFileName, altText));
 		} else if (imagePageType == PageBreakType.IMAGE_INLINE_TOP_W) {
-			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像上横")[0], dstFileName));
-			else buf.append(String.format(chukiMap.get("画像幅上")[0], ratio, dstFileName));
+			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像上横")[0], dstFileName, altText));
+			else buf.append(String.format(chukiMap.get("画像幅上")[0], ratio, dstFileName, altText));
 		} else if (imagePageType == PageBreakType.IMAGE_INLINE_BOTTOM_W) {
-			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像下横")[0], dstFileName));
-			else buf.append(String.format(chukiMap.get("画像幅下")[0], ratio, dstFileName));
+			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像下横")[0], dstFileName, altText));
+			else buf.append(String.format(chukiMap.get("画像幅下")[0], ratio, dstFileName, altText));
 		} else if (imagePageType == PageBreakType.IMAGE_INLINE_TOP) {
-			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像上")[0], dstFileName));
-			else buf.append(String.format(chukiMap.get("画像幅上")[0], ratio, dstFileName));
+			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像上")[0], dstFileName, altText));
+			else buf.append(String.format(chukiMap.get("画像幅上")[0], ratio, dstFileName, altText));
 		} else if (imagePageType == PageBreakType.IMAGE_INLINE_BOTTOM) {
 			if (ratio <= 0) buf.append(String.format(chukiMap.get("画像下")[0],  dstFileName));
-			else buf.append(String.format(chukiMap.get("画像幅下")[0], ratio, dstFileName));
+			else buf.append(String.format(chukiMap.get("画像幅下")[0], ratio, dstFileName, altText));
 		} else if (imagePageType != PageBreakType.IMAGE_PAGE_NONE) {
 			if (ratio != -1 && this.imageFloatPage) {
 				//単ページfloat表示
 				if (imagePageType == PageBreakType.IMAGE_PAGE_W) {
-					buf.append(String.format(chukiMap.get("画像単横浮")[0], dstFileName));
+					buf.append(String.format(chukiMap.get("画像単横浮")[0], dstFileName, altText));
 				} else if (imagePageType == PageBreakType.IMAGE_PAGE_H) {
-					buf.append(String.format(chukiMap.get("画像単縦浮")[0], dstFileName));
+					buf.append(String.format(chukiMap.get("画像単縦浮")[0], dstFileName, altText));
 				} else {
-					if (ratio <= 0) buf.append(String.format(chukiMap.get("画像単浮")[0], dstFileName));
-					else buf.append(String.format(chukiMap.get("画像単幅浮")[0], ratio, dstFileName));
+					if (ratio <= 0) buf.append(String.format(chukiMap.get("画像単浮")[0], dstFileName, altText));
+					else buf.append(String.format(chukiMap.get("画像単幅浮")[0], ratio, dstFileName, altText));
 				}
 			} else {
 				//単ページ出力 タグの外のみ
 				//改ページの前に文字があれば前のページに出力
 				if (!buf.isEmpty()) this.printLineBuffer(out, buf, lineNum, true);
-				buf.append(String.format(chukiMap.get("画像")[0], dstFileName));
+				buf.append(String.format(chukiMap.get("画像")[0], dstFileName, altText));
 				buf.append(chukiMap.get("画像終わり")[0]);
 				//単ページ出力
 				this.printImagePage(out, buf, lineNum, srcFileName, dstFileName, imagePageType);
@@ -2343,15 +2362,15 @@ public class AozoraEpub3Converter
 		} else {
 			if (ratio != -1 && imageFloatBlock) {
 				//画像float表示
-				if (ratio <= 0) buf.append(String.format(chukiMap.get("画像浮")[0], dstFileName));
-				else buf.append(String.format(chukiMap.get("画像幅浮")[0], ratio, dstFileName));
+				if (ratio <= 0) buf.append(String.format(chukiMap.get("画像浮")[0], dstFileName, altText));
+				else buf.append(String.format(chukiMap.get("画像幅浮")[0], ratio, dstFileName, altText));
 			} else {
 				//画像通常表示
-				if (ratio <= 0) buf.append(String.format(chukiMap.get("画像")[0], dstFileName));
-				else buf.append(String.format(chukiMap.get("画像幅")[0], ratio, dstFileName));
+				if (ratio <= 0) buf.append(String.format(chukiMap.get("画像")[0], dstFileName, altText));
+				else buf.append(String.format(chukiMap.get("画像幅")[0], ratio, dstFileName, altText));
 			}
 		}
-		//キャプショがある場合はタグを閉じない
+		//キャプションがある場合はタグを閉じない
 		if (hasCaption) {
 			this.inImageTag = true;
 			this.nextLineIsCaption = true;
@@ -2360,7 +2379,13 @@ public class AozoraEpub3Converter
 		}
 		return false;
 	}
-
+	/** HTML用のエスケープ */
+	private static String escapeHtml(String text) {
+		return text.replace("&", "&amp;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;")
+				.replace("\"", "&quot;");
+	}
 	/** 注記で分割された文字列単位でエスケープ処理を行う
 	 * <>&のエスケープと《》置換、IVSや不正な文字を除去して文字列を出力バッファに出力
 	 * ルビ変換前に呼び出す */
