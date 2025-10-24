@@ -357,6 +357,7 @@ public class AozoraEpub3Applet extends JFrame
 
 	/** jarファイルのあるパス文字列 "/"含む */
 	String jarPath = null;
+	String configPath= null;
 
 	/** 前回の出力パス */
 	File currentPath = null;
@@ -436,7 +437,8 @@ public class AozoraEpub3Applet extends JFrame
 		//this.jarPath = this.jarPath.replaceFirst("\\/bin\\/$", "/");
 		//AppletではVelocityでパスがエラーになるのでとりあえず空文字に
 		this.jarPath = "";
-
+		this.configPath = determineConfigPath(propFileName);
+		
 		this.cachePath = new File(this.jarPath+".cache");
 		this.webConfigPath = new File(this.jarPath+"web");
 		this.profilePath = new File(this.jarPath+"profiles");
@@ -2498,6 +2500,57 @@ public class AozoraEpub3Applet extends JFrame
 	}
 
 	////////////////////////////////////////////////////////////////
+	private String determineConfigPath(String propFileName) {
+		try {
+			// 実行Jarまたはexeの位置を取得
+			String basePath = AozoraEpub3.class
+					.getProtectionDomain()
+					.getCodeSource()
+					.getLocation()
+					.toURI()
+					.getPath();
+
+			File baseDir = new File(basePath).getParentFile();
+
+			// jpackage構成（app/lib配下）の場合は2階層上に戻す
+			if (baseDir.getName().equals("lib") && baseDir.getParentFile().getName().equals("app")) {
+				baseDir = baseDir.getParentFile().getParentFile();
+			}
+
+			Path appDir = baseDir.toPath();
+			Path iniPath = appDir.resolve(propFileName);
+
+			// ① アプリフォルダに書き込み可能ならそのまま使う
+			if (Files.exists(iniPath) || canWrite(appDir)) {
+				return appDir.toString();
+			}
+
+			// ② 書けない場合は AppData を使用
+			Path appDataDir = Path.of(System.getenv("APPDATA"), "AozoraEpub3");
+			Files.createDirectories(appDataDir);
+			return appDataDir.toString();
+
+		} catch (Exception e) {
+			// フォールバック：AppData
+			Path appDataDir = Path.of(System.getenv("APPDATA"), "AozoraEpub3");
+			try {
+				Files.createDirectories(appDataDir);
+			} catch (IOException ignored) {}
+			return appDataDir.toString();
+		}
+	}
+
+	private boolean canWrite(Path dir) {
+		try {
+			Path tmp = dir.resolve(".write_test");
+			Files.createFile(tmp);
+			Files.delete(tmp);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
 	class TextSelectFocusListener implements FocusListener
 	{
 		JTextField jTextField;
@@ -4938,7 +4991,8 @@ public class AozoraEpub3Applet extends JFrame
 		this.setProperties(this.props);
 
 		//設定ファイル更新
-		FileOutputStream fos = new FileOutputStream(this.jarPath+this.propFileName);
+		Path iniPath = Path.of(this.configPath, propFileName);
+		FileOutputStream fos = new FileOutputStream(iniPath.toFile());
 		this.props.store(fos, "AozoraEpub3 Parameters");
 		fos.close();
 
