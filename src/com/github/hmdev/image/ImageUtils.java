@@ -20,10 +20,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Iterator;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
+import javax.imageio.*;
+import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
@@ -32,6 +30,10 @@ import com.github.hmdev.util.LogAppender;
 
 public class ImageUtils
 {
+	static {
+		// クラスロード時に1回だけ実行される
+		ImageIO.scanForPlugins();
+	}
 	/** 4bitグレースケール時のRGB階調カラーモデル Singleton */
 	static ColorModel GRAY16_COLOR_MODEL;
 	/** 8bitグレースケール時のRGB階調カラーモデル Singleton */
@@ -45,6 +47,8 @@ public class ImageUtils
 	static ImageWriter pngImageWriter;
 	/** jpeg出力用 */
 	static ImageWriter jpegImageWriter;
+	/** webp出力用 */
+	static ImageWriter webpImageWriter;
 
 	/** 4bitグレースケール時のRGB階調カラーモデル取得 */
 	static ColorModel getGray16ColorModel()
@@ -94,17 +98,31 @@ public class ImageUtils
 
 	final static AffineTransform NO_TRANSFORM = AffineTransform.getTranslateInstance(0, 0);
 	/** ストリームから画像を読み込み */
-	static public BufferedImage readImage(String ext, InputStream is) throws IOException
-	{
-		BufferedImage image;
-			try {
+	static public BufferedImage readImage(String ext, InputStream is) throws IOException {
+		BufferedImage image = null;
+		try {
+			ext = ext.toLowerCase();
+
+			if (ext.equals("webp")) {
+				// WebP専用処理
+				ImageReader reader = ImageIO.getImageReadersByFormatName("webp").next();
+				try (ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+					reader.setInput(iis, true);
+					return reader.read(0, reader.getDefaultReadParam());
+				}
+			} else {
+				// 通常画像（jpg, png, gif, bmpなど）
 				image = ImageIO.read(is);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
 			}
-		is.close();
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			is.close();
+		}
 		return image;
 	}
+
 
 	/** 大きすぎる画像は縮小して出力
 	 * @param is 画像の入力ストリーム srcImageがあれば利用しないのでnull
@@ -413,7 +431,22 @@ public class ImageUtils
 			} else {
 				imageWriter.write(srcImage);
 			}
-		} else {
+		} else if ("webp".equals(ext)) {
+			// --- WebP出力処理 ---
+			ImageWriter imageWriter = getWebpImageWriter();
+			imageWriter.setOutput(ImageIO.createImageOutputStream(zos));
+			ImageWriteParam param = imageWriter.getDefaultWriteParam();
+
+			if (param.canWriteCompressed()) {
+				param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+				param.setCompressionType("Lossy"); // "Lossless" も可
+				param.setCompressionQuality(jpegQuality); // 0.0f～1.0f
+			}
+
+			imageWriter.write(null, new IIOImage(srcImage, null, null), param);
+			imageWriter.dispose();
+
+		}else {
 			ImageIO.write(srcImage, ext, zos);
 		}
 		zos.flush();
@@ -435,6 +468,28 @@ public class ImageUtils
 		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
 		jpegImageWriter = writers.next();
 		return jpegImageWriter;
+	}
+
+	/** WebP ImageWriter を取得 */
+	static private ImageWriter getWebpImageWriter() {
+		if (webpImageWriter != null) return webpImageWriter;
+
+		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("webp");
+
+		if (!writers.hasNext()) {
+			// プラグイン未登録エラー
+			throw new IllegalStateException(
+					"WebP ImageWriter not found. Make sure webp-imageio (or luciad-webp-imageio) is in the classpath, and call ImageIO.scanForPlugins()."
+			);
+		}
+
+		webpImageWriter = writers.next();
+
+		// 念のためクラス名チェック（複数プラグイン共存時）
+		String className = webpImageWriter.getClass().getName();
+		System.out.println("Using WebP writer: " + className);
+
+		return webpImageWriter;
 	}
 
 	/** 余白の画素数取得  左右のみずれ調整

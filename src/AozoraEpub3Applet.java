@@ -713,7 +713,7 @@ public class AozoraEpub3Applet extends JFrame
 		jLabelMaxCoverLine.setBorder(padding2H);
 		panel.add(jLabelMaxCoverLine);
 
-		jComboCover = new JComboBox<String>(new String[]{"[先頭の挿絵]", "[入力ファイル名と同じ画像(png,jpg)]", "[表紙無し]", "http://","[SVG表紙生成]"});
+		jComboCover = new JComboBox<String>(new String[]{"[先頭の挿絵]", "[入力ファイル名と同じ画像(png,jpg,webp)]", "[表紙無し]", "http://","[SVG表紙生成]"});
 		jComboCover.setEditable(true);
 		jComboCover.setPreferredSize(new Dimension(320, 24));
 		jComboCover.addActionListener(arg0 -> {
@@ -2730,7 +2730,7 @@ public class AozoraEpub3Applet extends JFrame
 			JFileChooser fileChooser = new JFileChooser(currentPath);
 			fileChooser.setDialogTitle("表紙画像を選択");
 			fileChooser.setApproveButtonText("選択");
-			fileChooser.setFileFilter(new FileNameExtensionFilter("表紙画像(jpg,png,gif)", "jpg","png","gif"));
+			fileChooser.setFileFilter(new FileNameExtensionFilter("表紙画像(jpg,png,gif,webp)", "jpg","png","gif","webp"));
 			int state = fileChooser.showOpenDialog(parent);
             if (state == JFileChooser.APPROVE_OPTION) {
                 jComboCover.setSelectedItem(fileChooser.getSelectedFile().getAbsolutePath());
@@ -3532,7 +3532,7 @@ public class AozoraEpub3Applet extends JFrame
 	{
 		//パラメータ設定
 		if (!"txt".equals(ext) && !"txtz".equals(ext) && !"zip".equals(ext) && !"cbz".equals(ext) && !"rar".equals(ext) ) {
-			if (!"png".equals(ext) && !"jpg".equals(ext) && !"jpeg".equals(ext) && !"gif".equals(ext)) {
+			if (!"png".equals(ext) && !"jpg".equals(ext) && !"jpeg".equals(ext) && !"gif".equals(ext) && !"webp".equals(ext)) {
 				LogAppender.println("txt, txtz, zip, cbz rar 以外は変換できません");
 			}
 			return;
