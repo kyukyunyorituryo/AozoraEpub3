@@ -72,7 +72,23 @@ Windowsの場合はOperating System：Windows、Architecture：x64、Package Typ
 
 使い方
 ------------
-#### インストール
+
+#### インストーラー版(Windows)
+
+**AozoraEpub3-Setup-*.exe** を実行してインストールします。  
+標準では **Program Files** フォルダにインストールされます。
+
+#### 起動方法
+- スタートメニューまたはデスクトップのショートカットから起動できます。  
+- エクスプローラーで `.txt` や `.zip` ファイルをドラッグ＆ドロップして変換可能です。
+
+#### 設定ファイルの保存先
+インストーラー版では、ユーザー権限で書き込みできる場所  
+（例：`AppData\Roaming\AozoraEpub3`）に設定ファイルが保存されます。  
+「Program Files」配下には保存されません。
+
+---
+#### jar版（従来の配布形式）
 　AozoraEpub3-*.zip を任意のフォルダに解凍します。
 
 #### 起動

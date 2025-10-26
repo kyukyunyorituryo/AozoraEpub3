@@ -37,12 +37,28 @@ System Requirements
 Java 21 and later system requirements (http://www.java.com/ja/)
 AdoptOpenJDK (https://adoptium.net/temurin/releases/)
 
-Windows XP or later works with Ubuntu Mac OS X.
+Windows or later works with Ubuntu Mac OS.
 
 
 How to use
 ------------
-#### Installation
+### Installing and Launching AozoraEpub3
+
+### Installer Version (Windows)
+
+Run **AozoraEpub3-Setup-*.exe** to install the application.  
+By default, it will be installed under **Program Files**.
+
+#### Launch
+- You can start AozoraEpub3 from the **Start Menu** or the **desktop shortcut**.  
+- You can also **drag and drop** `.txt` or `.zip` files onto the window to convert them.
+
+#### Configuration File Location
+In the installer version, configuration files are saved in a user-writable directory,  
+for example: `AppData\Roaming\AozoraEpub3`.  
+They are **not saved under "Program Files"**.
+
+### Jar Version (Legacy Distribution)
 Unzip AozoraEpub3 -*. zip to any folder.
 
 #### Start
