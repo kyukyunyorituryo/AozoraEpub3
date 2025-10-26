@@ -3,7 +3,7 @@
 
 改造版の説明
 ------------
-[電書協EPUB3制作ガイド](http://ebpaj.jp/counsel/guide)のEPUBに近づけることを目的としたフォーク版。[KADOKAWA-EPUB 制作仕様](https://kadokawa-epub.bookwalker.co.jp/)も参考しにしています。
+[電書連 EPUB 3 制作ガイド](https://dpfj.or.jp/counsel/guide)のEPUBに近づけることを目的としたフォーク版。[KADOKAWA-EPUB 制作仕様](https://kadokawa-epub.bookwalker.co.jp/)も参考しにしています。
 AozoraEpub3を電子出版目的に使う場合に、審査が通るように修正している。EPUBバリデーションを通すのと、多くのEPUBビュワーで表示に問題がないようにすることを目的としている。
 
 
@@ -114,10 +114,10 @@ https://github.com/kyukyunyorituryo/AozoraEpub3/wiki/
 
 #### 表紙
 * 表紙
-  表紙の画像を[先頭の挿絵][入力ファイル名と同じ画像(png,jpg)][表紙無し]またはファイル、URLを指定します。
+  表紙の画像を[先頭の挿絵][入力ファイル名と同じ画像(png,jpg,webp)][表紙無し]またはファイル、URLを指定します。
   [入力ファイル名と同じ画像(png,jpg)]は、入力ファイル名と拡張子以外が同じ画像を表紙に利用します。
-  (拡張子は以下の順でチェックpng,jpg,jpeg,gif)
-  表紙画像が無い場合にテキストファイルのパスに cover.png|jpg|jpeg のファイルがあれば確認画面で表紙に設定します。
+  (拡張子は以下の順でチェックpng,jpg,jpeg,gif,webp)
+  表紙画像が無い場合にテキストファイルのパスに cover.png|jpg|jpeg|webp のファイルがあれば確認画面で表紙に設定します。
 
 #### ページ出力
 * 表紙

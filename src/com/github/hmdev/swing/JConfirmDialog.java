@@ -903,6 +903,7 @@ public class JConfirmDialog extends JDialog
 					File coverFile = new File(srcPath+"/cover.png");
 					if (!coverFile.exists()) coverFile = new File(srcPath+"/cover.jpg");
 					if (!coverFile.exists()) coverFile = new File(srcPath+"/cover.jpeg");
+					if (!coverFile.exists()) coverFile = new File(srcPath + "/cover.webp");
 					if (coverFile.exists()) bookInfo.coverFileName = coverFile.getAbsolutePath();
 				}
 				if (bookInfo.coverFileName != null) {

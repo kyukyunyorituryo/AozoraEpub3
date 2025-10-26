@@ -718,7 +718,7 @@ public class AozoraEpub3
 	{
 		String baseFileName = srcFile.getPath();
 		baseFileName = baseFileName.substring(0, baseFileName.lastIndexOf('.')+1);
-		for (String ext : new String[]{"png","jpg","jpeg","PNG","JPG","JPEG","Png","Jpg","Jpeg"}) {
+		for (String ext : new String[]{"png","jpg","jpeg","webp","PNG","JPG","JPEG","WEBP","Png","Jpg","Jpeg","Webp"}) {
 			String coverFileName = baseFileName+ext;
 			if (new File(coverFileName).exists()) return coverFileName;
 		}

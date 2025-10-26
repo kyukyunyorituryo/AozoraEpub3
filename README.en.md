@@ -2,7 +2,7 @@ Modified AozoraEpub3
 ============
 description of the modified version
 ------------
-This is a fork version that aims to be close to the "[EBPAJ EPUB 3 File Creation Guide](http://ebpaj.jp/counsel/guide)". When using Aozora Epub 3 for electronic publishing purposes, the original version may not pass the review. Through EPUB validation, we ensure that many EPUB viewers have no display problems.
+This is a fork version that aims to be close to the "[DPFJ EPUB 3 File Creation Guide](https://dpfj.or.jp/counsel/guide)". When using Aozora Epub 3 for electronic publishing purposes, the original version may not pass the review. Through EPUB validation, we ensure that many EPUB viewers have no display problems.
 
 Due to a Java licensing issue, we decided to build with the AdoptOpenJDK. https://adoptopenjdk.net/releases.html OpenJDK 21 (LTS), HotSpot, OS, and Install JRE.
 
@@ -79,10 +79,10 @@ The style settings for the title and author lines in the body of the text follow
 
 #### Cover
 * front cover
-Specify the cover page image as [leading illustration] [Same image as input file name (png, jpg)] [No Cover] or a file or URL.
-[Same image as input file name (png, jpg)] uses an image with the same name and extension as the cover page.
-(The extensions are checked in the following order: png, jpg, jpeg, gif)
-If there is a cover.png | jpg | jpeg file in the path of the text file when there is no cover page image, set it as a cover page on the confirmation screen.
+Specify the cover page image as [leading illustration] [Same image as input file name (png, jpg,webp)] [No Cover] or a file or URL.
+[Same image as input file name (png, jpg,webp)] uses an image with the same name and extension as the cover page.
+(The extensions are checked in the following order: png, jpg, jpeg, gif,webp)
+If there is a cover.png | jpg | jpeg | webp file in the path of the text file when there is no cover page image, set it as a cover page on the confirmation screen.
 
 #### Page Output
 * front cover
