@@ -57,7 +57,7 @@ dependencies {
     implementation group: 'org.apache.velocity', name: 'velocity-engine-core', version: '2.4.1'
 
 // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.19.0'
 
 // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.17'
@@ -68,17 +68,17 @@ dependencies {
 
 
 // https://mvnrepository.com/artifact/com.github.junrar/junrar
-    implementation group: 'com.github.junrar', name: 'junrar', version: '7.5.5'
+    implementation group: 'com.github.junrar', name: 'junrar', version: '7.5.7'
 // https://mvnrepository.com/artifact/org.jsoup/jsoup
-    implementation group: 'org.jsoup', name: 'jsoup', version: '1.20.1'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.21.2'
 // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
-    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
+    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
 // https://mvnrepository.com/artifact/commons-cli/commons-cli
-    implementation group: 'commons-cli', name: 'commons-cli', version: '1.9.0'
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.10.0'
 // https://mvnrepository.com/artifact/com.github.albfernandez/juniversalchardet
     implementation group: 'com.github.albfernandez', name: 'juniversalchardet', version: '2.5.0'
 // https://mvnrepository.com/artifact/org.json/json
-    implementation group: 'org.json', name: 'json', version: '20250107'
+    implementation group: 'org.json', name: 'json', version: '20250517'
 // https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-webp
     implementation group: 'com.twelvemonkeys.imageio', name: 'imageio-webp', version: '3.12.0'
 
