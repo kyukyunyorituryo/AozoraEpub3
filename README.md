@@ -108,7 +108,7 @@ Windowsの場合はOperating System：Windows、Architecture：x64、Package Typ
 #### Web小説の変換
 　Web小説サイトの作品一覧ページのURLまたはURLショートカット(.url)のドラッグ＆ドロップでの取得と変換も可能です。
 　（web/ 以下に定義ファイルがあるサイトのみ）
- - 「小説家になろう/小説を読もう！」(＋関連サイト)「NEWVEL-LIBRARY」「FC2小説」「HAMELN」「Arcadia」「novelist.jp」「dNoVeLs」「暁」「カクヨム」「ノベルアップ＋」から取得が可能です。
+ - 「小説家になろう/小説を読もう！」(＋関連サイト)「FC2小説」「HAMELN」「Arcadia」「novelist.jp」「暁」「カクヨム」「ノベルアップ＋」から取得が可能です。
 
 #### Wikiページ
 　Wikiで簡単な使い方を公開しています。

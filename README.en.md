@@ -76,8 +76,8 @@ The "Original Filename .epub" or "[author's name] Title. epub" file is generated
 #### Converting Web novels
 You can also use drag-and-drop to retrieve and convert URLs or URL shortcuts (.url) on the list page of a Web novel site. (Only sites with definition files in web /)
 
-You can obtain it from "syosetu.com", (+ Related Sites), "NEWVEL-LIBRARY", "FC2 Novels", "HAMELN", "Arcadia", "novelist.jp", "dNoVeLs", "Kakyomu", and "novelup.plus".
-https://syosetu.com , https://novel.fc2.com/ , https://syosetu.org/ , http://www.mai-net.net/ , http://novelist.jp/ , http://www.dnovels.net/ , https://kakuyomu.jp/ , https://novelup.plus/
+You can obtain it from "syosetu.com", (+ Related Sites), "FC2 Novels", "HAMELN", "Arcadia", "novelist.jp", "Kakyomu", and "novelup.plus".
+https://syosetu.com , https://novel.fc2.com/ , https://syosetu.org/ , http://www.mai-net.net/ , http://novelist.jp/ , https://kakuyomu.jp/ , https://novelup.plus/
 
 
 screen setting
