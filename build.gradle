@@ -18,10 +18,15 @@ sourceSets {
         java {
             srcDirs = ['src']
         }
-        resources {
-            srcDirs= ["src"]
+    }
+    test {
+        java {
+            srcDirs = ['test']
         }
     }
+}
+test {
+    useJUnit()
 }
 java {
     toolchain {
@@ -81,5 +86,5 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20250517'
 // https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-webp
     implementation group: 'com.twelvemonkeys.imageio', name: 'imageio-webp', version: '3.12.0'
-
+    testImplementation 'junit:junit:4.13.2'
 }

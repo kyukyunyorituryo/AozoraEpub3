@@ -6,14 +6,20 @@ import java.io.StringWriter;
 
 import org.junit.Assert;
 import org.junit.Test;
-
+import org.junit.Before;
 import com.github.hmdev.info.BookInfo;
 import com.github.hmdev.writer.Epub3Writer;
 
 public class AozoraEpub3ConverterTest
 {
 	static AozoraEpub3Converter converter;
-	
+	@Before
+	public void setUp() throws Exception {
+		Epub3Writer writer = new Epub3Writer("");
+		converter = new AozoraEpub3Converter(writer, "");
+		converter.writer = new TestEpub3Writer("");
+		converter.bookInfo = new BookInfo(null);
+	}
 	@Test
 	public void test()
 	{
@@ -26,18 +32,24 @@ public class AozoraEpub3ConverterTest
 			e.printStackTrace();
 		}
 	}
-	
-	class TestEpub3Writer extends Epub3Writer
-	{
-		public TestEpub3Writer(String templatePath)
-		{
+
+	class TestEpub3Writer extends Epub3Writer {
+
+		public TestEpub3Writer(String templatePath) {
 			super(templatePath);
 		}
-		public String getImageFilePath(String srcImageFileName, int lineNum) throws IOException
-		{
+
+		@Override
+		public int getImageOrientation(String imagePath) {
+			return 0; // 仮値
+		}
+
+		@Override
+		public String getImageFilePath(String srcImageFileName, int lineNum) {
 			return "test.png";
 		}
 	}
+
 	
 	@Test
 	public void testConvertTextLineToEpub3()
