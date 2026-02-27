@@ -243,7 +243,7 @@ public class AozoraEpub3
 			boolean chapterNumOnly = "1".equals(props.getProperty("ChapterNumOnly"));
 			boolean chapterNumTitle = "1".equals(props.getProperty("ChapterNumTitle"));
 			boolean chapterNumParen = "1".equals(props.getProperty("ChapterNumParen"));
-			boolean chapterNumParenTitle = "1".equals(props.getProperty("hapterNumParenTitle"));
+			boolean chapterNumParenTitle = "1".equals(props.getProperty("ChapterNumParenTitle"));
 			String chapterPattern = ""; if ("1".equals(props.getProperty("ChapterPattern"))) chapterPattern = props.getProperty("ChapterPatternText");
 
 			//オプション指定を反映
