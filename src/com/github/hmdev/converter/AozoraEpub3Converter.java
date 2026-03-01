@@ -21,7 +21,7 @@ import com.github.hmdev.info.ImageInfo;
 import com.github.hmdev.util.CharUtils;
 import com.github.hmdev.util.LogAppender;
 import com.github.hmdev.writer.Epub3Writer;
-
+import org.apache.commons.text.StringEscapeUtils;
 /**
  * 青空文庫テキストをePub3形式のXHTMLに変換
  */
@@ -2379,13 +2379,7 @@ public class AozoraEpub3Converter
 		}
 		return false;
 	}
-	/** HTML用のエスケープ */
-	private static String escapeHtml(String text) {
-		return text.replace("&", "&amp;")
-				.replace("<", "&lt;")
-				.replace(">", "&gt;")
-				.replace("\"", "&quot;");
-	}
+
 	/** 注記で分割された文字列単位でエスケープ処理を行う
 	 * <>&のエスケープと《》置換、IVSや不正な文字を除去して文字列を出力バッファに出力
 	 * ルビ変換前に呼び出す */
@@ -3418,5 +3412,9 @@ public class AozoraEpub3Converter
 
 		//バッファクリア
 		buf.setLength(0);
+	}
+	/** HTML用のエスケープ */
+	private static String escapeHtml(String text) {
+		return StringEscapeUtils.escapeHtml4(text);
 	}
 }

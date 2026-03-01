@@ -73,7 +73,8 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.17'
 // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
     implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0'
-
+// Source: https://mvnrepository.com/artifact/org.apache.commons/commons-text
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.15.0'
 
 // https://mvnrepository.com/artifact/com.github.junrar/junrar
     implementation group: 'com.github.junrar', name: 'junrar', version: '7.5.7'
