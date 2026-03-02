@@ -11,8 +11,10 @@
 </docTitle>
 <navMap>
 #set($idx=0)
+#set($hasNcxItem=false)
 #if (${bookInfo.InsertCoverPage} && ${bookInfo.InsertCoverPageToc})
 #set($idx=$idx+1)
+#set($hasNcxItem=true)
 	<navPoint id="toccover" playOrder="${idx}">
 		<navLabel>
 			<text>${cover_name}</text>
@@ -23,6 +25,7 @@
 #foreach(${chapter} in ${chapters})
 #if ($chapter.ChapterName)
 #set($idx=$idx+1)
+#set($hasNcxItem=true)
 	<navPoint id="toc${idx}" playOrder="${idx}">
 		<navLabel>
 			<text>${chapter.NoTagChapterName}</text>
@@ -35,6 +38,18 @@
 #foreach(${end} in ${chapter.NavClose})
 	</navPoint>
 #end
+#end
+#end
+#if (!$hasNcxItem)
+#foreach(${sectionInfo} in ${sections})
+#set($idx=$idx+1)
+<navPoint id="toc${idx}" playOrder="${idx}">
+<navLabel>
+<text>本文</text>
+</navLabel>
+<content src="xhtml/${sectionInfo.SectionId}.xhtml"/>
+</navPoint>
+#break
 #end
 #end
 </navMap>

@@ -67,12 +67,15 @@ nav#landmarks { display:none; }
 	<nav epub:type="toc" id="toc">
 		<h1>目　次</h1>
 		<ol>
+#set($hasTocItem = false)
 #if (${bookInfo.InsertCoverPage} && ${bookInfo.InsertCoverPageToc})
 			<li class="chapter" id="toccover"><a href="xhtml/cover.xhtml">${cover_name}</a></li>
+#set($hasTocItem = true)
 #end
 #set($idx=0)
 #foreach(${chapter} in ${chapters})
 #if ($chapter.ChapterName)
+#set($hasTocItem = true)
 #set($idx=$idx+1)
 #if ((!${chapter.LevelStart} && $idx > 1) || (!${navNest}&& $idx != 1))
 </li>
@@ -94,7 +97,17 @@ nav#landmarks { display:none; }
 #end
 #end
 #end
-		</li></ol>
+#if (!$hasTocItem)
+#foreach(${sectionInfo} in ${sections})
+			<li><a href="xhtml/${sectionInfo.SectionId}.xhtml">本文</a></li>
+#break
+#end
+#end
+
+#if ($hasTocItem)
+		</li>
+#end
+		</ol>
 	</nav>
 </body>
 </html>
