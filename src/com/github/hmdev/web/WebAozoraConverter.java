@@ -445,7 +445,6 @@ public class WebAozoraConverter
                 StringWriter sw = new StringWriter();
                 Velocity.evaluate(context, sw, "", template);
                 //System.out.println(sw);
-                LogAppender.println(String.valueOf(sw));
                 doc = Jsoup.parse(sw.toString());
             }
 
