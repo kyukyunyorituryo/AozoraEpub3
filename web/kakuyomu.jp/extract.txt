@@ -21,6 +21,8 @@ HREF	.widget-toc-items a
 ##HREF	a	\/\d*\/episodes\/\d*
 ##一覧に記載されている各話の更新日時
 SUB_UPDATE	.widget-toc-episode-datePublished
+##本文に日付が無い場合 公開・更新日時の文字列に利用
+CONTENT_UPDATE_LIST	.episode-update
 
 ################################
 ###各話の抽出設定

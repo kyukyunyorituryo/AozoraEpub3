@@ -406,7 +406,7 @@ public class WebAozoraConverter
                 String[][] book = new String[episode.length()][];
                 String[] array = page.toArray(new String[0]);
                 for (int i = 0; i < episode.length(); i++) {
-                    book[i] = new String[3];
+                    book[i] = new String[4];
                     book[i][0] = episode.getJSONObject(array[i]).getString("id");
                     book[i][1] = episode.getJSONObject(array[i]).getString("title");
                     book[i][2] = episode.getJSONObject(array[i]).getString("publishedAt");
@@ -415,6 +415,9 @@ public class WebAozoraConverter
                     Date d = Date.from(ins1);
                     SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
                     book[i][2] = sf.format(d);
+                    // パターンを "yyyy/MM/dd HH:mm" に変更
+                    SimpleDateFormat sf2 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                    book[i][3] = sf2.format(d);
 
                 }
                 String template = """
@@ -426,6 +429,7 @@ public class WebAozoraConverter
                         #foreach( $object in $book)
                         <a href="/works/$cd/episodes/$book[$i][0]">
                         <time class="widget-toc-episode-datePublished">$book[$i][2]</time>
+                        <datetime class="episode-update">$book[$i][3] 公開</datetime>
                         </a>
                         #set($i=$i + 1)
                         #end
@@ -441,6 +445,7 @@ public class WebAozoraConverter
                 StringWriter sw = new StringWriter();
                 Velocity.evaluate(context, sw, "", template);
                 //System.out.println(sw);
+                LogAppender.println(String.valueOf(sw));
                 doc = Jsoup.parse(sw.toString());
             }
 
