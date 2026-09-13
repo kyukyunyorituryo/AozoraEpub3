@@ -314,6 +314,7 @@ public class AozoraEpub3
 			//各ファイルを変換処理
 			////////////////////////////////
 			for (String fileName : fileNames) {
+				String originalCoverFileName = coverFileName;
 				LogAppender.println("--------");
 				File srcFile = new File(fileName);
 				if (!srcFile.isFile()) {
@@ -444,6 +445,7 @@ public class AozoraEpub3
 						}
 					}
 					bookInfo.coverFileName = coverFileName;
+					coverFileName = originalCoverFileName;
 
 					String[] titleCreator = BookInfo.getFileTitleCreator(srcFile.getName());
                     if (useFileName) {
