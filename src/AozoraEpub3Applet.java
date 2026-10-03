@@ -2501,54 +2501,22 @@ public class AozoraEpub3Applet extends JFrame
 
 	////////////////////////////////////////////////////////////////
 	private String determineConfigPath(String propFileName) {
-		try {
-			// 実行Jarまたはexeの位置を取得
-			String basePath = AozoraEpub3.class
-					.getProtectionDomain()
-					.getCodeSource()
-					.getLocation()
-					.toURI()
-					.getPath();
+		String appData = System.getenv("APPDATA");
 
-			File baseDir = new File(basePath).getParentFile();
-
-			// jpackage構成（app/lib配下）の場合は2階層上に戻す
-			if (baseDir.getName().equals("lib") && baseDir.getParentFile().getName().equals("app")) {
-				baseDir = baseDir.getParentFile().getParentFile();
-			}
-
-			Path appDir = baseDir.toPath();
-			Path iniPath = appDir.resolve(propFileName);
-
-			// ① アプリフォルダに書き込み可能ならそのまま使う
-			if (Files.exists(iniPath) || canWrite(appDir)) {
-				return appDir.toString();
-			}
-
-			// ② 書けない場合は AppData を使用
-			Path appDataDir = Path.of(System.getenv("APPDATA"), "AozoraEpub3");
-			Files.createDirectories(appDataDir);
-			return appDataDir.toString();
-
-		} catch (Exception e) {
-			// フォールバック：AppData
-			Path appDataDir = Path.of(System.getenv("APPDATA"), "AozoraEpub3");
+		// jpackageで起動している場合はAppData
+		if (System.getProperty("jpackage.app-path") != null
+				&& appData != null && !appData.isEmpty()) {
+			Path appDataDir = Path.of(appData, "AozoraEpub3");
 			try {
 				Files.createDirectories(appDataDir);
-			} catch (IOException ignored) {}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 			return appDataDir.toString();
 		}
-	}
 
-	private boolean canWrite(Path dir) {
-		try {
-			Path tmp = dir.resolve(".write_test");
-			Files.createFile(tmp);
-			Files.delete(tmp);
-			return true;
-		} catch (IOException e) {
-			return false;
-		}
+		// 通常のJAR版は従来どおり
+		return new File(".").getAbsolutePath();
 	}
 
 	class TextSelectFocusListener implements FocusListener
