@@ -433,31 +433,54 @@ public class AozoraEpub3Applet extends JFrame
 		setJMenuBar(menubar);
 
 		//パス関連初期化
-		//this.jarPath = getClass().getClassLoader().getResource("").getFile();
-		//this.jarPath = this.jarPath.replaceFirst("\\/bin\\/$", "/");
-		//AppletではVelocityでパスがエラーになるのでとりあえず空文字に
-		this.jarPath = "";
-		this.configPath = determineConfigPath(propFileName);
-		
-		this.cachePath = new File(this.jarPath+".cache");
-		this.webConfigPath = new File(this.jarPath+"web");
-		this.profilePath = new File(this.jarPath+"profiles");
-		this.profilePath.mkdir();
+		// 1. 提示された判定メソッドを使って、設定ファイルを置くべきベースディレクトリを決定
+		String determinedPath = determineConfigPath(this.propFileName);
+		File baseDir = new File(determinedPath);
 
-		//設定ファイル読み込み
+		// 2. 判定されたパスが AppData かどうかをチェックして、jarPath を切り替える
+		boolean isJPackageEnv =
+				System.getProperty("jpackage.app-path") != null;
+
+		if (isJPackageEnv) {
+			this.jarPath = "app" + File.separator;
+		} else {
+			this.jarPath = "";
+		}
+
+		// 3. 各種パスの初期化割当
+		this.configPath = determinedPath; // 判定されたパスを設定パスとして保持
+
+		// ⚠️ キャッシュは書き込みが発生するため、書き込み保証のある baseDir（AppData等）配下に配置
+		this.cachePath = new File(baseDir, ".cache");
+
+		// ⚠️ web や profiles は「読み込み」を優先するため this.jarPath をベースにする
+		this.webConfigPath = new File(this.jarPath + "web");
+		this.profilePath = new File(this.jarPath + "profiles");
+
+		// 必要なフォルダの作成（書き込み先のみ）
+		if (!baseDir.exists()) baseDir.mkdirs();
+		if (!this.cachePath.exists()) this.cachePath.mkdir();
+
+		// ※もしユーザーがプロファイルを新規追加・変更して保存する仕様であれば、
+		// 　profilePath も baseDir（AppData側）を指すように調整してください。
+		//   例: this.profilePath = new File(baseDir, "profiles");
+		if (!this.profilePath.exists()) this.profilePath.mkdir();
+
+		// 4. 設定ファイル (Properties) の読み込み
 		props = new Properties();
+		File propFile = new File(baseDir, this.propFileName);
 		try {
-			if (Files.exists(Path.of(this.jarPath + this.propFileName))) {
-				FileInputStream fos = new FileInputStream(this.jarPath + this.propFileName);
-				props.load(fos);
-				fos.close();
+			if (Files.exists(propFile.toPath())) {
+				try (FileInputStream fos = new FileInputStream(propFile)) { // try-with-resources
+					props.load(fos);
+				}
 			}
 		} catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+			throw new RuntimeException(e);
+		}
+
 		String path = props.getProperty("LastDir");
 		if (path != null && !path.isEmpty()) this.currentPath = new File(path);
-
 		JPanel tabPanel;
 		JPanel panel;
 		JPanel panelV;
