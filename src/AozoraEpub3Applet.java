@@ -2814,33 +2814,67 @@ public class AozoraEpub3Applet extends JFrame
 		@Override
 		public void drop(DropTargetDropEvent dtde)
 		{
-			dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+
 			Transferable transfer = dtde.getTransferable();
+			boolean success = false; // ドロップ成否のフラグ
+
 			try {
 				if (transfer.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 					@SuppressWarnings("unchecked")
 					List<File> files = (List<File>)transfer.getTransferData(DataFlavor.javaFileListFlavor);
-					if (!files.isEmpty()) {
+					if (files != null && !files.isEmpty()) {
 						File file = files.getFirst();
-						if (!file.isDirectory()) file = file.getParentFile();
-						jCheckSamePath.setSelected(false);
-						jComboDstPath.setEditable(true);
-						jComboDstPath.setSelectedItem(file.getAbsolutePath());
-						return;
+						if (!file.isDirectory()) {
+							file = file.getParentFile();
+						}
+						if (file != null) {
+							updatePathUI(file.getAbsolutePath());
+							success = true;
+						}
 					}
 				}
-				if (transfer.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+
+				// ファイルリストで処理できなかった場合のみ文字列として判定
+				if (!success && transfer.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 					String path = (String)transfer.getTransferData(DataFlavor.stringFlavor);
-					if (path.startsWith("file://")) { path = URLDecoder.decode(path.substring(0, path.indexOf('\n')-1).substring(7).trim(), StandardCharsets.UTF_8); }
-					jCheckSamePath.setSelected(false);
-					jComboDstPath.setEditable(true);
-					jComboDstPath.setSelectedItem(path);
-                }
+					if (path != null && !path.isEmpty()) {
+						// 安全に1行目を抽出
+						int newlineIdx = path.indexOf('\n');
+						if (newlineIdx != -1) {
+							path = path.substring(0, newlineIdx).trim();
+						}
+
+						// URI（file://）形式のデコード処理を安全に行う
+						if (path.startsWith("file://")) {
+							// Windows環境の file:///C:/... などの考慮
+							path = path.substring(7);
+							if (path.startsWith("/")) {
+								path = path.substring(1);
+							}
+							path = URLDecoder.decode(path, StandardCharsets.UTF_8);
+						}
+						dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+						updatePathUI(path);
+						success = true;
+					}
+				}
 			} catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+				e.printStackTrace(); // または適切なロギング
+				success = false;
+			} finally {
+				// 【最重要】必ずドロップ完了を通知する
+				dtde.dropComplete(success);
+			}
+		}
+
+		/** UI更新処理を共通化 */
+		private void updatePathUI(String path) {
+			jCheckSamePath.setSelected(false);
+			jComboDstPath.setEditable(true);
+			jComboDstPath.setSelectedItem(path);
+		}
 	}
+
 
 	/** 出力先選択ボタンイベント */
 	class DstPathChooserListener implements ActionListener
