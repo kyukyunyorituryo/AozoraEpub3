@@ -10,7 +10,7 @@ jobs:
       - name: Get version from source code.
         run: |
           >> $GITHUB_ENV echo PKG_VER=$(egrep 'VERSION\s+=' src/AozoraEpub3.java | awk -F '"' '{print $2}')
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'zulu'
