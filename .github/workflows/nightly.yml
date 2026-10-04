@@ -24,3 +24,30 @@ jobs:
         with:
           name: AozoraEpub3-${{ env.PKG_VER }}
           path: out/
+
+  build_msi:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get version from source code
+        shell: bash
+        run: |
+          echo "PKG_VER=$(grep -E 'VERSION\s+=' src/AozoraEpub3.java | awk -F '"' '{print $2}')" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+          cache: 'gradle'
+
+      - name: Build MSI
+        shell: cmd
+        run: gradlew.bat jpackageMsi
+
+      - name: Upload MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: AozoraEpub3-${{ env.PKG_VER }}-msi
+          path: build/jpackage/*.msi
