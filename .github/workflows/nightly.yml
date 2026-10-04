@@ -44,7 +44,7 @@ jobs:
 
       - name: Build MSI
         shell: cmd
-        run: gradlew.bat jpackageMsi
+        run: gradle jpackageMsi
 
       - name: Upload MSI
         uses: actions/upload-artifact@v4
