@@ -6,7 +6,7 @@
     <property name="dir.buildfile" value="."/>
     <property name="dir.workspace" value="${dir.buildfile}/.."/>
     <property name="dir.jarfile" value="./out"/>
-    <target name="create_run_jar">
+    <target name="copy_runtime_files">
         <!--
     <delete dir="${dir.jarfile}/lib"/>
     <mkdir dir="${dir.jarfile}/lib"/>

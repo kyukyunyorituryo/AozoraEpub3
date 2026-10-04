@@ -9,7 +9,7 @@ compileTestJava.options.encoding = 'UTF-8'
 // javadocタスクのエンコーディング
 javadoc.options.encoding = 'UTF-8'
 //mainClassName = 'AozoraEpub3Applet'
-
+ant.importBuild 'ant.xml'
 repositories {
     mavenCentral()
 }
@@ -58,7 +58,38 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << '-Xlint:deprecation'
 }
 
-ant.importBuild 'ant.xml'
+tasks.register('jpackageMsi', Exec) {
+    dependsOn 'copy_runtime_files'
+
+    def inputDir = file('out')
+    def outputDir = layout.buildDirectory.dir('jpackage').get().asFile
+
+    doFirst {
+        inputDir.mkdirs()
+        outputDir.mkdirs()
+
+        copy {
+            from 'build/libs/AozoraEpub3.jar'
+            into inputDir
+        }
+    }
+
+    commandLine 'jpackage',
+            '--type', 'msi',
+            '--win-menu',
+            '--win-dir-chooser',
+            '--win-shortcut',
+            '--win-shortcut-prompt',
+            '--copyright', 'kyukyunyorituryo',
+            '--icon', 'AozoraEpub3.ico',
+            '--app-version', '1.1.1.33',
+            '--description', '改造版AozoraEpub3 青空文庫テキストePub3変換',
+            '-n', 'AozoraEpub3',
+            '--main-jar', 'AozoraEpub3.jar',
+            '--input', inputDir.absolutePath,
+            '--dest', outputDir.absolutePath
+}
+
 
 dependencies {
 // https://mvnrepository.com/artifact/org.apache.velocity/velocity-engine-core

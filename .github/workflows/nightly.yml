@@ -17,7 +17,7 @@ jobs:
           cache: 'gradle'
       - run: gradle build
       - run: mkdir -p bin
-      - run: gradle create_run_jar
+      - run: gradle copy_runtime_files
       - run: cp -v build/libs/AozoraEpub3.jar out/
       - run: cp -vr lib/LICENSE out/
       - uses: actions/upload-artifact@v4
