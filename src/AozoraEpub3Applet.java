@@ -4060,10 +4060,17 @@ public class AozoraEpub3Applet extends JFrame
 				try { modifiedExpire = Float.parseFloat(jTextWebModifiedExpire.getText()); } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-				//キャッシュパス
+				// jpackage環境ではキャッシュをAppDataにする
+				if (System.getProperty("jpackage.app-path") != null) {
+					this.cachePath = new File(
+							new File(System.getenv("APPDATA"), "AozoraEpub3"),
+							".cache"
+					);
+				}
+				// キャッシュパス
 				if (!this.cachePath.isDirectory()) {
 					this.cachePath.mkdirs();
-					LogAppender.println("キャッシュパスを作成します : "+this.cachePath.getCanonicalPath());
+					LogAppender.println("キャッシュパスを作成します : " + this.cachePath.getCanonicalPath());
 				}
 				if (!this.cachePath.isDirectory()) {
 					LogAppender.println("キャッシュパスが作成できませんでした");
