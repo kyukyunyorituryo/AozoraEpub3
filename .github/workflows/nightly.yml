@@ -35,6 +35,11 @@ jobs:
         shell: bash
         run: |
           echo "PKG_VER=$(grep -E 'VERSION\s+=' src/AozoraEpub3.java | awk -F '"' '{print $2}')" >> "$GITHUB_ENV"
+      - name: Install Wix Toolset 3.x
+        run: |
+        choco install wixtoolset -y
+        choco install dotnet-framework-runtime -y
+        refreshenv
 
       - uses: actions/setup-java@v5
         with:
