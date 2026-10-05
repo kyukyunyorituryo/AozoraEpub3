@@ -455,7 +455,7 @@ public class AozoraEpub3Applet extends JFrame
 
 		// ⚠️ web や profiles は「読み込み」を優先するため this.jarPath をベースにする
 		this.webConfigPath = new File(this.jarPath + "web");
-		this.profilePath = new File(this.jarPath + "profiles");
+		this.profilePath = new File(baseDir, "profiles");
 
 		// 必要なフォルダの作成（書き込み先のみ）
 		if (!baseDir.exists()) baseDir.mkdirs();
