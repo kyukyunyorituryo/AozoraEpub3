@@ -59,7 +59,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.register('jpackageMsi', Exec) {
-    dependsOn 'copy_runtime_files'
+    dependsOn 'jar','copy_runtime_files'
 
     def inputDir = file('out')
     def outputDir = layout.buildDirectory.dir('jpackage').get().asFile
