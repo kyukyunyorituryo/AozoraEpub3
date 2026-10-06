@@ -383,10 +383,10 @@ public class AozoraEpub3Applet extends JFrame
 		//アイコン設定
 		setIconImage(new ImageIcon(Objects.requireNonNull(AozoraEpub3Applet.class.getResource("images/icon.png"))).getImage());
 		//最小サイズ
-		setMinimumSize(new Dimension(540, 320));
+		setMinimumSize(new Dimension(540, 400));
 		setPreferredSize(new Dimension(540, 400));
 
-		setSize(new Dimension(520, 460));
+		setSize(new Dimension(540, 460));
 
 		JMenuBar menubar = new JMenuBar();
 
@@ -4864,7 +4864,21 @@ public class AozoraEpub3Applet extends JFrame
 	private static FontUIResource getDefaultFont() {
 		final String[] sysFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 		final String[] fontList = {"Yu Gothic UI", "Meiryo UI", "MS PGothic"};
-		final int FONT_SIZE = 12;
+		// ★ Java 21対応：メインモニターの解像度スケールを取得（取得できない場合は1.0倍）
+		double scale = 1.0;
+		try {
+			scale = GraphicsEnvironment.getLocalGraphicsEnvironment()
+					.getDefaultScreenDevice()
+					.getDefaultConfiguration()
+					.getDefaultTransform()
+					.getScaleX();
+		} catch (Exception e) {
+			// 例外時は1.0倍を維持
+		}
+
+		// ★ ベースの12ポイントにスケールを掛け算する（例: 1.5倍なら18ポイント）
+		final int FONT_SIZE = (int) Math.round(12 * scale);
+
 		FontUIResource fr = new FontUIResource("SansSerif", Font.PLAIN, FONT_SIZE);
         for (String s : fontList) {
             if (Arrays.asList(sysFonts).contains(s)) {
@@ -4910,7 +4924,6 @@ public class AozoraEpub3Applet extends JFrame
 					}
 				}
 			}
-
 		} catch(Exception e) { throw new RuntimeException(e); }
 
 		//フレーム初期化
