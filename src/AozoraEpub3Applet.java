@@ -2748,19 +2748,37 @@ public class AozoraEpub3Applet extends JFrame
 			fileChooser.setApproveButtonText("選択");
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			int state = fileChooser.showOpenDialog(parent);
-            if (state == JFileChooser.APPROVE_OPTION) {
-                String pathString = fileChooser.getSelectedFile().getAbsolutePath();
-                try {
-                    //パス調整
-                    String rootPath = new File("").getCanonicalPath();
-                    if (pathString.startsWith(rootPath)) {
-                        pathString = pathString.substring(rootPath.length() + 1);
-                    }
-                } catch (IOException e1) {
-                    throw new RuntimeException(e1);
-                }
-                jTextCachePath.setText(pathString);
-            }
+			if (state == JFileChooser.APPROVE_OPTION) {
+				File selectedPath = fileChooser.getSelectedFile();
+
+				// Program Files 配下は選択不可
+				File programFiles = new File(System.getenv("ProgramFiles"));
+				try {
+					if (selectedPath.getCanonicalPath().startsWith(programFiles.getCanonicalPath())) {
+						JOptionPane.showMessageDialog(
+								parent,
+								"Program Files 配下はキャッシュ出力先に指定できません。",
+								"キャッシュ出力先",
+								JOptionPane.WARNING_MESSAGE
+						);
+						return;
+					}
+				} catch (IOException e1) {
+					throw new RuntimeException(e1);
+				}
+
+				String pathString = selectedPath.getAbsolutePath();
+				try {
+					// パス調整
+					String rootPath = new File("").getCanonicalPath();
+					if (pathString.startsWith(rootPath)) {
+						pathString = pathString.substring(rootPath.length() + 1);
+					}
+				} catch (IOException e1) {
+					throw new RuntimeException(e1);
+				}
+				jTextCachePath.setText(pathString);
+			}
 		}
 	}
 
@@ -4060,13 +4078,6 @@ public class AozoraEpub3Applet extends JFrame
 				try { modifiedExpire = Float.parseFloat(jTextWebModifiedExpire.getText()); } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-				// jpackage環境ではキャッシュをAppDataにする
-				if (System.getProperty("jpackage.app-path") != null) {
-					this.cachePath = new File(
-							new File(System.getenv("APPDATA"), "AozoraEpub3"),
-							".cache"
-					);
-				}
 				// キャッシュパス
 				if (!this.cachePath.isDirectory()) {
 					this.cachePath.mkdirs();
@@ -4138,7 +4149,7 @@ public class AozoraEpub3Applet extends JFrame
 	private File getCachePath()
 	{
 		String cachePathString = this.jTextCachePath.getText().trim();
-		if(cachePathString.isEmpty()) cachePathString = this.jarPath+".cache";
+		if(cachePathString.isEmpty()) cachePathString = new File(this.configPath, ".cache").getPath();
 		return new File(cachePathString);
 	}
 	/** キャッシュパスを以下のファイルならtrue */
